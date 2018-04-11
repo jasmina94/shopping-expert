@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LoginActivity">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="129dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="12dp"
+        android:contentDescription="Logo"
+        app:srcCompat="@drawable/log" />
+
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="208dp"
+        android:ems="10"
+        android:hint="Username"
+        android:inputType="textEmailAddress" />
+
+    <EditText
+        android:id="@+id/editText2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="249dp"
+        android:ems="10"
+        android:hint="Password"
+        android:inputType="textPassword" />
+
+    <ImageButton
+        android:id="@+id/gmailButton"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignTop="@+id/facebookButton"
+        android:layout_marginStart="50dp"
+        android:src="@drawable/gmail_64" />
+
+    <ImageButton
+        android:id="@+id/facebookButton"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="21dp"
+        android:src="@drawable/facebook_64" />
+
+    <ImageButton
+        android:id="@+id/twitterButton"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/facebookButton"
+        android:layout_marginEnd="50dp"
+        android:src="@drawable/twitter_64" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="102dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/editText"
+        android:layout_marginBottom="172dp"
+        android:text="Login" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="102dp"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/imageView"
+        android:layout_alignTop="@+id/button"
+        android:text="Register" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="309dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/gmailButton"
+        android:layout_marginBottom="120dp"
+        android:layout_marginStart="0dp"
+        android:text="Or continue by logging into your account:"
+        android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Subtitle" />
+</RelativeLayout>
