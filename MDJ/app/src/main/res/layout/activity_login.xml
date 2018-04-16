@@ -66,7 +66,7 @@
         android:src="@drawable/twitter_64" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/loginButton"
         android:layout_width="102dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -75,11 +75,11 @@
         android:text="Login" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/registerButton"
         android:layout_width="102dp"
         android:layout_height="wrap_content"
         android:layout_alignEnd="@+id/imageView"
-        android:layout_alignTop="@+id/button"
+        android:layout_alignTop="@+id/loginButton"
         android:text="Register" />
 
     <TextView

@@ -9,10 +9,31 @@
 
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="169dp"
+        android:layout_width="214dp"
         android:layout_height="530dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         app:srcCompat="@drawable/list" />
+
+    <ImageView
+        android:id="@+id/addListView"
+        android:layout_width="72dp"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="170dp"
+        android:layout_marginEnd="59dp"
+        android:clickable="true"
+        app:srcCompat="@drawable/add_list" />
+
+
+    <!--<ImageButton-->
+        <!--android:id="@+id/addButton"-->
+        <!--android:layout_width="102dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_marginBottom="71dp"-->
+        <!--android:text="Add" />-->
 
 </RelativeLayout>
