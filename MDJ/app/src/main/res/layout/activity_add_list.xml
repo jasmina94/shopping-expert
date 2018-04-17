@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddListActivity">
+    tools:context=".activities.AddListActivity">
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
@@ -15,7 +15,7 @@
         tools:layout_editor_absoluteY="113dp">
 
         <EditText
-            android:id="@+id/editText4"
+            android:id="@+id/new_list_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
@@ -24,13 +24,13 @@
             android:inputType="textPersonName" />
 
         <Button
-            android:id="@+id/createListButton"
+            android:id="@+id/new_list_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="290dp"
             android:layout_marginTop="93dp"
             android:background="@android:color/holo_green_light"
-            android:text="Button" />
+            android:text="Create" />
 
     </android.support.v7.widget.CardView>
 </RelativeLayout>

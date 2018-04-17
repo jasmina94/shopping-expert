@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/action_trash"  android:title="@string/nav_trash" android:icon="@drawable/trash"/>
+    <item android:id="@+id/action_settings" android:title="@string/nav_settings" android:icon="@drawable/settings"/>
+    <item android:id="@+id/action_logout" android:title="@string/nav_logout" android:icon="@drawable/logout"/>
+</menu>
