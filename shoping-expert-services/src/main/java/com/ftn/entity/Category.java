@@ -3,6 +3,7 @@ package com.ftn.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,13 +17,14 @@ import javax.persistence.Id;
 @Setter
 @Entity
 @NoArgsConstructor
+@Component
 public class Category {
     @Id
     @GeneratedValue
-    private Long Id;
+    private Long id;
 
     @Column(nullable = false)
-    private String CategoryName;
+    private String categoryName;
 
     //see how to add photo
 }

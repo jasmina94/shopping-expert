@@ -3,6 +3,7 @@ package com.ftn.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
@@ -16,32 +17,33 @@ import java.util.Set;
 @Setter
 @Entity
 @NoArgsConstructor
+@Component
 public class ShoppingListItem {
 
     @Id
     @GeneratedValue
-    private Long Id;
+    private Long id;
 
     @Column(nullable = false)
-    private String ItemName;
+    private String itemName;
 
     @Column(nullable = false)
     @Min(1)
-    private Integer Quantity;
+    private Integer quantity;
 
     @Column(nullable = false)
-    private Double Price;
+    private Double price;
 
-    private String Note;
+    private String note;
 
-    private Long CategoryId;
+    private Long categoryId;
 
     @Column
     @ElementCollection(targetClass=Long.class)
-    private Set<Long> PartOfShoppingLists = new HashSet<>();
+    private Set<Long> partOfShoppingLists = new HashSet<>();
 
     @Column(columnDefinition = "Boolean default false")
-    private Boolean IsPurchased;
+    private Boolean isPurchased;
 
     //items created by user are connected only to the list not the user, so item is existing only on list level
 

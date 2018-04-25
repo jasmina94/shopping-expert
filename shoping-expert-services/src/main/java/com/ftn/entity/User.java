@@ -3,6 +3,7 @@ package com.ftn.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,23 +17,24 @@ import javax.validation.constraints.Email;
 @Setter
 @Entity
 @NoArgsConstructor
+@Component
 public class User {
 
     @Id
     @GeneratedValue
-    private Long Id;
+    private Long id;
 
     @Column
-    private String FirstName;
+    private String firstName;
 
     @Column
-    private String LastName;
+    private String lastName;
 
     @Column(nullable = false)
-    private String Password;
+    private String password;
 
     //email is at the same time username
     @Column(unique = true, nullable = false)
     @Email
-    private String Email;
+    private String email;
 }
