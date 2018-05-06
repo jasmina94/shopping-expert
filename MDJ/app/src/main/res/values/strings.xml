@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MDJ</string>
+    <string name="app_name">Shopping expert</string>
     <string name="title_activity_login">Sign in</string>
 
     <!-- Strings related to login -->
@@ -14,8 +14,4 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
-    <string name="nav_trash">Trash</string>
-    <string name="nav_logout">Logout</string>
-    <string name="nav_settings">Settings</string>
-    <string name="nav_profile">Welcome</string>
 </resources>

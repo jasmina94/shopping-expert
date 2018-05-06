@@ -19,13 +19,10 @@ public class DummyCollection {
     }
 
     public void initialize(){
-        ShoppingListDTO shoppingListDTO1 = new ShoppingListDTO("Shopping list 1");
-        ShoppingListDTO shoppingListDTO2 = new ShoppingListDTO("Shopping list 2");
-        ShoppingListDTO shoppingListDTO3 = new ShoppingListDTO("Shopping list 3");
-
-        dummies.add(shoppingListDTO1);
-        dummies.add(shoppingListDTO2);
-        dummies.add(shoppingListDTO3);
+        for(int i=0; i<10; i++){
+            ShoppingListDTO shoppingList = new ShoppingListDTO("List " + i);
+            dummies.add(shoppingList);
+        }
     }
 
     public void addNewShoppingList(ShoppingListDTO shoppingListDTO){

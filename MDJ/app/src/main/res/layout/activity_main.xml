@@ -1,64 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingBottom="16dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="16dp"
     tools:context="com.ftn.mdj.activities.MainActivity">
 
-
-    <!--<ImageView-->
-        <!--android:id="@+id/imageView2"-->
-        <!--android:layout_width="214dp"-->
-        <!--android:layout_height="530dp"-->
-        <!--android:layout_alignParentTop="true"-->
-        <!--android:layout_centerHorizontal="true"-->
-        <!--app:srcCompat="@drawable/list" />-->
-
-    <!--<ImageView-->
-        <!--android:id="@+id/addListView"-->
-        <!--android:layout_width="72dp"-->
-        <!--android:layout_height="60dp"-->
-        <!--android:layout_alignParentBottom="true"-->
-        <!--android:layout_alignParentEnd="true"-->
-        <!--android:layout_marginBottom="170dp"-->
-        <!--android:layout_marginEnd="59dp"-->
-        <!--android:clickable="true"-->
-        <!--app:srcCompat="@drawable/add_list" />-->
-
-
-    <!--<ImageButton-->
-        <!--android:id="@+id/addButton"-->
-        <!--android:layout_width="102dp"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignParentBottom="true"-->
-        <!--android:layout_centerHorizontal="true"-->
-        <!--android:layout_marginBottom="71dp"-->
-        <!--android:text="Add" />-->
-
-    <ListView
-        android:id="@+id/active_shopping_lists"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="119dp"
-        android:scrollbars="vertical"></ListView>
+        android:layout_height="match_parent">
+
+
+    </android.support.v7.widget.RecyclerView>
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/floatingActionButton"
-        android:layout_width="wrap_content"
+        android:id="@+id/btn_add_shopping_list"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_marginBottom="55dp"
-        android:layout_marginEnd="74dp"
-        android:layout_marginRight="74dp"
-        android:clickable="true"
-        app:backgroundTint="@color/cardview_light_background"
-        app:srcCompat="@drawable/add_list" />
-
+        android:src="@drawable/add"
+        android:elevation="6dp"/>
 
 </RelativeLayout>
