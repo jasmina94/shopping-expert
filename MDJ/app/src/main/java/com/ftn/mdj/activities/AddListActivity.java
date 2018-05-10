@@ -16,13 +16,16 @@ import java.io.Serializable;
 
 public class AddListActivity extends AppCompatActivity {
 
+    private Button btn_create_list;
+    private Button btn_dismiss;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_list);
 
-        Button createBtn = (Button) findViewById(R.id.new_list_btn);
-        createBtn.setOnClickListener(new View.OnClickListener() {
+        btn_create_list = (Button) findViewById(R.id.new_list_btn);
+        btn_create_list.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Context context = view.getContext();
@@ -33,6 +36,14 @@ public class AddListActivity extends AppCompatActivity {
 
                 intent.putExtra("newList", shoppingListDTO);
                 context.startActivity(intent);
+            }
+        });
+
+        btn_dismiss = (Button) findViewById(R.id.btn_dismiss_create);
+        btn_dismiss.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
             }
         });
     }

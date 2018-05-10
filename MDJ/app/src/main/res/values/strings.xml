@@ -1,8 +1,12 @@
 <resources>
-    <string name="app_name">Shopping expert</string>
-    <string name="title_activity_login">Sign in</string>
+    <string name="app_name">Shop expert</string>
+
+    <!--Main fragment -->
+    <string name="no_list_to_show">Create your first list just tap the pink button</string>
 
     <!-- Strings related to login -->
+    <string name="btn_sign_in">SIGN IN OR SIGN UP</string>
+    <string name="title_activity_login">Sign in</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password (optional)</string>
     <string name="action_sign_in">Sign in or register</string>
@@ -14,4 +18,12 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+
+    <!--Drawer-->
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+
+    <!--New list-->
+    <string name="create_hint">New list</string>
+    <string name="dismiss">X</string>
 </resources>
