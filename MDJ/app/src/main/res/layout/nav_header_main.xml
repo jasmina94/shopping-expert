@@ -5,15 +5,18 @@
     android:orientation="vertical"
     android:background="@drawable/nav_background">
 
-    <Button
+
+    <android.support.v7.widget.AppCompatButton
         android:id="@+id/btn_sign_in"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
-        android:layout_marginLeft="80dp"
-        android:padding="5dp"
-        android:gravity="center"
+        android:layout_marginBottom="24dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:padding="12dp"
         android:text="@string/btn_sign_in"
+        android:textColor="@color/darkGray"
         android:background="@color/lightOrange"/>
 
     <TextView

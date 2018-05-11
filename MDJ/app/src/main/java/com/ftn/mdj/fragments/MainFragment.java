@@ -26,11 +26,11 @@ import java.util.List;
  */
 public class MainFragment extends Fragment {
 
-    private RecyclerView recyclerView;
-    private RecyclerView.Adapter adapter;
-    private FloatingActionButton btn_add_list;
-    TextView emptyView;
-    ImageView emptyImgView;
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private FloatingActionButton mBtnAddList;
+    TextView mEmptyView;
+    ImageView mEmptyImgView;
 
     private List<ShoppingListDTO> activeShoppingLists;
 
@@ -41,28 +41,28 @@ public class MainFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-        recyclerView = (RecyclerView)rootView.findViewById(R.id.recycler_view);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(rootView.getContext()));
+        mRecyclerView = (RecyclerView)rootView.findViewById(R.id.recycler_view);
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(rootView.getContext()));
 
-        adapter = new MainAdapter(activeShoppingLists, rootView.getContext());
-        recyclerView.setAdapter(adapter);
+        mAdapter = new MainAdapter(activeShoppingLists, rootView.getContext());
+        mRecyclerView.setAdapter(mAdapter);
 
-        emptyView = (TextView) rootView.findViewById(R.id.empty_view);
-        emptyImgView = (ImageView) rootView.findViewById(R.id.empty_view_img);
+        mEmptyView = (TextView) rootView.findViewById(R.id.empty_view);
+        mEmptyImgView = (ImageView) rootView.findViewById(R.id.empty_view_img);
 
         if(activeShoppingLists.size()!=0){
-            recyclerView.setVisibility(View.VISIBLE);
-            emptyView.setVisibility(View.INVISIBLE);
-            emptyImgView.setVisibility(View.INVISIBLE);
+            mRecyclerView.setVisibility(View.VISIBLE);
+            mEmptyView.setVisibility(View.INVISIBLE);
+            mEmptyImgView.setVisibility(View.INVISIBLE);
         }else {
-            recyclerView.setVisibility(View.INVISIBLE);
-            emptyView.setVisibility(View.VISIBLE);
-            emptyImgView.setVisibility(View.VISIBLE);
+            mRecyclerView.setVisibility(View.INVISIBLE);
+            mEmptyView.setVisibility(View.VISIBLE);
+            mEmptyImgView.setVisibility(View.VISIBLE);
         }
 
-        btn_add_list = (FloatingActionButton)rootView.findViewById(R.id.btn_add_shopping_list);
-        btn_add_list.setOnClickListener(new View.OnClickListener() {
+        mBtnAddList = (FloatingActionButton)rootView.findViewById(R.id.btn_add_shopping_list);
+        mBtnAddList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Context context = view.getContext();

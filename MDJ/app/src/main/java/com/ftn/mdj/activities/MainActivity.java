@@ -1,22 +1,19 @@
 package com.ftn.mdj.activities;
 
-import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,8 +24,6 @@ import com.ftn.mdj.fragments.MainFragment;
 import com.ftn.mdj.utils.DummyCollection;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
-import org.w3c.dom.Text;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -41,21 +36,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private static final String SHOPPING_LIST_FILE = "shopping_lists.txt";
 
-    private NavigationView navigationView;
-    private Toolbar toolbar;
-    private DrawerLayout drawerLayout;
-    private ActionBarDrawerToggle toggle;
-    private  boolean userLogedIn = true;  //for test
+    private NavigationView mNavigationView;
+    private Toolbar mToolbar;
+    private DrawerLayout mDrawerLayout;
+    private ActionBarDrawerToggle mToggle;
+
+    private  boolean userLogedIn = false;  //for test
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //DummyCollection dummyCollection = new DummyCollection();
-        //write_lists(dummyCollection.getDummies());
-        //List<ShoppingListDTO> lists = read_lists();
-        List<ShoppingListDTO> lists = new ArrayList<>();
+        DummyCollection dummyCollection = new DummyCollection();
+        write_lists(dummyCollection.getDummies());
+        List<ShoppingListDTO> lists = read_lists();
+        //List<ShoppingListDTO> lists = new ArrayList<>();
 
         MainFragment fragment = new MainFragment();
         fragment.setActiveShoppingLists(lists);
@@ -63,20 +59,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fragmentTransaction.replace(R.id.fragment_container, fragment);
         fragmentTransaction.commit();
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
 
-        drawerLayout = (DrawerLayout) findViewById(R.id.main_drawer);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.main_drawer);
 
-        toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open, R.string.close);
-        toggle.syncState();
+        mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.open, R.string.close);
+        mToggle.syncState();
 
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        mNavigationView = (NavigationView) findViewById(R.id.nav_view);
+        mNavigationView.setNavigationItemSelectedListener(this);
         changeDrawerContent();
+        setSignInUpListener();
     }
-
-
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -100,12 +95,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         //Close navigation drawer
-        drawerLayout.closeDrawer(GravityCompat.START);
+        mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
 
     private void changeDrawerContent(){
-        View headerView = navigationView.getHeaderView(0);
+        View headerView = mNavigationView.getHeaderView(0);
         TextView emailText = (TextView) headerView.findViewById(R.id.user_email);
         Button button = (Button)headerView.findViewById(R.id.btn_sign_in);
         if(userLogedIn){
@@ -114,9 +109,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             emailText.setText("logedin@email.com"); //Put here email of logged in user if exists
         }else {
             emailText.setVisibility(View.INVISIBLE);
-            Menu navMenu = navigationView.getMenu();
+            Menu navMenu = mNavigationView.getMenu();
             navMenu.findItem(R.id.mnu_logout).setVisible(false);
         }
+    }
+
+    private void setSignInUpListener() {
+        View headerView = mNavigationView.getHeaderView(0);
+        Button button = (Button)headerView.findViewById(R.id.btn_sign_in);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Context context = view.getContext();
+                Toast.makeText(context, "Change activity", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(context, LogRegActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     public void write_lists(List<ShoppingListDTO> list) {
