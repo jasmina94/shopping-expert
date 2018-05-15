@@ -71,18 +71,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mNavigationView.setNavigationItemSelectedListener(this);
         changeDrawerContent();
         setSignInUpListener();
-
-        // desa added for testing maps
-        Button button = (Button)findViewById(R.id.btn_map);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Context context = view.getContext();
-                Toast.makeText(context, "Change activity", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(context, MapsActivity.class);
-                startActivity(intent);
-            }
-        });
     }
 
     @Override

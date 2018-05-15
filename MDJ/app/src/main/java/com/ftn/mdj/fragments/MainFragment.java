@@ -11,11 +11,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ftn.mdj.R;
 import com.ftn.mdj.activities.AddListActivity;
+import com.ftn.mdj.activities.MapsActivity;
 import com.ftn.mdj.adapters.MainAdapter;
 import com.ftn.mdj.dto.ShoppingListDTO;
 
@@ -29,6 +31,7 @@ public class MainFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private FloatingActionButton mBtnAddList;
+    private Button mBtnMap;
     TextView mEmptyView;
     ImageView mEmptyImgView;
 
@@ -67,6 +70,16 @@ public class MainFragment extends Fragment {
             public void onClick(View view) {
                 Context context = view.getContext();
                 Intent intent = new Intent(context, AddListActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        mBtnMap = (Button)rootView.findViewById(R.id.btn_map);
+        mBtnMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Context context = view.getContext();
+                Intent intent = new Intent(context, MapsActivity.class);
                 startActivity(intent);
             }
         });
