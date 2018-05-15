@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
  * Created by milca on 4/25/2018.
  */
 @RestController
-@RequestMapping("/shoppingLists")
+@RequestMapping("/api/lists")
 public class ShoppingListController {
 
     @Autowired
@@ -58,14 +58,14 @@ public class ShoppingListController {
     }
 
     @Transactional
-    @PutMapping("makeSecret/{listId}")
+    @PutMapping("/makeSecret/{listId}")
     public ResponseEntity MakeSecret(@PathVariable Long listId, @RequestBody @NotEmpty String password) {
         iShoppingListService.makeSecret(listId, password);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Transactional
-    @PutMapping("makePublic/{listId}")
+    @PutMapping("/makePublic/{listId}")
     public ResponseEntity MakePublic(@PathVariable Long listId, @RequestBody @NotEmpty String password) {
         if (!iShoppingListService.MakePublic(listId, password))
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
@@ -74,7 +74,7 @@ public class ShoppingListController {
     }
 
     @Transactional
-    @PutMapping("addReminder/{listId}/{reminder}")
+    @PutMapping("/addReminder/{listId}/{reminder}")
     public ResponseEntity AddReminder(@PathVariable Long listId, @PathVariable LocalDateTime reminder) {
         iShoppingListService.addReminder(listId, reminder);
         return new ResponseEntity<>(HttpStatus.OK);
