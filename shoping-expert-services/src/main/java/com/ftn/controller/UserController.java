@@ -1,5 +1,6 @@
 package com.ftn.controller;
 
+import com.ftn.dto.RegistrationDTO;
 import com.ftn.dto.UserDTO;
 import com.ftn.service.IUserService;
 import com.ftn.util.GenericResponse;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 
 /**
  * Created by Jasmina on 15/05/2018.
@@ -21,13 +23,16 @@ public class UserController {
 
     @Transactional
     @PostMapping
-    public GenericResponse<UserDTO> register(@RequestBody UserDTO userDTO){
+    public GenericResponse<UserDTO> register(@Valid @RequestBody RegistrationDTO registrationDTO){
+        System.out.println("so cool");
         GenericResponse<UserDTO> response = new GenericResponse<>();
-        UserDTO registeredUser = userService.register(userDTO);
+        UserDTO registeredUser = userService.register(registrationDTO);
 
         if(registeredUser != null){
+            System.out.println("dobro je");
             response.success(registeredUser);
         }else {
+            System.out.println("greska");
             response.error("Registration failed. Try with another email.");
         }
 
@@ -54,6 +59,11 @@ public class UserController {
             response.error("Credentials are not valid.");
         }
         return response;
+    }
+
+    @GetMapping
+    public String test(){
+        return "OK";
     }
 
 }

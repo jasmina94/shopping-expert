@@ -7,17 +7,49 @@
 
     <ImageView
         android:layout_width="wrap_content"
-        android:layout_height="75dp"
+        android:layout_height="60dp"
         android:src="@drawable/logo"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="5dp"/>
+        android:layout_marginTop="2dp"/>
+
+    <!-- Firstname -->
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp">
+        <EditText android:id="@+id/reg_input_firstname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:hint="@string/firstname"
+            android:textColor="@color/black"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <!-- Lastname Label -->
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp">
+        <EditText android:id="@+id/reg_input_lastname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text|textPersonName"
+            android:hint="@string/lastname"
+            android:textColor="@color/black"/>
+    </android.support.design.widget.TextInputLayout>
 
     <!-- Email Label -->
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp">
         <EditText android:id="@+id/reg_input_email"
@@ -32,8 +64,8 @@
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         app:passwordToggleEnabled="true">
@@ -46,11 +78,12 @@
 
     </android.support.design.widget.TextInputLayout>
 
+    <!-- Simple REGISTRATION BUTTON -->
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/btn_register"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="2dp"
         android:layout_marginBottom="24dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
@@ -59,11 +92,12 @@
         android:textColor="@color/white"
         android:background="@color/colorPrimary"/>
 
+    <!-- Google REGISTRATION BUTTON -->
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/btn_register_google"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="15dp"
         android:layout_marginBottom="24dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
@@ -72,11 +106,12 @@
         android:textColor="@color/white"
         android:background="@color/redGoogle"/>
 
+    <!-- Facebook REGISTRATION BUTTON -->
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/btn_register_facebook"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="2dp"
         android:layout_marginBottom="24dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"

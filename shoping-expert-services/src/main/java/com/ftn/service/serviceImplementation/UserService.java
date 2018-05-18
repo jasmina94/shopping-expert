@@ -1,5 +1,6 @@
 package com.ftn.service.serviceImplementation;
 
+import com.ftn.dto.RegistrationDTO;
 import com.ftn.dto.UserDTO;
 import com.ftn.entity.User;
 import com.ftn.repository.UserRepository;
@@ -18,20 +19,20 @@ public class UserService implements IUserService{
 
 
     @Override
-    public UserDTO register(UserDTO userDTO) {
-        UserDTO registered = null;
-        boolean emailOk = checkEmail(userDTO.getEmail());
+    public UserDTO register(RegistrationDTO registrationDTO) {
+        UserDTO userDTO = null;
+        boolean emailOk = checkEmail(registrationDTO.getEmail());
         if(emailOk) {
             try {
                 User user = new User();
-                user.merge(userDTO);
+                user.merge(registrationDTO);
                 user = userRepository.save(user);
-                registered = new UserDTO(user);
+                userDTO = new UserDTO(user);
             } catch (Exception e){
                 e.printStackTrace();
             }
         }
-        return registered;
+        return userDTO;
     }
 
     @Override

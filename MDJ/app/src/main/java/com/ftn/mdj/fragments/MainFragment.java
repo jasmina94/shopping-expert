@@ -29,8 +29,8 @@ public class MainFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private FloatingActionButton mBtnAddList;
-    TextView mEmptyView;
-    ImageView mEmptyImgView;
+    private TextView mEmptyView;
+    private ImageView mEmptyImgView;
 
     private List<ShoppingListDTO> activeShoppingLists;
 
