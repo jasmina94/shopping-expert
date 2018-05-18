@@ -1,6 +1,7 @@
 package com.ftn.controller;
 
 import com.ftn.service.IShoppingListService;
+import com.ftn.util.GenericResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,9 +30,11 @@ public class ShoppingListController {
 
     @Transactional
     @PostMapping("/create/{listName}")
-    public ResponseEntity Create(@PathVariable String listName) {
+    public GenericResponse Create(@PathVariable String listName) {
         iShoppingListService.create(listName, (long) 1);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        GenericResponse<String> response = new GenericResponse<>();
+
+        return response;
     }
 
     @Transactional
@@ -77,6 +80,13 @@ public class ShoppingListController {
     @PutMapping("/addReminder/{listId}/{reminder}")
     public ResponseEntity AddReminder(@PathVariable Long listId, @PathVariable LocalDateTime reminder) {
         iShoppingListService.addReminder(listId, reminder);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Transactional
+    @PutMapping("shareList/{listId}/{sharedWith}")
+    public ResponseEntity shareList(@PathVariable Long listId, @PathVariable String sharedWith) {
+        iShoppingListService.shareList(listId, sharedWith);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

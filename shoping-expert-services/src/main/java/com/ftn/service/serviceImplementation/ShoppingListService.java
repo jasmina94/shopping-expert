@@ -24,6 +24,9 @@ public class ShoppingListService implements IShoppingListService {
     @Autowired
     private IShoppingListItemService iShoppingListItemService;
 
+    @Autowired
+    private EmailService emailService;
+
     @Override
     public List<ShoppingListShowDto> getListsByArchivedStatus(Long loggedUserId, boolean isArchived) {
         List<ShoppingList> list = shoppingListRepository.findByCreatorIdAndIsArchived(loggedUserId, isArchived);
@@ -97,6 +100,16 @@ public class ShoppingListService implements IShoppingListService {
         ShoppingList shoppingList = shoppingListRepository.getOne(listId);
         shoppingList.setListName(listName);
         shoppingListRepository.save(shoppingList);
+    }
+
+    @Override
+    public void shareList(Long listId, String sharedWith) {
+        //check if user is registratet if not, send email invitation
+        String curentlyLoggedUserName = "Milica";
+        String subject = "MDJ - List shared";
+        // will add url to
+        String message ="Mr/s " + curentlyLoggedUserName + ", \n " + curentlyLoggedUserName + " has just shared shopping list with you. Click on notification. \n ";
+        emailService.sendEmail(subject, message, sharedWith);
     }
 
 }

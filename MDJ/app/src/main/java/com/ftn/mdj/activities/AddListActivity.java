@@ -2,22 +2,36 @@ package com.ftn.mdj.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ftn.mdj.R;
+import com.ftn.mdj.dto.RegistrationDTO;
 import com.ftn.mdj.dto.ShoppingListDTO;
+import com.ftn.mdj.dto.UserDTO;
+import com.ftn.mdj.fragments.RegisterFragment;
 import com.ftn.mdj.utils.DummyCollection;
+import com.ftn.mdj.utils.GenericResponse;
+import com.ftn.mdj.utils.ServiceUtils;
 
 import java.io.Serializable;
+
+import retrofit2.Call;
+import retrofit2.Response;
 
 public class AddListActivity extends AppCompatActivity {
 
     private Button btn_create_list;
     private Button btn_dismiss;
+    private Handler handler;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,20 +39,20 @@ public class AddListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_list);
 
         btn_create_list = (Button) findViewById(R.id.new_list_btn);
-        btn_create_list.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Context context = view.getContext();
-                Intent intent = new Intent(context, MainActivity.class);
-
-                String name = ((TextView) findViewById(R.id.new_list_name)).getText().toString().trim();
-                ShoppingListDTO shoppingListDTO = new ShoppingListDTO(name);
-
-                intent.putExtra("newList", shoppingListDTO);
-                context.startActivity(intent);
-            }
-        });
-
+//        btn_create_list.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Context context = view.getContext();
+//                Intent intent = new Intent(context, MainActivity.class);
+//
+//                String name = ((TextView) findViewById(R.id.new_list_name)).getText().toString().trim();
+//                ShoppingListDTO shoppingListDTO = new ShoppingListDTO(name);
+//
+//                intent.putExtra("newList", shoppingListDTO);
+//                context.startActivity(intent);
+//            }
+//        });
+        setupSubmit();
         btn_dismiss = (Button) findViewById(R.id.btn_dismiss_create);
         btn_dismiss.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,5 +60,47 @@ public class AddListActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    private void setupSubmit() {
+        btn_create_list.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                    WorkerThread workerThread = new WorkerThread();
+                    workerThread.start();
+                    Message msg = Message.obtain();
+                workerThread.handler.sendMessage(msg);
+                }
+        });
+    }
+
+    private class WorkerThread extends Thread{
+        private Handler handler;
+
+        public WorkerThread(){
+            handler = new Handler(){
+
+                @Override
+                public void handleMessage(Message msg) {
+                    String listName = ((TextView) findViewById(R.id.new_list_name)).getText().toString().trim();
+
+                    ServiceUtils.listService.create(listName).enqueue(new retrofit2.Callback<GenericResponse>(){
+
+                        @Override
+                        public void onResponse(Call<GenericResponse> call, Response<GenericResponse> response) {
+                            System.out.println("Meesage recieved successfully!");
+                        }
+
+                        @Override
+                        public void onFailure(Call<GenericResponse> call, Throwable t) {
+                            System.out.println("Error sending registration data!");
+                        }
+                    });
+                    super.handleMessage(msg);
+                }
+
+            };
+        }
     }
 }

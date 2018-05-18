@@ -2,6 +2,7 @@ package com.ftn.mdj.utils;
 
 import android.os.Message;
 
+import com.ftn.mdj.services.IListService;
 import com.ftn.mdj.services.IUserService;
 
 import java.util.concurrent.TimeUnit;
@@ -46,5 +47,7 @@ public class ServiceUtils {
     }
 
     public static IUserService userService = retrofit.create(IUserService.class);
+    public static IListService listService = retrofit.create(IListService.class);
+
     // TODO: Add all needed service interfaces with here
 }
