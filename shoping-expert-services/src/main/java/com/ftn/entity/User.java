@@ -1,5 +1,6 @@
 package com.ftn.entity;
 
+import com.ftn.dto.RegistrationDTO;
 import com.ftn.dto.UserDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -47,10 +48,10 @@ public class User {
         this.lastName = userDTO.getLastName();
     }
 
-    public void merge(UserDTO userDTO){
-        this.email = userDTO.getEmail();
-        this.password = userDTO.getPassword();
-        this.firstName = userDTO.getFirstName();
-        this.lastName = userDTO.getLastName();
+    public void merge(RegistrationDTO registrationDTO){
+        this.email = registrationDTO.getEmail();
+        this.password = registrationDTO.getPassword();
+        this.firstName = registrationDTO.getFirstName();
+        this.lastName = registrationDTO.getLastName();
     }
 }
