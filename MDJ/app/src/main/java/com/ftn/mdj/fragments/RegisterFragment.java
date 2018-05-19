@@ -6,6 +6,8 @@ import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatEditText;
 import android.view.LayoutInflater;
@@ -14,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.ftn.mdj.R;
+import com.ftn.mdj.activities.LogRegActivity;
 import com.ftn.mdj.dto.RegistrationDTO;
 import com.ftn.mdj.dto.UserDTO;
 import com.ftn.mdj.utils.GenericResponse;
@@ -42,10 +45,12 @@ public class RegisterFragment extends Fragment {
 
     private static final String EMAIL_PATTERN = "^[a-zA-Z0-9#_~!$&'()*+,;=:.\"(),:;<>@\\[\\]\\\\]+@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*$";
 
+    private View rootView;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_register, container, false);
+        rootView = inflater.inflate(R.layout.fragment_register, container, false);
 
         mFirstnameWrapper = (AppCompatEditText)rootView.findViewById(R.id.reg_input_firstname);
         mLastnameWrapper = (AppCompatEditText)rootView.findViewById(R.id.reg_input_lastname);
@@ -65,14 +70,14 @@ public class RegisterFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 RegistrationDTO registrationDTO;
-                String firstname = mFirstnameWrapper.getEditableText().toString().trim();
-                String lastname = mLastnameWrapper.getEditableText().toString().trim();
+                String firstName = mFirstnameWrapper.getEditableText().toString().trim();
+                String lastName = mLastnameWrapper.getEditableText().toString().trim();
                 String email = mEmailWrapper.getEditableText().toString().trim();
                 String password = mPasswordWrapper.getEditableText().toString().trim();
                 if(!validateEmail(email)){
                     mEmailWrapper.setError("Email address is not valid!");
                 }else {
-                    registrationDTO = new RegistrationDTO(firstname, lastname, email, password);
+                    registrationDTO = new RegistrationDTO(email, password, firstName, lastName);
                     WorkerThread workerThread = new WorkerThread(handler);
                     workerThread.start();
                     Message msg = Message.obtain();
@@ -91,14 +96,22 @@ public class RegisterFragment extends Fragment {
                 String message;
                 if(response.isSuccessfulOperation()) {
                     message = getString(R.string.success_registration);
+                    showToastMessage(message);
+                    clearInputs();
+                    ((LogRegActivity)getActivity()).switchFragment(0);
                 } else {
                     message = response.getErrorMessage();
+                    showToastMessage(message);
                 }
-
-                Toast t = Toast.makeText(getContext(), message, Toast.LENGTH_LONG);
-                t.show();
             }
         };
+    }
+
+    private void clearInputs() {
+        mFirstnameWrapper.getEditableText().clear();
+        mLastnameWrapper.getEditableText().clear();
+        mEmailWrapper.getEditableText().clear();
+        mPasswordWrapper.getEditableText().clear();
     }
 
     private boolean validateEmail(String email){
@@ -137,5 +150,19 @@ public class RegisterFragment extends Fragment {
 
             };
         }
+
+        @Override
+        public void run() {
+            if(Looper.myLooper() == null) {
+                Looper.prepare();
+            }
+
+            Looper.loop();
+        }
+    }
+
+    private void showToastMessage(String message){
+        Toast t = Toast.makeText(getContext(), message, Toast.LENGTH_LONG);
+        t.show();
     }
 }

@@ -5,25 +5,25 @@ package com.ftn.mdj.dto;
  */
 public class RegistrationDTO {
 
-    private String firstname;
-    private String lastname;
+    private String firstName;
+    private String lastName;
     private String email;
     private String password;
 
 
-    public RegistrationDTO(String firstname, String lastname, String password, String email) {
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.password = password;
+    public RegistrationDTO(String email, String password, String firstName, String lastName ) {
         this.email = email;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
 
-    public String getFirstname() {
-        return firstname;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     public String getPassword() {
@@ -42,11 +42,11 @@ public class RegistrationDTO {
         this.email = email;
     }
 
-    public String getLastname() {
-        return lastname;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 }

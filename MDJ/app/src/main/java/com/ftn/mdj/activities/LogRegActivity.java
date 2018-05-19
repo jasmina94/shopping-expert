@@ -39,4 +39,8 @@ public class LogRegActivity extends AppCompatActivity {
         onBackPressed();
         return true;
     }
+
+    public void switchFragment(int target){
+        mViewPager.setCurrentItem(target);
+    }
 }

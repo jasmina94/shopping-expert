@@ -22,8 +22,8 @@
     <!-- Strings related to login -->
     <string name="email">Email</string>
     <string name="pass">Password</string>
-    <string name="firstname">Firstname</string>
-    <string name="lastname">Lastname</string>
+    <string name="firstName">Firstname</string>
+    <string name="lastName">Lastname</string>
     <string name="login">SIGN IN</string>
     <string name="register">CREATE ACCOUNT</string>
     <string name="register_google">CREATE ACCOUNT WITH GOOGLE +</string>
@@ -31,6 +31,6 @@
     <string name="login_google">SIGN IN WITH GOOGLE +</string>
     <string name="login_facebook">SIGN IN WITH FACEBOOK</string>
     <string name="forgot_pass">FORGOT PASSWORD</string>
-    <string name="success_registration">Successfully registered!</string>
+    <string name="success_registration">Successfully registered! Now you can sign in.</string>
     <string name="email_error">Email address is not valid!</string>
 </resources>

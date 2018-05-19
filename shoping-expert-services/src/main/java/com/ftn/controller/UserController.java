@@ -23,16 +23,14 @@ public class UserController {
 
     @Transactional
     @PostMapping
-    public GenericResponse<UserDTO> register(@Valid @RequestBody RegistrationDTO registrationDTO){
-        System.out.println("so cool");
+    public GenericResponse<UserDTO> register(@RequestBody RegistrationDTO registrationDTO){
+
         GenericResponse<UserDTO> response = new GenericResponse<>();
         UserDTO registeredUser = userService.register(registrationDTO);
 
         if(registeredUser != null){
-            System.out.println("dobro je");
             response.success(registeredUser);
         }else {
-            System.out.println("greska");
             response.error("Registration failed. Try with another email.");
         }
 

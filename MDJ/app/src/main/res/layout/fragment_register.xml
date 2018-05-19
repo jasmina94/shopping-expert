@@ -3,7 +3,8 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    android:id="@+id/fragment_register">
 
     <ImageView
         android:layout_width="wrap_content"
@@ -24,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
-            android:hint="@string/firstname"
+            android:hint="@string/firstName"
             android:textColor="@color/black"/>
     </android.support.design.widget.TextInputLayout>
 
@@ -40,7 +41,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text|textPersonName"
-            android:hint="@string/lastname"
+            android:hint="@string/lastName"
             android:textColor="@color/black"/>
     </android.support.design.widget.TextInputLayout>
 
