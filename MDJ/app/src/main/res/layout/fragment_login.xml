@@ -71,7 +71,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:padding="12dp"
-        android:text="@string/login_google"
+        android:text="@string/sign_in_google"
         android:textColor="@color/white"
         android:background="@color/redGoogle"/>
 
@@ -84,7 +84,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:padding="12dp"
-        android:text="@string/login_facebook"
+        android:text="@string/sign_in_facebook"
         android:textColor="@color/white"
         android:background="@color/blueFacebook"/>
 

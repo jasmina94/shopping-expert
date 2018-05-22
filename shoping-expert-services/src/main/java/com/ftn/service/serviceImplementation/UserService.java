@@ -1,5 +1,6 @@
 package com.ftn.service.serviceImplementation;
 
+import com.ftn.dto.LoginDTO;
 import com.ftn.dto.RegistrationDTO;
 import com.ftn.dto.UserDTO;
 import com.ftn.entity.User;
@@ -7,6 +8,8 @@ import com.ftn.repository.UserRepository;
 import com.ftn.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 /**
  * Created by Jasmina on 15/05/2018.
@@ -36,6 +39,19 @@ public class UserService implements IUserService{
     }
 
     @Override
+    public UserDTO getById(int id) {
+        UserDTO userDTO = null;
+        long lId = ((long) id);
+        try{
+           User user = userRepository.findById(lId).orElseThrow(NullPointerException::new);
+           userDTO = new UserDTO(user);
+           return userDTO;
+        }catch (NullPointerException e){
+            return userDTO;
+        }
+    }
+
+    @Override
     public UserDTO getByEmail(String email) {
         UserDTO userDTO = null;
         User user = userRepository.findByEmail(email);
@@ -56,10 +72,10 @@ public class UserService implements IUserService{
     }
 
     @Override
-    public boolean checkCredentials(UserDTO userDTO) {
+    public boolean checkCredentials(LoginDTO loginDTO) {
         boolean credentialsOk = true;
-        String email = userDTO.getEmail();
-        String password = userDTO.getPassword();
+        String email = loginDTO.getEmail();
+        String password = loginDTO.getPassword();
         UserDTO user = getByEmailAndPassword(email, password);
         if(user == null){
             credentialsOk = false;

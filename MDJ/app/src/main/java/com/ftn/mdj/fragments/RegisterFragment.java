@@ -6,8 +6,6 @@ import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatEditText;
 import android.view.LayoutInflater;
@@ -20,7 +18,8 @@ import com.ftn.mdj.activities.LogRegActivity;
 import com.ftn.mdj.dto.RegistrationDTO;
 import com.ftn.mdj.dto.UserDTO;
 import com.ftn.mdj.utils.GenericResponse;
-import com.ftn.mdj.utils.ServiceUtils;
+import com.ftn.mdj.services.ServiceUtils;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -51,18 +50,18 @@ public class RegisterFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_register, container, false);
+        initViews();
+        setupHandler();
+        setupSubmit();
+        return rootView;
+    }
 
+    private void initViews(){
         mFirstnameWrapper = (AppCompatEditText)rootView.findViewById(R.id.reg_input_firstname);
         mLastnameWrapper = (AppCompatEditText)rootView.findViewById(R.id.reg_input_lastname);
         mEmailWrapper = (AppCompatEditText)rootView.findViewById(R.id.reg_input_email);
         mPasswordWrapper = (AppCompatEditText)rootView.findViewById(R.id.reg_input_password);
-
         mRegistrationButton = (AppCompatButton)rootView.findViewById(R.id.btn_register);
-
-        setupHandler();
-        setupSubmit();
-
-        return rootView;
     }
 
     private void setupSubmit() {
@@ -74,8 +73,21 @@ public class RegisterFragment extends Fragment {
                 String lastName = mLastnameWrapper.getEditableText().toString().trim();
                 String email = mEmailWrapper.getEditableText().toString().trim();
                 String password = mPasswordWrapper.getEditableText().toString().trim();
-                if(!validateEmail(email)){
-                    mEmailWrapper.setError("Email address is not valid!");
+                if(firstName.isEmpty()){
+                    mFirstnameWrapper.setError(getString(R.string.err_required_firstname));
+                    mFirstnameWrapper.requestFocus();
+                }else if(lastName.isEmpty()){
+                    mLastnameWrapper.setError(getString(R.string.err_required_lastname));
+                    mLastnameWrapper.requestFocus();
+                }else if(email.isEmpty()){
+                    mEmailWrapper.setError(getString(R.string.err_required_email));
+                    mEmailWrapper.requestFocus();
+                }else if(password.isEmpty()){
+                    mPasswordWrapper.setError(getString(R.string.err_required_password));
+                    mPasswordWrapper.requestFocus();
+                }else if(!validateEmail(email)){
+                    mEmailWrapper.setError(getString(R.string.err_valid_email));
+                    mEmailWrapper.requestFocus();
                 }else {
                     registrationDTO = new RegistrationDTO(email, password, firstName, lastName);
                     WorkerThread workerThread = new WorkerThread(handler);

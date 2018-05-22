@@ -1,8 +1,8 @@
-package com.ftn.mdj.utils;
+package com.ftn.mdj.services;
 
 import android.os.Message;
 
-import com.ftn.mdj.services.IUserService;
+import com.ftn.mdj.utils.ConnectionConfig;
 
 import java.util.concurrent.TimeUnit;
 

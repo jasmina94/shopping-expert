@@ -26,11 +26,23 @@
     <string name="lastName">Lastname</string>
     <string name="login">SIGN IN</string>
     <string name="register">CREATE ACCOUNT</string>
-    <string name="register_google">CREATE ACCOUNT WITH GOOGLE +</string>
-    <string name="register_facebook">CREATE ACCOUNT WITH FACEBOOK</string>
-    <string name="login_google">SIGN IN WITH GOOGLE +</string>
-    <string name="login_facebook">SIGN IN WITH FACEBOOK</string>
+    <string name="sign_in_google">SIGN IN WITH GOOGLE +</string>
+    <string name="sign_in_facebook">SIGN IN WITH FACEBOOK</string>
     <string name="forgot_pass">FORGOT PASSWORD</string>
     <string name="success_registration">Successfully registered! Now you can sign in.</string>
+    <string name="success_login">Enjoy in using your Shopping expert!</string>
     <string name="email_error">Email address is not valid!</string>
+    <string name="login_error">Wrong credentials for login!</string>
+
+    <!-- Strings related to password recovery -->
+    <string name="recovery_btn">GET PASSWORD</string>
+    <string name="recovery_message">Forgot your password? Please provide your email address and you will receive your password.</string>
+    <string name="recovery_message_toast">We sent you password on provided email. Continue with signing in.</string>
+
+    <!-- Errors -->
+    <string name="err_required_email">Please enter email!</string>
+    <string name="err_valid_email">Email address is not valid!</string>
+    <string name="err_required_password">Please enter password!</string>
+    <string name="err_required_firstname">Please enter firstname!</string>
+    <string name="err_required_lastname">Please enter lastname!</string>
 </resources>
