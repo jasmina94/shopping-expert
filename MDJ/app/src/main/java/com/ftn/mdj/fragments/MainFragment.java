@@ -17,7 +17,7 @@ import android.widget.TextView;
 import com.ftn.mdj.R;
 import com.ftn.mdj.activities.AddListActivity;
 import com.ftn.mdj.adapters.MainAdapter;
-import com.ftn.mdj.dto.ShoppingListDTO;
+import com.ftn.mdj.dto.ShoppingListShowDTO;
 
 import java.util.List;
 
@@ -32,7 +32,7 @@ public class MainFragment extends Fragment {
     private TextView mEmptyView;
     private ImageView mEmptyImgView;
 
-    private List<ShoppingListDTO> activeShoppingLists;
+    private List<ShoppingListShowDTO> activeShoppingLists;
 
     public MainFragment(){}
 
@@ -74,7 +74,7 @@ public class MainFragment extends Fragment {
         return rootView;
     }
 
-    public void setActiveShoppingLists(List<ShoppingListDTO> shoppingLists){
+    public void setActiveShoppingLists(List<ShoppingListShowDTO> shoppingLists){
         activeShoppingLists = shoppingLists;
     }
 }

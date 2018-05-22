@@ -1,27 +1,16 @@
 package com.ftn.mdj.activities;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ftn.mdj.R;
-import com.ftn.mdj.dto.RegistrationDTO;
-import com.ftn.mdj.dto.ShoppingListDTO;
-import com.ftn.mdj.dto.UserDTO;
-import com.ftn.mdj.fragments.RegisterFragment;
-import com.ftn.mdj.utils.DummyCollection;
 import com.ftn.mdj.utils.GenericResponse;
 import com.ftn.mdj.utils.ServiceUtils;
-
-import java.io.Serializable;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -46,7 +35,7 @@ public class AddListActivity extends AppCompatActivity {
 //                Intent intent = new Intent(context, MainActivity.class);
 //
 //                String name = ((TextView) findViewById(R.id.new_list_name)).getText().toString().trim();
-//                ShoppingListDTO shoppingListDTO = new ShoppingListDTO(name);
+//                ShoppingListShowDTO shoppingListDTO = new ShoppingListShowDTO(name);
 //
 //                intent.putExtra("newList", shoppingListDTO);
 //                context.startActivity(intent);

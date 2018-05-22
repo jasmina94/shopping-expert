@@ -1,6 +1,6 @@
 package com.ftn.mdj.utils;
 
-import com.ftn.mdj.dto.ShoppingListDTO;
+import com.ftn.mdj.dto.ShoppingListShowDTO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +11,7 @@ import java.util.List;
 
 public class DummyCollection {
 
-    private static List<ShoppingListDTO> dummies;
+    private static List<ShoppingListShowDTO> dummies;
 
     public DummyCollection(){
         dummies = new ArrayList<>();
@@ -20,20 +20,20 @@ public class DummyCollection {
 
     public void initialize(){
         for(int i=0; i<10; i++){
-            ShoppingListDTO shoppingList = new ShoppingListDTO("List " + i);
+            ShoppingListShowDTO shoppingList = new ShoppingListShowDTO("List " + i);
             dummies.add(shoppingList);
         }
     }
 
-    public void addNewShoppingList(ShoppingListDTO shoppingListDTO){
-        dummies.add(shoppingListDTO);
+    public void addNewShoppingList(ShoppingListShowDTO shoppingListShowDTO){
+        dummies.add(shoppingListShowDTO);
     }
 
-    public List<ShoppingListDTO> getDummies(){
+    public List<ShoppingListShowDTO> getDummies(){
         return dummies;
     }
 
-    public void setDummies(List<ShoppingListDTO> dummies){
+    public void setDummies(List<ShoppingListShowDTO> dummies){
         this.dummies = dummies;
     }
 }

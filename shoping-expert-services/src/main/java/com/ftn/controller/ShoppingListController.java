@@ -1,5 +1,6 @@
 package com.ftn.controller;
 
+import com.ftn.dto.ShoppingListShowDto;
 import com.ftn.service.IShoppingListService;
 import com.ftn.util.GenericResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.transaction.Transactional;
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * Created by milca on 4/25/2018.
@@ -19,19 +21,20 @@ import java.time.LocalDateTime;
 public class ShoppingListController {
 
     @Autowired
-    private IShoppingListService iShoppingListService;
+    private IShoppingListService shoppingListService;
 
     @Transactional
     @GetMapping("/listsByStatus/{isArchived}")
-    public ResponseEntity getListsByStatus(@PathVariable Boolean isArchived) {
-
-        return new ResponseEntity<>(iShoppingListService.getListsByArchivedStatus((long) 1, isArchived), HttpStatus.OK);
+    public GenericResponse<List<ShoppingListShowDto>> getListsByStatus(@PathVariable Boolean isArchived) {
+        GenericResponse<List<ShoppingListShowDto>> response = new GenericResponse<>();
+        response.setEntity(shoppingListService.getListsByArchivedStatus((long) 1, isArchived));
+        return response;
     }
 
     @Transactional
     @PostMapping("/create/{listName}")
     public GenericResponse Create(@PathVariable String listName) {
-        iShoppingListService.create(listName, (long) 1);
+        shoppingListService.create(listName, (long) 1);
         GenericResponse<String> response = new GenericResponse<>();
 
         return response;
@@ -40,7 +43,7 @@ public class ShoppingListController {
     @Transactional
     @PostMapping("/updateName/{listId}/{listName}")
     public ResponseEntity UpdateName(@PathVariable Long listId, @PathVariable String listName) {
-        iShoppingListService.updateName((long) 1, listName);
+        shoppingListService.updateName((long) 1, listName);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -48,7 +51,7 @@ public class ShoppingListController {
     @DeleteMapping("/archive/{listId}")
     public ResponseEntity Archive(@PathVariable Long listId) {
 
-        iShoppingListService.archive((long) 1);
+        shoppingListService.archive((long) 1);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -56,21 +59,21 @@ public class ShoppingListController {
     @DeleteMapping("/revive/{listId}")
     public ResponseEntity Revive(@PathVariable Long listId) {
 
-        iShoppingListService.revive((long) 1);
+        shoppingListService.revive((long) 1);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Transactional
     @PutMapping("/makeSecret/{listId}")
     public ResponseEntity MakeSecret(@PathVariable Long listId, @RequestBody @NotEmpty String password) {
-        iShoppingListService.makeSecret(listId, password);
+        shoppingListService.makeSecret(listId, password);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Transactional
     @PutMapping("/makePublic/{listId}")
     public ResponseEntity MakePublic(@PathVariable Long listId, @RequestBody @NotEmpty String password) {
-        if (!iShoppingListService.MakePublic(listId, password))
+        if (!shoppingListService.MakePublic(listId, password))
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         else
             return new ResponseEntity<>(HttpStatus.OK);
@@ -79,14 +82,14 @@ public class ShoppingListController {
     @Transactional
     @PutMapping("/addReminder/{listId}/{reminder}")
     public ResponseEntity AddReminder(@PathVariable Long listId, @PathVariable LocalDateTime reminder) {
-        iShoppingListService.addReminder(listId, reminder);
+        shoppingListService.addReminder(listId, reminder);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Transactional
     @PutMapping("shareList/{listId}/{sharedWith}")
     public ResponseEntity shareList(@PathVariable Long listId, @PathVariable String sharedWith) {
-        iShoppingListService.shareList(listId, sharedWith);
+        shoppingListService.shareList(listId, sharedWith);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

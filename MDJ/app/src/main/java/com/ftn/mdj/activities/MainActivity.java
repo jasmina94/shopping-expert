@@ -3,6 +3,8 @@ package com.ftn.mdj.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -19,9 +21,11 @@ import android.widget.Toast;
 
 
 import com.ftn.mdj.R;
-import com.ftn.mdj.dto.ShoppingListDTO;
+import com.ftn.mdj.dto.ShoppingListShowDTO;
 import com.ftn.mdj.fragments.MainFragment;
 import com.ftn.mdj.utils.DummyCollection;
+import com.ftn.mdj.utils.GenericResponse;
+import com.ftn.mdj.utils.ServiceUtils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -32,6 +36,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Response;
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String SHOPPING_LIST_FILE = "shopping_lists.txt";
@@ -41,6 +48,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToggle;
 
+    private List<ShoppingListShowDTO> activeLists = new ArrayList<>();
+
     private  boolean userLogedIn = false;  //for test
 
     @Override
@@ -48,16 +57,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        DummyCollection dummyCollection = new DummyCollection();
-        write_lists(dummyCollection.getDummies());
-        List<ShoppingListDTO> lists = read_lists();
-        //List<ShoppingListDTO> lists = new ArrayList<>();
+//        DummyCollection dummyCollection = new DummyCollection();
+//        write_lists(dummyCollection.getDummies());
+//        List<ShoppingListShowDTO> lists = read_lists();
+//        //List<ShoppingListShowDTO> lists = new ArrayList<>();
 
-        MainFragment fragment = new MainFragment();
-        fragment.setActiveShoppingLists(lists);
-        android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container, fragment);
-        fragmentTransaction.commit();
+        MainActivity.WorkerThread workerThread = new MainActivity.WorkerThread(false);
+        workerThread.start();
+        Message msg = Message.obtain();
+        workerThread.handler.sendMessage(msg);
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
@@ -128,7 +136,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
     }
 
-    public void write_lists(List<ShoppingListDTO> list) {
+    public void write_lists(List<ShoppingListShowDTO> list) {
         String json = new Gson().toJson(list);
         try {
             FileOutputStream fos = openFileOutput(SHOPPING_LIST_FILE, Context.MODE_PRIVATE);
@@ -140,9 +148,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    public List<ShoppingListDTO> read_lists() {
+    public List<ShoppingListShowDTO> read_lists() {
         String text = "";
-        List<ShoppingListDTO> shoppingLists = new ArrayList<>();
+        List<ShoppingListShowDTO> shoppingLists = new ArrayList<>();
         try {
             FileInputStream fis = openFileInput(SHOPPING_LIST_FILE);
             int size = fis.available();
@@ -156,9 +164,44 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             e.printStackTrace();
         }
         if (!text.isEmpty()) {
-            shoppingLists = new Gson().fromJson(text, new TypeToken<List<ShoppingListDTO>>() {
+            shoppingLists = new Gson().fromJson(text, new TypeToken<List<ShoppingListShowDTO>>() {
             }.getType());
         }
         return shoppingLists;
     }
+
+    private class WorkerThread extends Thread{
+        private Handler handler;
+
+        public WorkerThread(final Boolean archived){
+            handler = new Handler(){
+
+                @Override
+                public void handleMessage(Message msg) {
+                    ServiceUtils.listService.listsByStatus(archived).enqueue(new retrofit2.Callback<GenericResponse>(){
+
+                        @Override
+                        public void onResponse(Call<GenericResponse> call, Response<GenericResponse> response) {
+                            activeLists = (List<ShoppingListShowDTO>) response.body().getEntity();
+                            MainFragment fragment = new MainFragment();
+                            fragment.setActiveShoppingLists(activeLists);
+                            android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                            fragmentTransaction.replace(R.id.fragment_container, fragment);
+                            fragmentTransaction.commit();
+                            System.out.println("Meesage recieved successfully!");
+                        }
+
+                        @Override
+                        public void onFailure(Call<GenericResponse> call, Throwable t) {
+                            System.out.println("Error sending registration data!");
+                        }
+                    });
+                    super.handleMessage(msg);
+                }
+
+            };
+        }
+    }
+
+
 }

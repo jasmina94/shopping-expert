@@ -11,10 +11,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ftn.mdj.R;
-import com.ftn.mdj.dto.ShoppingListDTO;
+import com.ftn.mdj.dto.ShoppingListShowDTO;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.reflect.TypeToken;
 
-import org.w3c.dom.Text;
-
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,10 +26,10 @@ import java.util.List;
 
 public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
 
-    List<ShoppingListDTO> activeShoppingLists;
+    List<ShoppingListShowDTO> activeShoppingLists;
     private Context context;
 
-    public MainAdapter(List<ShoppingListDTO> activeShoppingLists, Context context) {
+    public MainAdapter(List<ShoppingListShowDTO> activeShoppingLists, Context context) {
         this.activeShoppingLists = activeShoppingLists;
         this.context = context;
     }
@@ -40,9 +43,12 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        ShoppingListDTO shoppingList = activeShoppingLists.get(position);
+        Type listType = new TypeToken<ArrayList<ShoppingListShowDTO>>() {
+        }.getType();
+        List<ShoppingListShowDTO> keyPairBoolDataList = new Gson().fromJson(String.valueOf(activeShoppingLists), listType);
+        ShoppingListShowDTO shoppingList = keyPairBoolDataList.get(position);
 
-        holder.txt_name.setText(shoppingList.getName());
+        holder.txt_name.setText(shoppingList.getListName());
         holder.txt_status.setText("0/10");
         holder.txt_option_mnu.setOnClickListener(new View.OnClickListener() {
             @Override

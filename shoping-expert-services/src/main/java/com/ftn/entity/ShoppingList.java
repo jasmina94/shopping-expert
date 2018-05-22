@@ -29,13 +29,13 @@ public class ShoppingList {
     private String listName;
 
     @Column(columnDefinition = "Boolean default false")
-    private Boolean isSecret;
+    private Boolean isSecret = false;
 
     //I have removed status is completed, because that will be show if all items are purchased
 
     //deletion of the list is only logical, so maybe if we have time we can have restore
     @Column(columnDefinition = "Boolean default false")
-    private Boolean isArchived;
+    private Boolean isArchived = false;
 
     private String accessPassword;
 
