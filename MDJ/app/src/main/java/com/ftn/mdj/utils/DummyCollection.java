@@ -1,7 +1,15 @@
 package com.ftn.mdj.utils;
 
-import com.ftn.mdj.dto.ShoppingListDTO;
+import android.content.Context;
 
+import com.ftn.mdj.dto.ShoppingListDTO;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +19,7 @@ import java.util.List;
 
 public class DummyCollection {
 
+    private static final String SHOPPING_LIST_FILE = "shopping_lists.txt";
     private static List<ShoppingListDTO> dummies;
 
     public DummyCollection(){
@@ -35,5 +44,39 @@ public class DummyCollection {
 
     public void setDummies(List<ShoppingListDTO> dummies){
         this.dummies = dummies;
+    }
+
+    public void writeLists(List<ShoppingListDTO> list, Context context) {
+        String json = new Gson().toJson(list);
+        try {
+            FileOutputStream fos = context.openFileOutput(SHOPPING_LIST_FILE, context.MODE_PRIVATE);
+            fos.write(json.getBytes());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public List<ShoppingListDTO> readLists(Context context) {
+        String text = "";
+        List<ShoppingListDTO> shoppingLists = new ArrayList<>();
+        try {
+            FileInputStream fis = context.openFileInput(SHOPPING_LIST_FILE);
+            int size = fis.available();
+            byte[] buffer = new byte[size];
+            fis.read(buffer);
+            fis.close();
+            text = new String(buffer);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (!text.isEmpty()) {
+            shoppingLists = new Gson().fromJson(text, new TypeToken<List<ShoppingListDTO>>() {
+            }.getType());
+        }
+        return shoppingLists;
     }
 }

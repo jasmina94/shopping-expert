@@ -30,14 +30,9 @@ import com.ftn.mdj.fragments.MainFragment;
 import com.ftn.mdj.services.MDJInterceptor;
 import com.ftn.mdj.services.ServiceUtils;
 import com.ftn.mdj.utils.Constants;
+import com.ftn.mdj.utils.DummyCollection;
 import com.ftn.mdj.utils.GenericResponse;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,15 +41,13 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private static final String SHOPPING_LIST_FILE = "shopping_lists.txt";
+
     public static final int SHARED_PREFS_AUTH_MODE = MODE_PRIVATE;
 
     private NavigationView mNavigationView;
     private Toolbar mToolbar;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToggle;
-
-    private  boolean userLogedIn;
 
     private Handler handler;
 
@@ -64,10 +57,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
 
         //TODO : Change this to show lists from database if loged in or from file if not
-//        DummyCollection dummyCollection = new DummyCollection();
-//        write_lists(dummyCollection.getDummies());
-//        List<ShoppingListDTO> lists = read_lists();
         List<ShoppingListDTO> lists = new ArrayList<>();
+        //DummyCollection dummyCollection = new DummyCollection();
+        //dummyCollection.writeLists(dummyCollection.getDummies(), this.getApplicationContext());
+        //List<ShoppingListDTO> lists = dummyCollection.readLists(this.getApplicationContext());
 
         MainFragment fragment = new MainFragment();
         fragment.setActiveShoppingLists(lists);
@@ -77,8 +70,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         initViews();
         setupHandler();
-        checkIfUserLogin();
-        setSignInUpListener();
     }
 
     @Override
@@ -87,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onResume();
     }
 
-    private void initViews(){
+    private void initViews() {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
 
@@ -98,14 +89,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         mNavigationView = (NavigationView) findViewById(R.id.nav_view);
         mNavigationView.setNavigationItemSelectedListener(this);
+
+        View headerView = mNavigationView.getHeaderView(0);
+        Button signInUpBtn = (Button) headerView.findViewById(R.id.btn_sign_in);
+        signInUpBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Context context = view.getContext();
+                Intent intent = new Intent(context, LogRegActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void setupHandler() {
         handler = new Handler(Looper.getMainLooper()) {
             @Override
             public void handleMessage(Message msg) {
-                GenericResponse<UserDTO> response = (GenericResponse<UserDTO>)msg.obj;
-                if(response.isSuccessfulOperation()) {
+                GenericResponse<UserDTO> response = (GenericResponse<UserDTO>) msg.obj;
+                if (response.isSuccessfulOperation()) {
                     changeDrawerContent(true, response.getEntity());
                 } else {
                     changeDrawerContent(false, null);
@@ -118,117 +120,64 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         boolean hasJWT = false;
         SharedPreferences sharedPreferences = getSharedPreferences(Constants.SHARED_PREFS_AUTH_FILE_NAME, SHARED_PREFS_AUTH_MODE);
         String jwtVal = sharedPreferences.getString(Constants.SHARED_PREFS_JWT_KEY, "");
-        if (jwtVal != null && !jwtVal.isEmpty()){
+        if (jwtVal != null && !jwtVal.isEmpty()) {
             MainActivity.WorkerThread workerThread = new MainActivity.WorkerThread(handler);
             workerThread.start();
             Message msg = Message.obtain();
             workerThread.handler.sendMessage(msg);
+        } else {
+            changeDrawerContent(false, null);
         }
     }
 
-    private void changeDrawerContent(boolean loggedIn, UserDTO userDTO){
+    private void changeDrawerContent(boolean loggedIn, UserDTO userDTO) {
         View headerView = mNavigationView.getHeaderView(0);
         TextView emailText = (TextView) headerView.findViewById(R.id.user_email);
-        Button button = (Button)headerView.findViewById(R.id.btn_sign_in);
+        Button button = (Button) headerView.findViewById(R.id.btn_sign_in);
         Menu navMenu = mNavigationView.getMenu();
-        if(loggedIn){
+        if (loggedIn) {
             button.setVisibility(View.INVISIBLE);
             emailText.setVisibility(View.VISIBLE);
             emailText.setText(userDTO.getEmail());
             navMenu.findItem(R.id.mnu_logout).setVisible(true);
-        }else {
+        } else {
             emailText.setVisibility(View.INVISIBLE);
             navMenu.findItem(R.id.mnu_logout).setVisible(false);
         }
     }
 
-    private void setSignInUpListener() {
-        View headerView = mNavigationView.getHeaderView(0);
-        Button button = (Button)headerView.findViewById(R.id.btn_sign_in);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Context context = view.getContext();
-                Toast.makeText(context, "Change activity", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(context, LogRegActivity.class);
-                startActivity(intent);
-            }
-        });
-    }
-
-    public void write_lists(List<ShoppingListDTO> list) {
-        String json = new Gson().toJson(list);
-        try {
-            FileOutputStream fos = openFileOutput(SHOPPING_LIST_FILE, Context.MODE_PRIVATE);
-            fos.write(json.getBytes());
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public List<ShoppingListDTO> read_lists() {
-        String text = "";
-        List<ShoppingListDTO> shoppingLists = new ArrayList<>();
-        try {
-            FileInputStream fis = openFileInput(SHOPPING_LIST_FILE);
-            int size = fis.available();
-            byte[] buffer = new byte[size];
-            fis.read(buffer);
-            fis.close();
-            text = new String(buffer);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        if (!text.isEmpty()) {
-            shoppingLists = new Gson().fromJson(text, new TypeToken<List<ShoppingListDTO>>() {
-            }.getType());
-        }
-        return shoppingLists;
+    private void singOutUser() {
+        SharedPreferences sp = getSharedPreferences(Constants.SHARED_PREFS_AUTH_FILE_NAME, SHARED_PREFS_AUTH_MODE);
+        SharedPreferences.Editor e = sp.edit();
+        e.remove(Constants.SHARED_PREFS_JWT_KEY).apply();
+        MDJInterceptor.jwt = "";
+        Intent intent = new Intent(MainActivity.this, MainActivity.class);
+        startActivity(intent);
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.mnu_trash: {
-                Toast.makeText(MainActivity.this, "Show trash fragment!",Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Show trash fragment!", Toast.LENGTH_SHORT).show();
                 break;
             }
             case R.id.mnu_help: {
-                Toast.makeText(MainActivity.this, "Show help fragment!",Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Show help fragment!", Toast.LENGTH_SHORT).show();
                 break;
             }
-            case R.id.mnu_settings:{
-                Toast.makeText(MainActivity.this, "Show settings fragment!",Toast.LENGTH_SHORT).show();
+            case R.id.mnu_settings: {
+                Toast.makeText(MainActivity.this, "Show settings fragment!", Toast.LENGTH_SHORT).show();
                 break;
             }
-            case R.id.mnu_logout:{
+            case R.id.mnu_logout: {
                 singOutUser();
             }
         }
-
-        //Close navigation drawer
         mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
-
-    private void singOutUser(){
-        Intent intent = new Intent(MainActivity.this, MainActivity.class);
-        deleteJWTToken();
-        changeDrawerContent(false, null);
-        startActivity(intent);
-    }
-
-    private void deleteJWTToken() {
-        SharedPreferences sp = getSharedPreferences(Constants.SHARED_PREFS_AUTH_FILE_NAME, SHARED_PREFS_AUTH_MODE);
-        SharedPreferences.Editor e = sp.edit();
-        e.remove(Constants.SHARED_PREFS_JWT_KEY).apply();
-        MDJInterceptor.jwt = "";
-    }
-
+    
     private class WorkerThread extends Thread {
         private Handler handler;
         private Handler responseHandler;
@@ -261,7 +210,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         @Override
         public void run() {
-            if(Looper.myLooper() == null) {
+            if (Looper.myLooper() == null) {
                 Looper.prepare();
             }
 
