@@ -31,7 +31,6 @@ public class MainFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private FloatingActionButton mBtnAddList;
-    private Button mBtnMap;
     TextView mEmptyView;
     ImageView mEmptyImgView;
 
@@ -70,16 +69,6 @@ public class MainFragment extends Fragment {
             public void onClick(View view) {
                 Context context = view.getContext();
                 Intent intent = new Intent(context, AddListActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        mBtnMap = (Button)rootView.findViewById(R.id.btn_map);
-        mBtnMap.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Context context = view.getContext();
-                Intent intent = new Intent(context, MapsActivity.class);
                 startActivity(intent);
             }
         });

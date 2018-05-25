@@ -1,6 +1,7 @@
 package com.ftn.mdj.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -11,6 +12,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ftn.mdj.R;
+import com.ftn.mdj.activities.MainActivity;
+import com.ftn.mdj.activities.MapsActivity;
 import com.ftn.mdj.dto.ShoppingListDTO;
 
 import org.w3c.dom.Text;
@@ -66,6 +69,10 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
                                 break;
                             case R.id.mnu_copy:
                                 Toast.makeText(context, "Copied", Toast.LENGTH_LONG).show();
+                                break;
+                            case R.id.mnu_location:
+                                Intent intent = new Intent(context, MapsActivity.class);
+                                context.startActivity(intent);
                                 break;
                         }
                         return false;

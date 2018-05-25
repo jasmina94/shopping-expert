@@ -51,12 +51,4 @@
         android:src="@drawable/add"
         android:elevation="6dp"/>
 
-    <!-- desa added for testing maps -->
-     <Button
-        android:id="@+id/btn_map"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/recycler_view"
-        android:text="Map" />
-
 </RelativeLayout>
