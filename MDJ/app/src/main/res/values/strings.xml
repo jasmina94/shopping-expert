@@ -33,4 +33,6 @@
     <string name="forgot_pass">FORGOT PASSWORD</string>
     <string name="success_registration">Successfully registered!</string>
     <string name="email_error">Email address is not valid!</string>
+    <string name="rename_list">Rename List</string>
+    <string name="new_list_name">New list name</string>
 </resources>

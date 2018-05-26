@@ -3,6 +3,7 @@ package com.ftn.mdj.services;
 import com.ftn.mdj.utils.GenericResponse;
 
 import retrofit2.Call;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -17,5 +18,11 @@ public interface IListService {
 
     @GET(USER_PREFIX + "/listsByStatus/{isArchived}")
     Call<GenericResponse> listsByStatus(@Path("isArchived") Boolean isArchived);
+
+    @DELETE(USER_PREFIX + "/archive/{listId}")
+    Call<GenericResponse> archive(@Path("listId") Long listId);
+
+    @POST(USER_PREFIX + "/updateName/{listId}/{listName}")
+    Call<GenericResponse> updateName(@Path("listId") Long listId, @Path("listName") String listName);
 
 }

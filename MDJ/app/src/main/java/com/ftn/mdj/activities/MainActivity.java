@@ -41,8 +41,6 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private static final String SHOPPING_LIST_FILE = "shopping_lists.txt";
-
     private NavigationView mNavigationView;
     private Toolbar mToolbar;
     private DrawerLayout mDrawerLayout;
@@ -56,11 +54,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-//        DummyCollection dummyCollection = new DummyCollection();
-//        write_lists(dummyCollection.getDummies());
-//        List<ShoppingListShowDTO> lists = read_lists();
-//        //List<ShoppingListShowDTO> lists = new ArrayList<>();
 
         MainActivity.WorkerThread workerThread = new MainActivity.WorkerThread(false);
         workerThread.start();
@@ -124,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void setSignInUpListener() {
         View headerView = mNavigationView.getHeaderView(0);
-        Button button = (Button)headerView.findViewById(R.id.btn_sign_in);
+        Button button = (Button) headerView.findViewById(R.id.btn_sign_in);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -134,40 +127,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(intent);
             }
         });
-    }
-
-    public void write_lists(List<ShoppingListShowDTO> list) {
-        String json = new Gson().toJson(list);
-        try {
-            FileOutputStream fos = openFileOutput(SHOPPING_LIST_FILE, Context.MODE_PRIVATE);
-            fos.write(json.getBytes());
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public List<ShoppingListShowDTO> read_lists() {
-        String text = "";
-        List<ShoppingListShowDTO> shoppingLists = new ArrayList<>();
-        try {
-            FileInputStream fis = openFileInput(SHOPPING_LIST_FILE);
-            int size = fis.available();
-            byte[] buffer = new byte[size];
-            fis.read(buffer);
-            fis.close();
-            text = new String(buffer);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        if (!text.isEmpty()) {
-            shoppingLists = new Gson().fromJson(text, new TypeToken<List<ShoppingListShowDTO>>() {
-            }.getType());
-        }
-        return shoppingLists;
     }
 
     private class WorkerThread extends Thread{

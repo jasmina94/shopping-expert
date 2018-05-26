@@ -42,17 +42,16 @@ public class ShoppingListController {
 
     @Transactional
     @PostMapping("/updateName/{listId}/{listName}")
-    public ResponseEntity UpdateName(@PathVariable Long listId, @PathVariable String listName) {
+    public GenericResponse UpdateName(@PathVariable Long listId, @PathVariable String listName) {
         shoppingListService.updateName((long) 1, listName);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new GenericResponse<>();
     }
 
     @Transactional
     @DeleteMapping("/archive/{listId}")
-    public ResponseEntity Archive(@PathVariable Long listId) {
-
-        shoppingListService.archive((long) 1);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public GenericResponse archive(@PathVariable Long listId) {
+        shoppingListService.archive((long) listId);
+        return new GenericResponse();
     }
 
     @Transactional

@@ -55,7 +55,9 @@ public class ShoppingListService implements IShoppingListService {
 
     @Override
     public void archive(long listId) {
-        shoppingListRepository.deleteById(listId);
+        ShoppingList shoppingList = shoppingListRepository.getOne(listId);
+        shoppingList.setIsArchived(true);
+        shoppingListRepository.save(shoppingList);
     }
 
     @Override
