@@ -16,13 +16,11 @@ public class RegistrationDTO {
     @NotNull
     private String firstName;
 
-    @NotNull
     private String lastName;
 
     @NotNull
     private String email;
 
-    @NotNull
     private String password;
 
 

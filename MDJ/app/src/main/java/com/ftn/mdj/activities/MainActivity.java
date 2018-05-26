@@ -2,7 +2,6 @@ package com.ftn.mdj.activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -23,26 +22,27 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.facebook.login.LoginManager;
 import com.ftn.mdj.R;
 import com.ftn.mdj.dto.ShoppingListDTO;
 import com.ftn.mdj.dto.UserDTO;
 import com.ftn.mdj.fragments.MainFragment;
 import com.ftn.mdj.services.MDJInterceptor;
-import com.ftn.mdj.services.ServiceUtils;
-import com.ftn.mdj.utils.Constants;
+import com.ftn.mdj.threads.LoggedUserThread;
 import com.ftn.mdj.utils.DummyCollection;
 import com.ftn.mdj.utils.GenericResponse;
+import com.ftn.mdj.utils.SharedPreferencesManager;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    private final static String SIGN_IN_FACEBOOK = "fb";
+    private final static String SIGN_IN_GOOGLE = "google";
+    private final static String SIGN_IN_INNER = "mdj";
 
-    public static final int SHARED_PREFS_AUTH_MODE = MODE_PRIVATE;
 
     private NavigationView mNavigationView;
     private Toolbar mToolbar;
@@ -51,16 +51,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private Handler handler;
 
+    private FirebaseAuth mAuth;
+
+    private SharedPreferencesManager sharedPreferenceManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mAuth = FirebaseAuth.getInstance();
+
+        sharedPreferenceManager = SharedPreferencesManager.getInstance(this.getApplicationContext()); //Initialize ShPref manager
+
         //TODO : Change this to show lists from database if loged in or from file if not
-        List<ShoppingListDTO> lists = new ArrayList<>();
-        //DummyCollection dummyCollection = new DummyCollection();
-        //dummyCollection.writeLists(dummyCollection.getDummies(), this.getApplicationContext());
-        //List<ShoppingListDTO> lists = dummyCollection.readLists(this.getApplicationContext());
+        //List<ShoppingListDTO> lists = new ArrayList<>();
+        DummyCollection dummyCollection = new DummyCollection();
+        dummyCollection.writeLists(dummyCollection.getDummies(), this.getApplicationContext());
+        List<ShoppingListDTO> lists = dummyCollection.readLists(this.getApplicationContext());
 
         MainFragment fragment = new MainFragment();
         fragment.setActiveShoppingLists(lists);
@@ -102,35 +110,47 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
     }
 
+    //Ovde dobavljam logovanog korisnika koji je nas MDJ
     private void setupHandler() {
         handler = new Handler(Looper.getMainLooper()) {
             @Override
             public void handleMessage(Message msg) {
                 GenericResponse<UserDTO> response = (GenericResponse<UserDTO>) msg.obj;
                 if (response.isSuccessfulOperation()) {
-                    changeDrawerContent(true, response.getEntity());
+                    //Stavljam njegov ID u shared pref
+                    sharedPreferenceManager.put(SharedPreferencesManager.Key.USER_ID, response.getEntity().getId().intValue());
+                    updateUI(true, response.getEntity().getEmail());
                 } else {
-                    changeDrawerContent(false, null);
+                    updateUI(false, null);
                 }
             }
         };
     }
 
     private void checkIfUserLogin() {
-        boolean hasJWT = false;
-        SharedPreferences sharedPreferences = getSharedPreferences(Constants.SHARED_PREFS_AUTH_FILE_NAME, SHARED_PREFS_AUTH_MODE);
-        String jwtVal = sharedPreferences.getString(Constants.SHARED_PREFS_JWT_KEY, "");
-        if (jwtVal != null && !jwtVal.isEmpty()) {
-            MainActivity.WorkerThread workerThread = new MainActivity.WorkerThread(handler);
-            workerThread.start();
-            Message msg = Message.obtain();
-            workerThread.handler.sendMessage(msg);
-        } else {
-            changeDrawerContent(false, null);
+        String type = sharedPreferenceManager.getString(SharedPreferencesManager.Key.SIGN_IN_TYPE.name());
+        String jwtVal = sharedPreferenceManager.getString(SharedPreferencesManager.Key.JWT_KEY.name());
+        if(type != null && !type.equals(SIGN_IN_INNER)){
+            FirebaseUser currentUser = mAuth.getCurrentUser();
+            if(currentUser != null){
+                updateUI(true, currentUser.getEmail());
+            }else {
+                updateUI(false, null);
+            }
+        }else { //Ako se logovao kao obicni korisnik proveri jwt dobavi ko je
+            if (jwtVal != null && !jwtVal.isEmpty()) {
+                LoggedUserThread loggedUserThread = new LoggedUserThread(handler);
+                loggedUserThread.start();
+                Message msg = Message.obtain();
+                loggedUserThread.getHandler().sendMessage(msg);
+            } else {
+                updateUI(false, null);
+            }
         }
     }
 
-    private void changeDrawerContent(boolean loggedIn, UserDTO userDTO) {
+
+    private void updateUI(boolean loggedIn, String userEmail){
         View headerView = mNavigationView.getHeaderView(0);
         TextView emailText = (TextView) headerView.findViewById(R.id.user_email);
         Button button = (Button) headerView.findViewById(R.id.btn_sign_in);
@@ -138,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (loggedIn) {
             button.setVisibility(View.INVISIBLE);
             emailText.setVisibility(View.VISIBLE);
-            emailText.setText(userDTO.getEmail());
+            emailText.setText(userEmail);
             navMenu.findItem(R.id.mnu_logout).setVisible(true);
         } else {
             emailText.setVisibility(View.INVISIBLE);
@@ -146,10 +166,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+
     private void singOutUser() {
-        SharedPreferences sp = getSharedPreferences(Constants.SHARED_PREFS_AUTH_FILE_NAME, SHARED_PREFS_AUTH_MODE);
-        SharedPreferences.Editor e = sp.edit();
-        e.remove(Constants.SHARED_PREFS_JWT_KEY).apply();
+        String type = sharedPreferenceManager.getString(SharedPreferencesManager.Key.SIGN_IN_TYPE.name());
+        if(type.equals(SIGN_IN_INNER)) {
+            sharedPreferenceManager.put(SharedPreferencesManager.Key.JWT_KEY, "");
+        }else if(type.equals(SIGN_IN_FACEBOOK)){
+            mAuth.signOut();
+            LoginManager.getInstance().logOut();
+        }else {
+            mAuth.signOut();
+        }
+        sharedPreferenceManager.put(SharedPreferencesManager.Key.SIGN_IN_TYPE, null);
+        sharedPreferenceManager.put(SharedPreferencesManager.Key.USER_ID, null);
         MDJInterceptor.jwt = "";
         Intent intent = new Intent(MainActivity.this, MainActivity.class);
         startActivity(intent);
@@ -176,45 +205,5 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
-    }
-    
-    private class WorkerThread extends Thread {
-        private Handler handler;
-        private Handler responseHandler;
-
-        public WorkerThread(Handler handlerUI) {
-            responseHandler = handlerUI;
-            handler = new Handler() {
-
-                @Override
-                public void handleMessage(Message msg) {
-                    ServiceUtils.userService.getLoggedInUser().enqueue(new retrofit2.Callback<GenericResponse<UserDTO>>() {
-
-                        @Override
-                        public void onResponse(Call<GenericResponse<UserDTO>> call, Response<GenericResponse<UserDTO>> response) {
-                            System.out.println("Meesage recieved successfully!");
-                            responseHandler.sendMessage(ServiceUtils.getHandlerMessageFromResponse(response));
-                        }
-
-                        @Override
-                        public void onFailure(Call<GenericResponse<UserDTO>> call, Throwable t) {
-                            System.out.println("Error sending registration data!");
-                            responseHandler.sendMessage(GenericResponse.getGenericServerErrorResponseMessage());
-                        }
-                    });
-                    super.handleMessage(msg);
-                }
-
-            };
-        }
-
-        @Override
-        public void run() {
-            if (Looper.myLooper() == null) {
-                Looper.prepare();
-            }
-
-            Looper.loop();
-        }
     }
 }

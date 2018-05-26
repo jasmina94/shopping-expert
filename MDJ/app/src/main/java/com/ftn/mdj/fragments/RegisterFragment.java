@@ -17,8 +17,10 @@ import com.ftn.mdj.R;
 import com.ftn.mdj.activities.LogRegActivity;
 import com.ftn.mdj.dto.RegistrationDTO;
 import com.ftn.mdj.dto.UserDTO;
+import com.ftn.mdj.threads.RegisterThread;
 import com.ftn.mdj.utils.GenericResponse;
 import com.ftn.mdj.services.ServiceUtils;
+import com.ftn.mdj.utils.UtilHelper;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.regex.Matcher;
@@ -41,9 +43,6 @@ public class RegisterFragment extends Fragment {
     private AppCompatEditText mPasswordWrapper;
 
     private AppCompatButton mRegistrationButton;
-
-    private static final String EMAIL_PATTERN = "^[a-zA-Z0-9#_~!$&'()*+,;=:.\"(),:;<>@\\[\\]\\\\]+@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*$";
-
     private View rootView;
 
     @Nullable
@@ -85,16 +84,16 @@ public class RegisterFragment extends Fragment {
                 }else if(password.isEmpty()){
                     mPasswordWrapper.setError(getString(R.string.err_required_password));
                     mPasswordWrapper.requestFocus();
-                }else if(!validateEmail(email)){
+                }else if(!UtilHelper.validateEmail(email)){
                     mEmailWrapper.setError(getString(R.string.err_valid_email));
                     mEmailWrapper.requestFocus();
                 }else {
                     registrationDTO = new RegistrationDTO(email, password, firstName, lastName);
-                    WorkerThread workerThread = new WorkerThread(handler);
-                    workerThread.start();
+                    RegisterThread registerThread = new RegisterThread(handler);
+                    registerThread.start();
                     Message msg = Message.obtain();
                     msg.obj = registrationDTO;
-                    workerThread.handler.sendMessage(msg);
+                    registerThread.getHandler().sendMessage(msg);
                 }
             }
         });
@@ -104,16 +103,16 @@ public class RegisterFragment extends Fragment {
         handler = new Handler(Looper.getMainLooper()) {
             @Override
             public void handleMessage(Message msg) {
-                GenericResponse<Boolean> response = (GenericResponse<Boolean>)msg.obj;
+                GenericResponse<UserDTO> response = (GenericResponse<UserDTO>)msg.obj;
                 String message;
                 if(response.isSuccessfulOperation()) {
                     message = getString(R.string.success_registration);
-                    showToastMessage(message);
+                    UtilHelper.showToastMessage(getContext(), message, UtilHelper.ToastLength.LONG);
                     clearInputs();
                     ((LogRegActivity)getActivity()).switchFragment(0);
                 } else {
                     message = response.getErrorMessage();
-                    showToastMessage(message);
+                    UtilHelper.showToastMessage(getContext(), message,  UtilHelper.ToastLength.LONG);
                 }
             }
         };
@@ -124,57 +123,5 @@ public class RegisterFragment extends Fragment {
         mLastnameWrapper.getEditableText().clear();
         mEmailWrapper.getEditableText().clear();
         mPasswordWrapper.getEditableText().clear();
-    }
-
-    private boolean validateEmail(String email){
-        Pattern pattern = Pattern.compile(EMAIL_PATTERN);
-        Matcher matcher = pattern.matcher(email);
-        return matcher.matches();
-    }
-
-    private class WorkerThread extends Thread{
-        private Handler handler;
-        private Handler responseHandler;
-
-        public WorkerThread(Handler handlerUI){
-            responseHandler = handlerUI;
-            handler = new Handler(){
-
-                @Override
-                public void handleMessage(Message msg) {
-                    RegistrationDTO registrationDTO = (RegistrationDTO)msg.obj;
-                    ServiceUtils.userService.register(registrationDTO).enqueue(new retrofit2.Callback<GenericResponse<UserDTO>>(){
-
-                        @Override
-                        public void onResponse(Call<GenericResponse<UserDTO>> call, Response<GenericResponse<UserDTO>> response) {
-                            System.out.println("Meesage recieved successfully!");
-                            responseHandler.sendMessage(ServiceUtils.getHandlerMessageFromResponse(response));
-                        }
-
-                        @Override
-                        public void onFailure(Call<GenericResponse<UserDTO>> call, Throwable t) {
-                            System.out.println("Error sending registration data!");
-                            responseHandler.sendMessage(GenericResponse.getGenericServerErrorResponseMessage());
-                        }
-                    });
-                    super.handleMessage(msg);
-                }
-
-            };
-        }
-
-        @Override
-        public void run() {
-            if(Looper.myLooper() == null) {
-                Looper.prepare();
-            }
-
-            Looper.loop();
-        }
-    }
-
-    private void showToastMessage(String message){
-        Toast t = Toast.makeText(getContext(), message, Toast.LENGTH_LONG);
-        t.show();
     }
 }

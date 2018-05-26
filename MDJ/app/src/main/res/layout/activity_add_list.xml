@@ -40,8 +40,8 @@
             android:id="@+id/new_list_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="290dp"
-            android:layout_marginTop="93dp"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="5dp"
             android:textColor="@color/colorAccent"
             android:background="@android:color/white"
             android:text="Create" />

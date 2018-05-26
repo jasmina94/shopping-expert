@@ -1,5 +1,7 @@
 package com.ftn.mdj.dto;
 
+import com.google.firebase.auth.FirebaseUser;
+
 /**
  * Created by Jasmina on 17/04/2018.
  */
@@ -16,6 +18,13 @@ public class RegistrationDTO {
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
+    }
+
+    public RegistrationDTO(FirebaseUser firebaseUser){
+        this.email = firebaseUser.getEmail();
+        this.firstName = firebaseUser.getDisplayName();
+        this.password = "";
+        this.lastName = "";
     }
 
     public String getFirstName() {
