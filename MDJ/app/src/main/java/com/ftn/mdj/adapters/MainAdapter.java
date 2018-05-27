@@ -2,7 +2,6 @@ package com.ftn.mdj.adapters;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -18,18 +17,11 @@ import android.widget.Toast;
 import com.ftn.mdj.R;
 import com.ftn.mdj.dto.ShoppingListShowDTO;
 import com.ftn.mdj.fragments.MainFragment;
+import com.ftn.mdj.threads.WorkerThreadArchiveList;
 import com.ftn.mdj.threads.WorkerThreadRenameList;
-import com.ftn.mdj.utils.GenericResponse;
-import com.ftn.mdj.utils.ServiceUtils;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import com.ftn.mdj.threads.WorkerThreadSecretList;
 
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Response;
 
 /**
  * Created by Jasmina on 06/05/2018.
@@ -64,18 +56,25 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
         holder.txt_option_mnu.setOnClickListener(view -> {
             PopupMenu popupMenu = new PopupMenu(context, holder.txt_option_mnu);
             popupMenu.inflate(R.menu.option_menu);
+            String secret = shoppingList.getIsSecret() ? "Make public" : "Make secret";
+            popupMenu.getMenu().getItem(4).setTitle(secret);
             popupMenu.setOnMenuItemClickListener(menuItem -> {
                 switch (menuItem.getItemId()){
                     case R.id.mnu_rename:
                         AlertDialog.Builder renameBuilder = new AlertDialog.Builder(context);
                         LayoutInflater inflater = (LayoutInflater) context.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
-                        View dialogView = inflater.inflate( R.layout.dialog_rename_list, null );
-                        Button dismiss = dialogView.findViewById( R.id.btn_dismiss_rename );
-                        Button rename = dialogView.findViewById( R.id.btn_rename );
-                        EditText editName = dialogView.findViewById(R.id.rename_text);
-                        editName.setHint(shoppingList.getListName());
+                        View dialogView = inflater.inflate( R.layout.dialog_one_field, null );
+                        Button dismiss = dialogView.findViewById( R.id.dialog_dismiss );
+                        TextView dialogTitle = dialogView.findViewById(R.id.dialog_title);
+                        dialogTitle.setText("Rename list");
+                        Button rename = dialogView.findViewById( R.id.dialog_submit );
+                        rename.setText("Rename");
+                        EditText editName = dialogView.findViewById(R.id.dialog_text);
+                        editName.setText(shoppingList.getListName());
                         renameBuilder.setView(dialogView);
                         AlertDialog renameAlertDialog = renameBuilder.create();
+                        renameAlertDialog.setCanceledOnTouchOutside(false);
+
                         rename.setOnClickListener(view1 -> {
                             if(editName.getText().toString().isEmpty()) {
                                 Toast.makeText(context, "List name must not be empty!", Toast.LENGTH_SHORT).show();
@@ -93,16 +92,47 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
                         renameAlertDialog.show();
                         break;
                     case R.id.mnu_archive:
-                        WorkerThread workerThread = new WorkerThread(shoppingList.getId());
-                        workerThread.start();
+                        WorkerThreadArchiveList workerThreadArchiveList = new WorkerThreadArchiveList(shoppingList.getId(), mainFragment, context);
+                        workerThreadArchiveList.start();
                         Message msg = Message.obtain();
-                        workerThread.handler.sendMessage(msg);
+                        workerThreadArchiveList.getHandler().sendMessage(msg);
                         break;
                     case R.id.mnu_share:
                         Toast.makeText(context, "Shared", Toast.LENGTH_LONG).show();
                         break;
                     case R.id.mnu_copy:
                         Toast.makeText(context, "Copied", Toast.LENGTH_LONG).show();
+                        break;
+                    case R.id.mnu_secret:
+                        AlertDialog.Builder secretBuilder = new AlertDialog.Builder(context);
+                        LayoutInflater inflaterSecret = (LayoutInflater) context.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
+                        View dialogSecretView = inflaterSecret.inflate( R.layout.dialog_one_field, null );
+                        Button dismissSecret = dialogSecretView.findViewById( R.id.dialog_dismiss );
+                        TextView dialogSecretTitle = dialogSecretView.findViewById(R.id.dialog_title);
+                        dialogSecretTitle.setText("Secret password");
+                        Button submitPass = dialogSecretView.findViewById( R.id.dialog_submit );
+                        submitPass.setText("Submit");
+                        EditText password = dialogSecretView.findViewById(R.id.dialog_text);
+                        password.setHint("Your password here");
+                        secretBuilder.setView(dialogSecretView);
+                        AlertDialog passwordAlertDialog = secretBuilder.create();
+                        passwordAlertDialog.setCanceledOnTouchOutside(false);
+
+                        submitPass.setOnClickListener(view1 -> {
+                            if(password.getText().toString().isEmpty()) {
+                                Toast.makeText(context, "Password can not be empty!", Toast.LENGTH_SHORT).show();
+                            } else {
+                                WorkerThreadSecretList workerThreadRenameList = new WorkerThreadSecretList(shoppingList.getId(), password.getText().toString(),!shoppingList.getIsSecret(), context, mainFragment);
+                                workerThreadRenameList.start();
+                                Message msgSecret = Message.obtain();
+                                workerThreadRenameList.getHandler().sendMessage(msgSecret);
+                                passwordAlertDialog.cancel();
+                            }
+                        });
+                        dismissSecret.setOnClickListener(view12 -> {
+                            passwordAlertDialog.cancel();
+                        });
+                        passwordAlertDialog.show();
                         break;
                 }
                 return false;
@@ -130,35 +160,4 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
         }
     }
 
-    private class WorkerThread extends Thread{
-        private Handler handler;
-
-        public WorkerThread(final Long shoppingListId){
-            handler = new Handler(){
-
-                @Override
-                public void handleMessage(Message msg) {
-                    ServiceUtils.listService.archive(shoppingListId).enqueue(new retrofit2.Callback<GenericResponse>(){
-
-                        @Override
-                        public void onResponse(Call<GenericResponse> call, Response<GenericResponse> response) {
-                            mainFragment.archiveListUI(shoppingListId);
-//                            notifyDataSetChanged();
-
-                            Toast.makeText(context, "Archived", Toast.LENGTH_LONG).show();
-                        }
-
-                        @Override
-                        public void onFailure(Call<GenericResponse> call, Throwable t) {
-                            Toast.makeText(context, "Error while archiving", Toast.LENGTH_LONG).show();
-
-                            System.out.println("Error sending registration data!");
-                        }
-                    });
-                    super.handleMessage(msg);
-                }
-
-            };
-        }
-    }
 }

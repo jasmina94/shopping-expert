@@ -14,13 +14,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ftn.mdj.R;
 import com.ftn.mdj.activities.AddListActivity;
 import com.ftn.mdj.adapters.MainAdapter;
 import com.ftn.mdj.dto.ShoppingListShowDTO;
-import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -80,11 +83,13 @@ public class MainFragment extends Fragment {
         return rootView;
     }
 
-    public void setActiveShoppingLists(List<ShoppingListShowDTO> shoppingLists){
+    public void setActiveShoppingLists(List<ShoppingListShowDTO> shoppingLists) throws IOException {
         Type listType = new TypeToken<ArrayList<ShoppingListShowDTO>>() {
         }.getType();
-        activeShoppingLists = new Gson().fromJson(String.valueOf(shoppingLists), listType);
-//        activeShoppingLists = shoppingLists;
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
+        activeShoppingLists = mapper.readValue(mapper.writeValueAsString(shoppingLists), new TypeReference<List<ShoppingListShowDTO>>(){});
+//        activeShoppingLists = new Gson().fromJson(mapper.writeValueAsString(shoppingLists), listType);
     }
 
     public void archiveListUI(Long shoppingListId) {
@@ -104,6 +109,9 @@ public class MainFragment extends Fragment {
         });
         System.out.println("Settovao novo IME");
         getFragmentManager().beginTransaction().detach(this).attach(this).commit();
+    }
 
+    public void restartFragment() {
+        getFragmentManager().beginTransaction().detach(this).attach(this).commit();
     }
 }

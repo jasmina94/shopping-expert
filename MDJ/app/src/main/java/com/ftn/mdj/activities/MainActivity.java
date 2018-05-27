@@ -23,16 +23,10 @@ import android.widget.Toast;
 import com.ftn.mdj.R;
 import com.ftn.mdj.dto.ShoppingListShowDTO;
 import com.ftn.mdj.fragments.MainFragment;
-import com.ftn.mdj.utils.DummyCollection;
+import com.ftn.mdj.threads.WorkerThreadGetActiveLists;
 import com.ftn.mdj.utils.GenericResponse;
 import com.ftn.mdj.utils.ServiceUtils;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,30 +42,34 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private List<ShoppingListShowDTO> activeLists = new ArrayList<>();
 
-    private  boolean userLogedIn = false;  //for test
+    private  boolean userLogedIn = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        MainActivity.WorkerThread workerThread = new MainActivity.WorkerThread(false);
-        workerThread.start();
-        Message msg = Message.obtain();
-        workerThread.handler.sendMessage(msg);
-
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
 
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.main_drawer);
+        mDrawerLayout = findViewById(R.id.main_drawer);
 
         mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.open, R.string.close);
         mToggle.syncState();
 
-        mNavigationView = (NavigationView) findViewById(R.id.nav_view);
+        mNavigationView = findViewById(R.id.nav_view);
         mNavigationView.setNavigationItemSelectedListener(this);
         changeDrawerContent();
         setSignInUpListener();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        WorkerThreadGetActiveLists workerThreadGetActiveLists = new WorkerThreadGetActiveLists(false, (long) 1, this);
+        workerThreadGetActiveLists.start();
+        Message msg = Message.obtain();
+        workerThreadGetActiveLists.getHandler().sendMessage(msg);
     }
 
     @Override
@@ -102,8 +100,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void changeDrawerContent(){
         View headerView = mNavigationView.getHeaderView(0);
-        TextView emailText = (TextView) headerView.findViewById(R.id.user_email);
-        Button button = (Button)headerView.findViewById(R.id.btn_sign_in);
+        TextView emailText = headerView.findViewById(R.id.user_email);
+        Button button = headerView.findViewById(R.id.btn_sign_in);
         if(userLogedIn){
             button.setVisibility(View.INVISIBLE);
             emailText.setVisibility(View.VISIBLE);
@@ -117,50 +115,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void setSignInUpListener() {
         View headerView = mNavigationView.getHeaderView(0);
-        Button button = (Button) headerView.findViewById(R.id.btn_sign_in);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Context context = view.getContext();
-                Toast.makeText(context, "Change activity", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(context, LogRegActivity.class);
-                startActivity(intent);
-            }
+        Button button = headerView.findViewById(R.id.btn_sign_in);
+        button.setOnClickListener(view -> {
+            Context context = view.getContext();
+            Toast.makeText(context, "Change activity", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(context, LogRegActivity.class);
+            startActivity(intent);
         });
     }
-
-    private class WorkerThread extends Thread{
-        private Handler handler;
-
-        public WorkerThread(final Boolean archived){
-            handler = new Handler(){
-
-                @Override
-                public void handleMessage(Message msg) {
-                    ServiceUtils.listService.listsByStatus(archived).enqueue(new retrofit2.Callback<GenericResponse>(){
-
-                        @Override
-                        public void onResponse(Call<GenericResponse> call, Response<GenericResponse> response) {
-                            activeLists = (List<ShoppingListShowDTO>) response.body().getEntity();
-                            MainFragment fragment = new MainFragment();
-                            fragment.setActiveShoppingLists(activeLists);
-                            android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                            fragmentTransaction.replace(R.id.fragment_container, fragment);
-                            fragmentTransaction.commit();
-                            System.out.println("Meesage recieved successfully!");
-                        }
-
-                        @Override
-                        public void onFailure(Call<GenericResponse> call, Throwable t) {
-                            System.out.println("Error sending registration data!");
-                        }
-                    });
-                    super.handleMessage(msg);
-                }
-
-            };
-        }
-    }
-
 
 }

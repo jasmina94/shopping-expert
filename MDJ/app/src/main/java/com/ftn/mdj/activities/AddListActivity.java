@@ -22,8 +22,6 @@ public class AddListActivity extends AppCompatActivity {
 
     private Button btn_create_list;
     private Button btn_dismiss;
-    private Handler handler;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,39 +43,31 @@ public class AddListActivity extends AppCompatActivity {
 //            }
 //        });
         setupSubmit();
-        btn_dismiss = (Button) findViewById(R.id.btn_dismiss_create);
-        btn_dismiss.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+        btn_dismiss = findViewById(R.id.btn_dismiss_create);
+        btn_dismiss.setOnClickListener(view -> finish());
     }
 
     private void setupSubmit() {
-        btn_create_list.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        btn_create_list.setOnClickListener(view -> {
 
-                    WorkerThread workerThread = new WorkerThread();
-                    workerThread.start();
-                    Message msg = Message.obtain();
-                workerThread.handler.sendMessage(msg);
-                }
-        });
+                WorkerThread workerThread = new WorkerThread((long) 1);
+                workerThread.start();
+                Message msg = Message.obtain();
+            workerThread.handler.sendMessage(msg);
+            });
     }
 
     private class WorkerThread extends Thread{
         private Handler handler;
 
-        public WorkerThread(){
+        public WorkerThread(Long userId){
             handler = new Handler(){
 
                 @Override
                 public void handleMessage(Message msg) {
                     String listName = ((TextView) findViewById(R.id.new_list_name)).getText().toString().trim();
 
-                    ServiceUtils.listService.create(listName).enqueue(new retrofit2.Callback<GenericResponse>(){
+                    ServiceUtils.listService.create(listName, userId).enqueue(new retrofit2.Callback<GenericResponse>(){
 
                         @Override
                         public void onResponse(Call<GenericResponse> call, Response<GenericResponse> response) {

@@ -6,7 +6,7 @@
     android:orientation="vertical">
 
     <Button
-        android:id="@+id/btn_dismiss_rename"
+        android:id="@+id/dialog_dismiss"
         android:layout_width="35dp"
         android:layout_height="35dp"
         android:layout_margin="5dp"
@@ -19,7 +19,7 @@
 
 
         <TextView
-            android:id="@+id/rename_list"
+            android:id="@+id/dialog_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -30,7 +30,7 @@
             android:textStyle="bold" />
 
     <EditText
-        android:id="@+id/rename_text"
+        android:id="@+id/dialog_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
@@ -39,16 +39,16 @@
         android:hint="@string/new_list_name"
         android:inputType="textPersonName"
         android:textColor="@color/colorAccent"
-        android:textColorHint="@color/colorAccent" />
+        android:textColorHint="@color/colorPrimary" />
 
         <Button
-            android:id="@+id/btn_rename"
+            android:id="@+id/dialog_submit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="280dp"
             android:layout_marginTop="5dp"
             android:textStyle="bold"
-            android:background="@color/colorAccent"
+            android:background="@color/white"
             android:text="Rename"
-            android:textColor="@color/white" />
+            android:textColor="@color/colorAccent" />
 </LinearLayout>
