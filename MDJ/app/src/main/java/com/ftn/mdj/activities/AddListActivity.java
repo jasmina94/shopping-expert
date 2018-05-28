@@ -1,18 +1,19 @@
 package com.ftn.mdj.activities;
 
-import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
+import android.os.Handler;
+import android.os.Message;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.ftn.mdj.R;
-import com.ftn.mdj.dto.ShoppingListDTO;
-import com.ftn.mdj.utils.DummyCollection;
+import com.ftn.mdj.services.ServiceUtils;
+import com.ftn.mdj.utils.GenericResponse;
 
-import java.io.Serializable;
+import retrofit2.Call;
+import retrofit2.Response;
 
 public class AddListActivity extends AppCompatActivity {
 
@@ -25,26 +26,62 @@ public class AddListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_list);
 
         btn_create_list = (Button) findViewById(R.id.new_list_btn);
-        btn_create_list.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Context context = view.getContext();
-                Intent intent = new Intent(context, MainActivity.class);
+//        btn_create_list.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Context context = view.getContext();
+//                Intent intent = new Intent(context, MainActivity.class);
+//
+//                String name = ((TextView) findViewById(R.id.new_list_name)).getText().toString().trim();
+//                ShoppingListShowDTO shoppingListDTO = new ShoppingListShowDTO(name);
+//
+//                intent.putExtra("newList", shoppingListDTO);
+//                context.startActivity(intent);
+//            }
+//        });
+        setupSubmit();
+        btn_dismiss = findViewById(R.id.btn_dismiss_create);
+        btn_dismiss.setOnClickListener(view -> finish());
+    }
 
-                String name = ((TextView) findViewById(R.id.new_list_name)).getText().toString().trim();
-                ShoppingListDTO shoppingListDTO = new ShoppingListDTO(name);
+    private void setupSubmit() {
+        btn_create_list.setOnClickListener(view -> {
 
-                intent.putExtra("newList", shoppingListDTO);
-                context.startActivity(intent);
-            }
-        });
+                WorkerThread workerThread = new WorkerThread((long) 1);
+                workerThread.start();
+                Message msg = Message.obtain();
+            workerThread.handler.sendMessage(msg);
+            });
+    }
 
-        btn_dismiss = (Button) findViewById(R.id.btn_dismiss_create);
-        btn_dismiss.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+    private class WorkerThread extends Thread{
+        private Handler handler;
+
+        public WorkerThread(Long userId){
+            handler = new Handler(){
+
+                @Override
+                public void handleMessage(Message msg) {
+                    String listName = ((TextView) findViewById(R.id.new_list_name)).getText().toString().trim();
+
+                    ServiceUtils.listService.create(listName, userId).enqueue(new retrofit2.Callback<GenericResponse>(){
+
+                        @Override
+                        public void onResponse(Call<GenericResponse> call, Response<GenericResponse> response) {
+                            Intent intent = new Intent(AddListActivity.this, MainActivity.class);
+                            startActivity(intent);
+                            System.out.println("Meesage recieved successfully!");
+                        }
+
+                        @Override
+                        public void onFailure(Call<GenericResponse> call, Throwable t) {
+                            System.out.println("Error sending registration data!");
+                        }
+                    });
+                    super.handleMessage(msg);
+                }
+
+            };
+        }
     }
 }

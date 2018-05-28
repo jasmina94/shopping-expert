@@ -21,20 +21,21 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import com.facebook.login.LoginManager;
 import com.ftn.mdj.R;
-import com.ftn.mdj.dto.ShoppingListDTO;
+import com.ftn.mdj.dto.ShoppingListShowDTO;
 import com.ftn.mdj.dto.UserDTO;
 import com.ftn.mdj.fragments.MainFragment;
 import com.ftn.mdj.services.MDJInterceptor;
 import com.ftn.mdj.threads.LoggedUserThread;
+import com.ftn.mdj.threads.WorkerThreadGetActiveLists;
 import com.ftn.mdj.utils.DummyCollection;
 import com.ftn.mdj.utils.GenericResponse;
 import com.ftn.mdj.utils.SharedPreferencesManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -49,6 +50,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToggle;
 
+    private List<ShoppingListShowDTO> activeLists = new ArrayList<>();
+
+    private  boolean userLogedIn = false;
     private Handler handler;
 
     private FirebaseAuth mAuth;
@@ -65,16 +69,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         sharedPreferenceManager = SharedPreferencesManager.getInstance(this.getApplicationContext()); //Initialize ShPref manager
 
         //TODO : Change this to show lists from database if loged in or from file if not
-        //List<ShoppingListDTO> lists = new ArrayList<>();
-        DummyCollection dummyCollection = new DummyCollection();
-        dummyCollection.writeLists(dummyCollection.getDummies(), this.getApplicationContext());
-        List<ShoppingListDTO> lists = dummyCollection.readLists(this.getApplicationContext());
+        List<ShoppingListShowDTO> lists = new ArrayList<>();
+//        DummyCollection dummyCollection = new DummyCollection();
+//        dummyCollection.writeLists(dummyCollection.getDummies(), this.getApplicationContext());
+        //List<ShoppingListDTO> lists = dummyCollection.readLists(this.getApplicationContext());
 
-        MainFragment fragment = new MainFragment();
-        fragment.setActiveShoppingLists(lists);
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container, fragment);
-        fragmentTransaction.commit();
+//        MainFragment fragment = new MainFragment();
+//        fragment.setActiveShoppingLists(lists);
+//        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+//        fragmentTransaction.replace(R.id.fragment_container, fragment);
+//        fragmentTransaction.commit();
 
         initViews();
         setupHandler();
@@ -84,6 +88,67 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onResume() {
         checkIfUserLogin();
         super.onResume();
+    }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        WorkerThreadGetActiveLists workerThreadGetActiveLists = new WorkerThreadGetActiveLists(false, (long) 1, this);
+        workerThreadGetActiveLists.start();
+        Message msg = Message.obtain();
+        workerThreadGetActiveLists.getHandler().sendMessage(msg);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.mnu_trash: {
+                Toast.makeText(MainActivity.this, "Show trash fragment!", Toast.LENGTH_SHORT).show();
+                break;
+            }
+            case R.id.mnu_help: {
+                Toast.makeText(MainActivity.this, "Show help fragment!", Toast.LENGTH_SHORT).show();
+                break;
+            }
+            case R.id.mnu_settings: {
+                Toast.makeText(MainActivity.this, "Show settings fragment!", Toast.LENGTH_SHORT).show();
+                break;
+            }
+            case R.id.mnu_logout: {
+                singOutUser();
+            }
+        }
+
+        //Close navigation drawer
+        mDrawerLayout.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    private void changeDrawerContent(){
+        View headerView = mNavigationView.getHeaderView(0);
+        TextView emailText = headerView.findViewById(R.id.user_email);
+        Button button = headerView.findViewById(R.id.btn_sign_in);
+        if(userLogedIn){
+            button.setVisibility(View.INVISIBLE);
+            emailText.setVisibility(View.VISIBLE);
+            emailText.setText("logedin@email.com"); //Put here email of logged in user if exists
+        }else {
+            emailText.setVisibility(View.INVISIBLE);
+            Menu navMenu = mNavigationView.getMenu();
+            navMenu.findItem(R.id.mnu_logout).setVisible(false);
+        }
+    }
+
+    private void setSignInUpListener() {
+        View headerView = mNavigationView.getHeaderView(0);
+        Button button = headerView.findViewById(R.id.btn_sign_in);
+        button.setOnClickListener(view -> {
+            Context context = view.getContext();
+            Toast.makeText(context, "Change activity", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(context, LogRegActivity.class);
+            startActivity(intent);
+        });
     }
 
     private void initViews() {
@@ -184,26 +249,5 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         startActivity(intent);
     }
 
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.mnu_trash: {
-                Toast.makeText(MainActivity.this, "Show trash fragment!", Toast.LENGTH_SHORT).show();
-                break;
-            }
-            case R.id.mnu_help: {
-                Toast.makeText(MainActivity.this, "Show help fragment!", Toast.LENGTH_SHORT).show();
-                break;
-            }
-            case R.id.mnu_settings: {
-                Toast.makeText(MainActivity.this, "Show settings fragment!", Toast.LENGTH_SHORT).show();
-                break;
-            }
-            case R.id.mnu_logout: {
-                singOutUser();
-            }
-        }
-        mDrawerLayout.closeDrawer(GravityCompat.START);
-        return true;
-    }
+
 }

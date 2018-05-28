@@ -84,4 +84,6 @@
     string in this file.
     -->
     <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyAu3PLh_WaL_1SS1OmM8L0M9e_X55BIEgU</string>
+    <string name="rename_list">Rename List</string>
+    <string name="new_list_name">New list name</string>
 </resources>

@@ -15,13 +15,21 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ftn.mdj.R;
 import com.ftn.mdj.activities.AddListActivity;
 import com.ftn.mdj.activities.MapsActivity;
 import com.ftn.mdj.adapters.MainAdapter;
-import com.ftn.mdj.dto.ShoppingListDTO;
+import com.ftn.mdj.dto.ShoppingListShowDTO;
+import com.google.gson.reflect.TypeToken;
 
+import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,20 +42,21 @@ public class MainFragment extends Fragment {
     private TextView mEmptyView;
     private ImageView mEmptyImgView;
 
-    private List<ShoppingListDTO> activeShoppingLists;
+    private List<ShoppingListShowDTO> activeShoppingLists;
 
     public MainFragment(){}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
         mRecyclerView = (RecyclerView)rootView.findViewById(R.id.recycler_view);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(rootView.getContext()));
 
-        mAdapter = new MainAdapter(activeShoppingLists, rootView.getContext());
+        mAdapter = new MainAdapter(activeShoppingLists, rootView.getContext(), this);
         mRecyclerView.setAdapter(mAdapter);
 
         mEmptyView = (TextView) rootView.findViewById(R.id.empty_view);
@@ -76,7 +85,35 @@ public class MainFragment extends Fragment {
         return rootView;
     }
 
-    public void setActiveShoppingLists(List<ShoppingListDTO> shoppingLists){
-        activeShoppingLists = shoppingLists;
+    public void setActiveShoppingLists(List<ShoppingListShowDTO> shoppingLists) throws IOException {
+        Type listType = new TypeToken<ArrayList<ShoppingListShowDTO>>() {
+        }.getType();
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
+        activeShoppingLists = mapper.readValue(mapper.writeValueAsString(shoppingLists), new TypeReference<List<ShoppingListShowDTO>>(){});
+//        activeShoppingLists = new Gson().fromJson(mapper.writeValueAsString(shoppingLists), listType);
+    }
+
+    public void archiveListUI(Long shoppingListId) {
+        Optional<ShoppingListShowDTO> shoppingListShowDTO = activeShoppingLists.stream().filter(e -> e.getId() == shoppingListId).findFirst();
+        activeShoppingLists.remove(shoppingListShowDTO.get());
+        System.out.println("Settovao novo");
+        getFragmentManager().beginTransaction().detach(this).attach(this).commit();
+
+    }
+
+    public void renameListInArray(Long shoppingListId, String listName) {
+        activeShoppingLists.forEach(e -> {
+            if(e.getId() == shoppingListId) {
+                e.setListName(listName);
+                return;
+            }
+        });
+        System.out.println("Settovao novo IME");
+        getFragmentManager().beginTransaction().detach(this).attach(this).commit();
+    }
+
+    public void restartFragment() {
+        getFragmentManager().beginTransaction().detach(this).attach(this).commit();
     }
 }

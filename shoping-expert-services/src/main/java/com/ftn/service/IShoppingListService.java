@@ -25,4 +25,6 @@ public interface IShoppingListService {
     void revive(long listId);
 
     void updateName(long listId, String listName);
+
+    void shareList(Long listId, String sharedWith);
 }

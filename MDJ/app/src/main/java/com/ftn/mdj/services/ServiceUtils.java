@@ -46,5 +46,7 @@ public class ServiceUtils {
     }
 
     public static IUserService userService = retrofit.create(IUserService.class);
+    public static IListService listService = retrofit.create(IListService.class);
+
     // TODO: Add all needed service interfaces with here
 }
