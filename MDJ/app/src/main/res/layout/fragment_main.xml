@@ -3,20 +3,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/content_main"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:paddingBottom="16dp"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:paddingTop="16dp"
     tools:context="com.ftn.mdj.activities.MainActivity">
 
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
+        android:layout_height="wrap_content">
 
     </android.support.v7.widget.RecyclerView>
+
 
     <ImageView
         android:id="@+id/empty_view_img"
@@ -40,7 +41,7 @@
         android:layout_marginTop="142dp"
         android:gravity="center"
         android:text="@string/no_list_to_show"
-        android:textSize="24dp"/>
+        android:textSize="24dp" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/btn_add_shopping_list"
@@ -48,7 +49,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:src="@drawable/add"
-        android:elevation="6dp"/>
+        android:elevation="6dp"
+        android:src="@drawable/add" />
 
 </RelativeLayout>

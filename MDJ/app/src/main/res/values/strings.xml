@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Shop expert</string>
 
+    <string name="facebook_app_id">1949689358388929</string>
+    <string name="fb_login_protocol_scheme">fb1949689358388929</string>
+
     <!--Main fragment -->
     <string name="no_list_to_show">Create your first list just tap the pink button</string>
 
@@ -22,14 +25,63 @@
     <!-- Strings related to login -->
     <string name="email">Email</string>
     <string name="pass">Password</string>
+    <string name="firstName">Firstname</string>
+    <string name="lastName">Lastname</string>
     <string name="login">SIGN IN</string>
     <string name="register">CREATE ACCOUNT</string>
-    <string name="register_google">CREATE ACCOUNT WITH GOOGLE +</string>
-    <string name="register_facebook">CREATE ACCOUNT WITH FACEBOOK</string>
-    <string name="login_google">SIGN IN WITH GOOGLE +</string>
-    <string name="login_facebook">SIGN IN WITH FACEBOOK</string>
+    <string name="sign_in_google">SIGN IN WITH GOOGLE +</string>
+    <string name="sign_in_facebook">SIGN IN WITH FACEBOOK</string>
     <string name="forgot_pass">FORGOT PASSWORD</string>
     <string name="title_activity_maps">Map</string>
     <string name="default_info_title">Default Location</string>
     <string name="default_info_snippet">No places found, because location permission is disabled.</string>
+    <string name="success_registration">Successfully registered! Now you can sign in.</string>
+    <string name="success_login">Enjoy in using your Shopping expert!</string>
+    <string name="email_error">Email address is not valid!</string>
+    <string name="login_error">Wrong credentials for login!</string>
+
+    <string name="loading">Loading…</string>
+    <string name="firebase_status_fmt">Firebase User: %s</string>
+    <string name="firebase_user_management">Firebase User Management</string>
+
+    <string name="google_status_fmt">Google User: %s</string>
+    <string name="google_title_text">Google Sign In</string>
+
+    <string name="facebook_status_fmt">Facebook User: %s</string>
+    <string name="facebook_title_text">Facebook Login</string>
+
+    <!-- Strings related to password recovery -->
+    <string name="recovery_btn">GET PASSWORD</string>
+    <string name="recovery_message">Forgot your password? Please provide your email address and you will receive your password.</string>
+    <string name="recovery_message_toast">We sent you password on provided email. Continue with signing in.</string>
+
+    <!-- Errors -->
+    <string name="err_required_email">Please enter email!</string>
+    <string name="err_valid_email">Email address is not valid!</string>
+    <string name="err_required_password">Please enter password!</string>
+    <string name="err_required_firstname">Please enter firstname!</string>
+    <string name="err_required_lastname">Please enter lastname!</string>
+    <!--
+    TODO: Before you run your application, you need a Google Maps API key.
+
+    To get one, follow this link, follow the directions and press "Create" at the end:
+    https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=CLIENT_SIDE_ANDROID&r=A2:C8:08:96:89:1B:A7:03:67:CD:58:E5:CD:55:69:AF:38:1F:EC:15%3Bcom.ftn.mdj.activities
+
+    https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=CLIENT_SIDE_ANDROID&r=A2:C8:08:96:89:1B:A7:03:67:CD:58:E5:CD:55:69:AF:38:1F:EC:15%3Bcom.ftn.mdj.activities
+
+    You can also add your credentials to an existing key, using these values:
+
+    Package name:
+    A2:C8:08:96:89:1B:A7:03:67:CD:58:E5:CD:55:69:AF:38:1F:EC:15
+
+    SHA-1 certificate fingerprint:
+    A2:C8:08:96:89:1B:A7:03:67:CD:58:E5:CD:55:69:AF:38:1F:EC:15
+
+    Alternatively, follow the directions here:
+    https://developers.google.com/maps/documentation/android/start#get-key
+
+    Once you have your key (it starts with "AIza"), replace the "google_maps_key"
+    string in this file.
+    -->
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyAu3PLh_WaL_1SS1OmM8L0M9e_X55BIEgU</string>
 </resources>

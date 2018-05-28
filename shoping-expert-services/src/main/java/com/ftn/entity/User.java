@@ -1,5 +1,7 @@
 package com.ftn.entity;
 
+import com.ftn.dto.RegistrationDTO;
+import com.ftn.dto.UserDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -37,4 +39,19 @@ public class User {
     @Column(unique = true, nullable = false)
     @Email
     private String email;
+
+    public User(UserDTO userDTO){
+        this.id = userDTO.getId();
+        this.email = userDTO.getEmail();
+        this.password = userDTO.getPassword();
+        this.firstName = userDTO.getFirstName();
+        this.lastName = userDTO.getLastName();
+    }
+
+    public void merge(RegistrationDTO registrationDTO){
+        this.email = registrationDTO.getEmail();
+        this.password = registrationDTO.getPassword();
+        this.firstName = registrationDTO.getFirstName();
+        this.lastName = registrationDTO.getLastName();
+    }
 }
