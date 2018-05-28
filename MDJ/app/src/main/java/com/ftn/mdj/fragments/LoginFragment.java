@@ -146,6 +146,7 @@ public class LoginFragment extends Fragment {
         if(currentUser != null) {
             System.out.println("On start");
             System.out.println(currentUser.getDisplayName());
+            goToMainActivity();
         }
     }
 
@@ -288,7 +289,6 @@ public class LoginFragment extends Fragment {
             mProgressDialog.setMessage(getString(R.string.loading));
             mProgressDialog.setIndeterminate(true);
         }
-
         mProgressDialog.show();
     }
 
@@ -355,7 +355,6 @@ public class LoginFragment extends Fragment {
     private void goToMainActivity(){
         Context context = rootView.getContext();
         Intent intent = new Intent(context, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         startActivity(intent);
     }
 

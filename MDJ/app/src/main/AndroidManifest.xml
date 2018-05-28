@@ -27,7 +27,8 @@
         <activity
             android:name=".activities.LogRegActivity"
             android:label="@string/title_activity_log_reg"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"
+            android:noHistory="true" />
         <activity android:name=".activities.ForgotPasswordActivity" />
 
         <meta-data android:name="com.facebook.sdk.ApplicationId"

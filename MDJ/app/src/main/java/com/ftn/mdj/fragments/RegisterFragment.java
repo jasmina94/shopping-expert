@@ -1,11 +1,13 @@
 package com.ftn.mdj.fragments;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatEditText;
 import android.view.LayoutInflater;
@@ -45,10 +47,14 @@ public class RegisterFragment extends Fragment {
     private AppCompatButton mRegistrationButton;
     private View rootView;
 
+    public ProgressDialog mProgressDialog;
+    private FragmentActivity parentActivity;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_register, container, false);
+        parentActivity = super.getActivity();
         initViews();
         setupHandler();
         setupSubmit();
@@ -94,6 +100,7 @@ public class RegisterFragment extends Fragment {
                     Message msg = Message.obtain();
                     msg.obj = registrationDTO;
                     registerThread.getHandler().sendMessage(msg);
+                    showProgressDialog();
                 }
             }
         });
@@ -105,6 +112,7 @@ public class RegisterFragment extends Fragment {
             public void handleMessage(Message msg) {
                 GenericResponse<UserDTO> response = (GenericResponse<UserDTO>)msg.obj;
                 String message;
+                hideProgressDialog();
                 if(response.isSuccessfulOperation()) {
                     message = getString(R.string.success_registration);
                     UtilHelper.showToastMessage(getContext(), message, UtilHelper.ToastLength.LONG);
@@ -123,5 +131,20 @@ public class RegisterFragment extends Fragment {
         mLastnameWrapper.getEditableText().clear();
         mEmailWrapper.getEditableText().clear();
         mPasswordWrapper.getEditableText().clear();
+    }
+
+    public void showProgressDialog() {
+        if (mProgressDialog == null) {
+            mProgressDialog = new ProgressDialog(this.parentActivity);
+            mProgressDialog.setMessage(getString(R.string.loading));
+            mProgressDialog.setIndeterminate(true);
+        }
+        mProgressDialog.show();
+    }
+
+    public void hideProgressDialog() {
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            mProgressDialog.dismiss();
+        }
     }
 }
