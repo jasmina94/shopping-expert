@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -22,6 +23,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ftn.mdj.R;
+import com.ftn.mdj.threads.WorkerThreadAddLocation;
+import com.ftn.mdj.threads.WorkerThreadRenameList;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -82,9 +85,19 @@ public class MapsActivity extends AppCompatActivity
     private LatLng mLatLng;
     private Toolbar mToolbar;
 
+    private Long listId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        listId = getIntent().getExtras().getLong("listId");
+
+        if(getIntent().getExtras().get("latitude")!=null && getIntent().getExtras().get("longitude")!=null)
+        {
+            mLatLng = new LatLng((double)getIntent().getExtras().get("latitude"),(double)getIntent().getExtras().get("longitude"));
+            //nakon kreiranja mape treba dodati marker sa ovim duzinama
+        }
 
         // Retrieve location and camera position from saved instance state.
         if (savedInstanceState != null) {
@@ -201,6 +214,12 @@ public class MapsActivity extends AppCompatActivity
                                         .target(mLatLng).zoom(14).build();
 
                                 mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
+                                WorkerThreadAddLocation workerThreadAddLocation = new WorkerThreadAddLocation(listId, mLatLng.longitude, mLatLng.latitude, MapsActivity.this);
+                                workerThreadAddLocation.start();
+                                Message msg = Message.obtain();
+                                workerThreadAddLocation.getHandler().sendMessage(msg);
+
                                 Toast.makeText(MapsActivity.this, "You will receive notification near this place.", Toast.LENGTH_SHORT).show();
                                 //go back to main activity
                                 Intent intent = new Intent(MapsActivity.this, MainActivity.class);

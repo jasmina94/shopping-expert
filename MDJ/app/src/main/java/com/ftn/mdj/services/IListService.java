@@ -32,4 +32,7 @@ public interface IListService {
     @PUT(USER_PREFIX + "/makePublic/{listId}/{password}")
     Call<GenericResponse> makePublic(@Path("listId") Long listId, @Path("password") String password);
 
+    @PUT(USER_PREFIX + "/updateLocation/{listId}/{latitude}/{longitude}")
+    Call<GenericResponse> updateLocation(@Path("listId") Long listId, @Path("latitude") Double latitude, @Path("longitude") Double longitude);
+
 }

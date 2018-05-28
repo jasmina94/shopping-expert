@@ -27,4 +27,6 @@ public interface IShoppingListService {
     void updateName(long listId, String listName);
 
     void shareList(Long listId, String sharedWith);
+    
+    void updateLocation(long listId, Double latitude, Double longitude);
 }

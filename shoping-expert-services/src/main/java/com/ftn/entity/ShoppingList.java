@@ -50,4 +50,10 @@ public class ShoppingList {
     @Column
     private LocalDateTime reminder;
     //same for time and date of completion, need to investigate how reminders work
+    
+    @Column
+    private Double latitude;
+    
+    @Column
+    private Double longitude;
 }

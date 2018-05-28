@@ -8,6 +8,8 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Column;
+
 /**
  * Created by milca on 4/25/2018.
  */
@@ -31,7 +33,9 @@ public class ShoppingListShowDto {
     private LocalDateTime reminder;
     //same for time and date of completion, need to investigate how reminders work
 
-    //maybe location
+    private Double latitude;
+    
+    private Double longitude;
 
     public ShoppingListShowDto() {}
 
@@ -41,5 +45,7 @@ public class ShoppingListShowDto {
         this.isSecret = shoppingList.getIsSecret();
         this.sharedWith = shoppingList.getSharedWith();
         this.reminder = shoppingList.getReminder();
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 }

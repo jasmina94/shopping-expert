@@ -31,6 +31,10 @@ public class ShoppingListShowDTO implements Serializable {
 
     private String reminder;
 
+    private Double latitude;
+
+    private Double longitude;
+
     public ShoppingListShowDTO(String name) {
         this.listName = name;
         this.isSecret = false;
@@ -38,7 +42,7 @@ public class ShoppingListShowDTO implements Serializable {
         this.numberOfItems = 0;
     }
 
-    public ShoppingListShowDTO(Long id, String listName, Boolean isSecret, Integer boughtItems, Integer numberOfItems, Set<String> sharedWith, String reminder) {
+    public ShoppingListShowDTO(Long id, String listName, Boolean isSecret, Integer boughtItems, Integer numberOfItems, Set<String> sharedWith, String reminder, Double latitude, Double longitude) {
         this.id = id;
         this.listName = listName;
         this.isSecret = isSecret;
@@ -46,5 +50,7 @@ public class ShoppingListShowDTO implements Serializable {
         this.numberOfItems = numberOfItems;
         this.sharedWith = sharedWith;
         this.reminder = reminder;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 }

@@ -137,6 +137,11 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
                         break;
                     case R.id.mnu_location:
                         Intent intent = new Intent(context, MapsActivity.class);
+                        if(shoppingList.getLatitude() != null && shoppingList.getLongitude() != null){
+                            intent.putExtra("latitude",shoppingList.getLatitude());
+                            intent.putExtra("longitude",shoppingList.getLongitude());
+                        }
+                        intent.putExtra("listId",shoppingList.getId());
                         context.startActivity(intent);
                         break;
                 }

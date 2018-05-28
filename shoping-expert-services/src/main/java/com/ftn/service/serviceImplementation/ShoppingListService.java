@@ -110,5 +110,13 @@ public class ShoppingListService implements IShoppingListService {
         String message ="Mr/s " + curentlyLoggedUserName + ", \n " + curentlyLoggedUserName + " has just shared shopping list with you. Click on notification. \n ";
 //        emailService.sendEmail(subject, message, sharedWith);
     }
+    
+    @Override
+    public void updateLocation(long listId, Double latitude, Double longitude) {
+        ShoppingList shoppingList = shoppingListRepository.getOne(listId);
+        shoppingList.setLatitude(latitude);
+        shoppingList.setLongitude(longitude);
+        shoppingListRepository.save(shoppingList);
+    }
 
 }
