@@ -1,5 +1,7 @@
 package com.ftn.service;
 
+import com.ftn.dto.LoginDTO;
+import com.ftn.dto.RegistrationDTO;
 import com.ftn.dto.UserDTO;
 
 /**
@@ -7,8 +9,9 @@ import com.ftn.dto.UserDTO;
  */
 public interface IUserService {
 
-    UserDTO register(UserDTO userDTO);
+    UserDTO register(RegistrationDTO registrationDTO);
+    UserDTO getById(int id);
     UserDTO getByEmail(String email);
     UserDTO getByEmailAndPassword(String email, String password);
-    boolean checkCredentials(UserDTO userDTO);
+    boolean checkCredentials(LoginDTO loginDTO);
 }

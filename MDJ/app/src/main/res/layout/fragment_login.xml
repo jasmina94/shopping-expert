@@ -1,9 +1,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    android:id="@+id/fragment_login">
 
 
     <!-- Email Label -->
@@ -65,16 +66,16 @@
         android:id="@+id/btn_login_google"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="20dp"
         android:layout_marginBottom="24dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:padding="12dp"
-        android:text="@string/login_google"
+        android:text="@string/sign_in_google"
         android:textColor="@color/white"
         android:background="@color/redGoogle"/>
 
-    <android.support.v7.widget.AppCompatButton
+    <com.facebook.login.widget.LoginButton
         android:id="@+id/btn_login_facebook"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -83,8 +84,9 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:padding="12dp"
-        android:text="@string/login_facebook"
+        android:text="@string/sign_in_facebook"
         android:textColor="@color/white"
         android:background="@color/blueFacebook"/>
+
 
 </LinearLayout>
