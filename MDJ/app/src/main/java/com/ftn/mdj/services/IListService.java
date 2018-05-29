@@ -1,8 +1,12 @@
 package com.ftn.mdj.services;
 
+import com.ftn.mdj.dto.ShoppingListDTO;
 import com.ftn.mdj.utils.GenericResponse;
 
+import java.util.List;
+
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
@@ -16,6 +20,9 @@ public interface IListService {
 
     @POST(USER_PREFIX + "/create/{listName}/{userId}")
     Call<GenericResponse> create(@Path("listName") String listName, @Path("userId") Long userId);
+
+    @POST(USER_PREFIX + "/uploadList/{userId}")
+    Call<GenericResponse> uploadList(@Path("userId") Long userId, @Body List<ShoppingListDTO> shoppingListShowDtos);
 
     @GET(USER_PREFIX + "/listsByStatus/{isArchived}/{userId}")
     Call<GenericResponse> listsByStatus(@Path("isArchived") Boolean isArchived, @Path("userId") Long userId);

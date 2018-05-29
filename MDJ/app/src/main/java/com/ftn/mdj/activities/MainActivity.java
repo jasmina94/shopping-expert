@@ -29,12 +29,14 @@ import com.ftn.mdj.fragments.MainFragment;
 import com.ftn.mdj.services.MDJInterceptor;
 import com.ftn.mdj.threads.LoggedUserThread;
 import com.ftn.mdj.threads.GetActiveListsThread;
+import com.ftn.mdj.threads.UploadListThread;
 import com.ftn.mdj.utils.DummyCollection;
 import com.ftn.mdj.utils.GenericResponse;
 import com.ftn.mdj.utils.SharedPreferencesManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
@@ -77,15 +79,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onResume() {
         //Ovde se dobavljaju liste iz baze ako je korisnik ulogovan -> dobavljas iz baze
+        List<ShoppingListDTO> lists = DummyCollection.readLists(this.getApplicationContext());
         if(userIsLoggedIn){
             long id = sharedPreferenceManager.getInt(SharedPreferencesManager.Key.USER_ID.name());
-            GetActiveListsThread getActiveListsThread = new GetActiveListsThread(false, id, this);
-            getActiveListsThread.start();
-            Message msg = Message.obtain();
-            getActiveListsThread.getHandler().sendMessage(msg);
+            if(!lists.isEmpty()) {
+                UploadListThread uploadListThread = new UploadListThread(id, lists, this.getApplicationContext(), this);
+                uploadListThread.start();
+                Message msg = Message.obtain();
+                uploadListThread.getHandler().sendMessage(msg);
+                try {
+                    DummyCollection.emptyList(this.getApplicationContext());
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                GetActiveListsThread getActiveListsThread = new GetActiveListsThread(false, id, this);
+                getActiveListsThread.start();
+                Message msg = Message.obtain();
+                getActiveListsThread.getHandler().sendMessage(msg);
+            }
         }else {
             //Ovde se citaju liste iz fajla ako ih ima ako ih nema prikazi prazno
-            List<ShoppingListDTO> lists = DummyCollection.readLists(this.getApplicationContext());
             MainFragment fragment = new MainFragment();
             try {
                 fragment.setActiveShoppingLists(lists);

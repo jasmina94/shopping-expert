@@ -111,4 +111,16 @@ public class ShoppingListService implements IShoppingListService {
 //        emailService.sendEmail(subject, message, sharedWith);
     }
 
+    @Override
+    public void saveUnloggedShoppingList(Long loggedUserId, List<ShoppingListShowDto> listDTO) {
+        List<ShoppingList> list = listDTO.stream().map(l -> {
+            ShoppingList shoppingList = new ShoppingList();
+            shoppingList.setListName(l.getListName());
+            shoppingList.setCreatorId(loggedUserId);
+            return shoppingList;
+        }).collect(Collectors.toList());
+
+        shoppingListRepository.saveAll(list);
+    }
+
 }

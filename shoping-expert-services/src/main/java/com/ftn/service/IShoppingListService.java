@@ -27,4 +27,6 @@ public interface IShoppingListService {
     void updateName(long listId, String listName);
 
     void shareList(Long listId, String sharedWith);
+
+    void saveUnloggedShoppingList(Long loggedUserId, List<ShoppingListShowDto> list);
 }

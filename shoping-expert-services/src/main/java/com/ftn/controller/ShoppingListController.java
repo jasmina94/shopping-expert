@@ -32,6 +32,13 @@ public class ShoppingListController {
     }
 
     @Transactional
+    @PostMapping("/uploadList/{userId}")
+    public GenericResponse uploadList(@PathVariable Long userId, @RequestBody List<ShoppingListShowDto> shoppingListShowDtos) {
+        shoppingListService.saveUnloggedShoppingList(userId, shoppingListShowDtos);
+        return new GenericResponse<>();
+    }
+
+    @Transactional
     @PostMapping("/create/{listName}/{userId}")
     public GenericResponse Create(@PathVariable String listName, @PathVariable Long userId) {
         shoppingListService.create(listName, userId);
@@ -87,4 +94,6 @@ public class ShoppingListController {
         shoppingListService.shareList(listId, sharedWith);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+
 }

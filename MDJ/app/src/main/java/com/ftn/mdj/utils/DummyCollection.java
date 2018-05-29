@@ -10,6 +10,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,5 +66,11 @@ public class DummyCollection {
             }.getType());
         }
         return shoppingLists;
+    }
+
+    public static void emptyList(Context context) throws FileNotFoundException {
+        FileOutputStream fos = context.openFileOutput(SHOPPING_LIST_FILE, context.MODE_PRIVATE);
+        PrintWriter pw = new PrintWriter(fos);
+        pw.close();
     }
 }
