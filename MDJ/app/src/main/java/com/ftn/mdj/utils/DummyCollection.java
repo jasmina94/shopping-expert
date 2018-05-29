@@ -22,11 +22,6 @@ public class DummyCollection {
     private static final String SHOPPING_LIST_FILE = "shopping_lists.txt";
     private static List<ShoppingListDTO> dummies = new ArrayList<>();
 
-//    public DummyCollection(){
-//        dummies = new ArrayList<>();
-//        initialize();
-//    }
-
     public static void initialize(){
         for(int i=0; i<10; i++){
             ShoppingListDTO shoppingList = new ShoppingListDTO("List " + i);

@@ -7,21 +7,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="562cfefb-5350-4af3-b341-6043b7ac684f" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" afterPath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change beforePath="$PROJECT_DIR$/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/src/main/AndroidManifest.xml" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ftn/mdj/activities/AddListActivity.java" afterPath="$PROJECT_DIR$/src/main/java/com/ftn/mdj/activities/AddListActivity.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ftn/mdj/activities/MainActivity.java" afterPath="$PROJECT_DIR$/src/main/java/com/ftn/mdj/activities/MainActivity.java" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/ftn/mdj/adapters/MainAdapter.java" afterPath="$PROJECT_DIR$/src/main/java/com/ftn/mdj/adapters/MainAdapter.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ftn/mdj/dto/ShoppingListShowDTO.java" afterPath="$PROJECT_DIR$/src/main/java/com/ftn/mdj/dto/ShoppingListDTO.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ftn/mdj/fragments/MainFragment.java" afterPath="$PROJECT_DIR$/src/main/java/com/ftn/mdj/fragments/MainFragment.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ftn/mdj/threads/LoggedUserThread.java" afterPath="$PROJECT_DIR$/src/main/java/com/ftn/mdj/threads/LoggedUserThread.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ftn/mdj/threads/LoginThread.java" afterPath="$PROJECT_DIR$/src/main/java/com/ftn/mdj/threads/LoginThread.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ftn/mdj/threads/RegisterThread.java" afterPath="$PROJECT_DIR$/src/main/java/com/ftn/mdj/threads/RegisterThread.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ftn/mdj/threads/WorkerThreadArchiveList.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ftn/mdj/threads/WorkerThreadGetActiveLists.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ftn/mdj/threads/WorkerThreadRenameList.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ftn/mdj/threads/WorkerThreadSecretList.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ftn/mdj/utils/ConnectionConfig.java" afterPath="$PROJECT_DIR$/src/main/java/com/ftn/mdj/utils/ConnectionConfig.java" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/ftn/mdj/utils/DummyCollection.java" afterPath="$PROJECT_DIR$/src/main/java/com/ftn/mdj/utils/DummyCollection.java" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/list_item.xml" afterPath="$PROJECT_DIR$/src/main/res/layout/list_item.xml" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -38,6 +29,9 @@
   <component name="ExternalProjectsManager">
     <system id="GRADLE">
       <state>
+        <task path="$PROJECT_DIR$">
+          <activation />
+        </task>
         <projects_view>
           <tree_state>
             <expand>
@@ -57,198 +51,85 @@
       <file leaf-file-name="MainActivity.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/ftn/mdj/activities/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="156">
-              <caret line="191" column="0" lean-forward="false" selection-start-line="191" selection-start-column="0" selection-end-line="191" selection-end-column="0" />
+            <state relative-caret-position="324">
+              <caret line="161" column="10" lean-forward="false" selection-start-line="161" selection-start-column="10" selection-end-line="161" selection-end-column="10" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="method#onNavigationItemSelected#0;class#MainActivity#0" expanded="false" />
-                <element signature="method#initViews#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#singOutUser#0;class#MainActivity#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Instrumentation.class" pinned="false" current-in-tab="false">
-        <entry file="jar://$USER_HOME$/AppData/Local/Android/Sdk/platforms/android-26/android.jar!/android/app/Instrumentation.class">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="165">
-              <caret line="232" column="56" lean-forward="false" selection-start-line="232" selection-start-column="56" selection-end-line="232" selection-end-column="56" />
-              <folding>
-                <marker date="1523379088109" expanded="false" signature="0:104" ph="/.../" />
-                <marker date="1523379088109" expanded="false" signature="135:521" ph="..." />
-                <marker date="1523379088109" expanded="false" signature="711:722" ph=" { " />
-                <marker date="1523379088109" expanded="false" signature="758:764" ph=" }" />
-                <marker date="1523379088109" expanded="false" signature="808:819" ph=" { " />
-                <marker date="1523379088109" expanded="false" signature="855:861" ph=" }" />
-                <marker date="1523379088109" expanded="false" signature="886:897" ph=" { " />
-                <marker date="1523379088109" expanded="false" signature="933:939" ph=" }" />
-                <marker date="1523379088109" expanded="false" signature="966:977" ph=" { " />
-                <marker date="1523379088109" expanded="false" signature="1013:1019" ph=" }" />
-                <marker date="1523379088109" expanded="false" signature="1076:1087" ph=" { " />
-                <marker date="1523379088109" expanded="false" signature="1123:1129" ph=" }" />
-                <marker date="1523379088109" expanded="false" signature="1189:1200" ph=" { " />
-                <marker date="1523379088109" expanded="false" signature="1236:1242" ph=" }" />
-                <marker date="1523379088109" expanded="false" signature="1286:1297" ph=" { " />
-                <marker date="1523379088109" expanded="false" signature="1333:1339" ph=" }" />
-                <marker date="1523379088109" expanded="false" signature="1395:1406" ph=" { " />
-                <marker date="1523379088109" expanded="false" signature="1442:1448" ph=" }" />
-                <marker date="1523379088109" expanded="false" signature="1500:1511" ph=" { " />
-                <marker date="1523379088109" expanded="false" signature="1547:1553" ph=" }" />
-                <marker date="1523379088109" expanded="false" signature="1597:1608" ph=" { " />
-                <marker date="1523379088109" expanded="false" signature="1644:1650" ph=" }" />
-                <marker date="1523379088109" expanded="false" signature="1692:1703" ph=" { " />
-                <marker date="1523379088109" expanded="false" signature="1739:1745" ph=" }" />
-                <marker date="1523379088109" expanded="false" signature="1774:1785" ph=" { " />
-                <marker date="1523379088109" expanded="false" signature="1821:1827" ph=" }" />
-                <marker date="1523379088109" expanded="false" signature="1860:1871" ph=" { " />
-                <marker date="1523379088109" expanded="false" signature="1907:1913" ph=" }" />
-                <marker date="1523379088109" expanded="false" signature="1958:1969" ph=" { " />
-                <marker date="1523379088109" expanded="false" signature="2005:2011" ph=" }" />
-                <marker date="1523379088109" expanded="false" signature="2050:2061" ph=" { " />
-                <marker date="1523379088109" expanded="false" signature="2097:2103" ph=" }" />
-                <marker date="1523379088109" expanded="false" signature="2139:2150" ph=" { " />
-                <marker date="1523379088109" expanded="false" signature="2186:2192" ph=" }" />
-                <marker date="1523379088109" expanded="false" signature="2226:2237" ph=" { " />
-                <marker date="1523379088109" expanded="false" signature="2273:2279" ph=" }" />
-                <marker date="1523379088109" expanded="false" signature="2313:2324" ph=" { " />
-                <marker date="1523379088109" expanded="false" signature="2360:2366" ph=" }" />
-                <marker date="1523379088109" expanded="false" signature="2399:2410" ph=" { " />
-                <marker date="1523379088109" expanded="false" signature="2446:2452" ph=" }" />
-                <marker date="1523379088109" expanded="false" signature="2501:2512" ph=" { " />
-                <marker date="1523379088109" expanded="false" signature="2548:2554" ph=" }" />
-                <marker date="1523379088109" expanded="false" signature="2603:2614" ph=" { " />
-                <marker date="1523379088109" expanded="false" signature="2650:2656" ph=" }" />
-                <marker date="1523379088109" expanded="false" signature="2691:2702" ph=" { " />
-                <marker date="1523379088109" expanded="false" signature="2738:2744" ph=" }" />
-                <marker date="1523379088109" expanded="false" signature="2792:2803" ph=" { " />
-                <marker date="1523379088109" expanded="false" signature="2839:2845" ph=" }" />
-                <marker date="1523379088109" expanded="false" signature="2899:2910" ph=" { " />
-                <marker date="1523379088109" expanded="false" signature="2946:2952" ph=" }" />
-                <marker date="1523379088109" expanded="true" signature="3022:3074" ph="{...}" />
-                <marker date="1523379088109" expanded="true" signature="3205:3257" ph="{...}" />
-                <marker date="1523379088109" expanded="true" signature="3379:3431" ph="{...}" />
-                <marker date="1523379088109" expanded="true" signature="3522:3574" ph="{...}" />
-                <marker date="1523379088109" expanded="true" signature="3652:3704" ph="{...}" />
-                <marker date="1523379088109" expanded="true" signature="3807:3859" ph="{...}" />
-                <marker date="1523379088109" expanded="true" signature="3932:3984" ph="{...}" />
-                <marker date="1523379088109" expanded="true" signature="4069:4121" ph="{...}" />
-                <marker date="1523379088109" expanded="true" signature="4209:4261" ph="{...}" />
-                <marker date="1523379088109" expanded="false" signature="4306:4317" ph=" { " />
-                <marker date="1523379088109" expanded="false" signature="4353:4359" ph=" }" />
-                <marker date="1523379088109" expanded="false" signature="4404:4415" ph=" { " />
-                <marker date="1523379088109" expanded="false" signature="4451:4457" ph=" }" />
-                <marker date="1523379088109" expanded="false" signature="4501:4512" ph=" { " />
-                <marker date="1523379088109" expanded="false" signature="4548:4554" ph=" }" />
-                <marker date="1523379088109" expanded="false" signature="4602:4613" ph=" { " />
-                <marker date="1523379088109" expanded="false" signature="4649:4655" ph=" }" />
-                <marker date="1523379088109" expanded="false" signature="4707:4718" ph=" { " />
-                <marker date="1523379088109" expanded="false" signature="4754:4760" ph=" }" />
-                <marker date="1523379088109" expanded="false" signature="4819:4830" ph=" { " />
-                <marker date="1523379088109" expanded="false" signature="4866:4872" ph=" }" />
-                <marker date="1523379088109" expanded="true" signature="5041:5093" ph="{...}" />
-                <marker date="1523379088109" expanded="true" signature="5251:5303" ph="{...}" />
-                <marker date="1523379088109" expanded="false" signature="5361:5372" ph=" { " />
-                <marker date="1523379088109" expanded="false" signature="5408:5414" ph=" }" />
-                <marker date="1523379088109" expanded="true" signature="5694:5746" ph="{...}" />
-                <marker date="1523379088109" expanded="true" signature="5907:5959" ph="{...}" />
-                <marker date="1523379088109" expanded="true" signature="6032:6084" ph="{...}" />
-                <marker date="1523379088109" expanded="true" signature="6192:6244" ph="{...}" />
-                <marker date="1523379088109" expanded="false" signature="6302:6313" ph=" { " />
-                <marker date="1523379088109" expanded="false" signature="6349:6355" ph=" }" />
-                <marker date="1523379088109" expanded="true" signature="6454:6506" ph="{...}" />
-                <marker date="1523379088109" expanded="true" signature="6640:6692" ph="{...}" />
-                <marker date="1523379088109" expanded="true" signature="6769:6821" ph="{...}" />
-                <marker date="1523379088109" expanded="true" signature="6933:6985" ph="{...}" />
-                <marker date="1523379088109" expanded="true" signature="7061:7113" ph="{...}" />
-                <marker date="1523379088109" expanded="true" signature="7169:7180" ph=" { " />
-                <marker date="1523379088109" expanded="true" signature="7216:7222" ph=" }" />
-                <marker date="1523379088109" expanded="false" signature="7280:7291" ph=" { " />
-                <marker date="1523379088109" expanded="false" signature="7327:7333" ph=" }" />
-                <marker date="1523379088109" expanded="false" signature="7390:7401" ph=" { " />
-                <marker date="1523379088109" expanded="false" signature="7437:7443" ph=" }" />
-                <marker date="1523379088109" expanded="false" signature="7498:7509" ph=" { " />
-                <marker date="1523379088109" expanded="false" signature="7545:7551" ph=" }" />
-                <marker date="1523379088109" expanded="true" signature="7637:7689" ph="{...}" />
-                <marker date="1523379088109" expanded="true" signature="7813:7865" ph="{...}" />
-                <marker date="1523379088109" expanded="false" signature="7921:7932" ph=" { " />
-                <marker date="1523379088109" expanded="false" signature="7968:7974" ph=" }" />
-                <marker date="1523379088109" expanded="true" signature="8037:8089" ph="{...}" />
-                <marker date="1523379088109" expanded="true" signature="8095:8113" ph="/**...*/" />
-                <marker date="1523379088109" expanded="false" signature="8166:8177" ph=" { " />
-                <marker date="1523379088109" expanded="false" signature="8213:8219" ph=" }" />
-                <marker date="1523379088109" expanded="true" signature="8225:8243" ph="/**...*/" />
-                <marker date="1523379088109" expanded="false" signature="8295:8306" ph=" { " />
-                <marker date="1523379088109" expanded="false" signature="8342:8348" ph=" }" />
-                <marker date="1523379088109" expanded="false" signature="8384:8395" ph=" { " />
-                <marker date="1523379088109" expanded="false" signature="8431:8437" ph=" }" />
-                <marker date="1523379088109" expanded="false" signature="8474:8485" ph=" { " />
-                <marker date="1523379088109" expanded="false" signature="8521:8527" ph=" }" />
-                <marker date="1523379088109" expanded="false" signature="8570:8581" ph=" { " />
-                <marker date="1523379088109" expanded="false" signature="8617:8623" ph=" }" />
-                <marker date="1523379088109" expanded="false" signature="8675:8686" ph=" { " />
-                <marker date="1523379088109" expanded="false" signature="8722:8728" ph=" }" />
-                <marker date="1523379088109" expanded="true" signature="8795:8847" ph="{...}" />
-                <marker date="1523379088109" expanded="true" signature="8894:9224" ph="{...}" />
-                <marker date="1523379088109" expanded="true" signature="8961:9021" ph="{...}" />
-                <marker date="1523379088109" expanded="false" signature="9057:9072" ph=" { " />
-                <marker date="1523379088109" expanded="false" signature="9108:9118" ph=" }" />
-                <marker date="1523379088109" expanded="false" signature="9157:9172" ph=" { " />
-                <marker date="1523379088109" expanded="false" signature="9208:9218" ph=" }" />
-                <marker date="1523379088109" expanded="true" signature="9266:10620" ph="{...}" />
-                <marker date="1523379088109" expanded="true" signature="9373:9433" ph="{...}" />
-                <marker date="1523379088109" expanded="true" signature="9532:9592" ph="{...}" />
-                <marker date="1523379088109" expanded="false" signature="9626:9641" ph=" { " />
-                <marker date="1523379088109" expanded="false" signature="9677:9687" ph=" }" />
-                <marker date="1523379088109" expanded="false" signature="9734:9749" ph=" { " />
-                <marker date="1523379088109" expanded="false" signature="9785:9795" ph=" }" />
-                <marker date="1523379088109" expanded="true" signature="9861:9921" ph="{...}" />
-                <marker date="1523379088109" expanded="false" signature="9964:9979" ph=" { " />
-                <marker date="1523379088109" expanded="false" signature="10015:10025" ph=" }" />
-                <marker date="1523379088109" expanded="false" signature="10061:10076" ph=" { " />
-                <marker date="1523379088109" expanded="false" signature="10112:10122" ph=" }" />
-                <marker date="1523379088109" expanded="false" signature="10171:10186" ph=" { " />
-                <marker date="1523379088109" expanded="false" signature="10222:10232" ph=" }" />
-                <marker date="1523379088109" expanded="false" signature="10281:10296" ph=" { " />
-                <marker date="1523379088109" expanded="false" signature="10332:10342" ph=" }" />
-                <marker date="1523379088109" expanded="true" signature="10415:10475" ph="{...}" />
-                <marker date="1523379088109" expanded="true" signature="10554:10614" ph="{...}" />
-              </folding>
-            </state>
+      <file leaf-file-name="app_bar_main.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/res/layout/app_bar_main.xml">
+          <provider editor-type-id="android-designer2">
+            <state />
           </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AddListActivity.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/ftn/mdj/activities/AddListActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="66">
-              <caret line="45" column="0" lean-forward="false" selection-start-line="45" selection-start-column="0" selection-end-line="45" selection-end-column="0" />
+            <state relative-caret-position="525">
+              <caret line="25" column="49" lean-forward="true" selection-start-line="13" selection-start-column="4" selection-end-line="25" selection-end-column="49" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DummyCollection.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/ftn/mdj/utils/DummyCollection.java">
+      <file leaf-file-name="activity_maps.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/res/layout/activity_maps.xml">
+          <provider editor-type-id="android-designer2">
+            <state />
+          </provider>
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="378">
-              <caret line="34" column="5" lean-forward="false" selection-start-line="34" selection-start-column="5" selection-end-line="34" selection-end-column="5" />
+            <state relative-caret-position="-189">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="activity_shopping_list.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/res/layout/activity_shopping_list.xml">
+          <provider editor-type-id="android-designer2">
+            <state />
+          </provider>
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="315">
+              <caret line="24" column="42" lean-forward="false" selection-start-line="24" selection-start-column="42" selection-end-line="24" selection-end-column="42" />
               <folding>
-                <element signature="method#initialize#0;class#DummyCollection#0" expanded="false" />
-                <element signature="method#addNewShoppingList#0;class#DummyCollection#0" expanded="false" />
-                <element signature="method#writeLists#0;class#DummyCollection#0" expanded="false" />
-                <element signature="method#readLists#0;class#DummyCollection#0" expanded="false" />
+                <element signature="e#732#754#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ShoppingListDTO.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/ftn/mdj/dto/ShoppingListDTO.java">
+      <file leaf-file-name="list_item.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/res/layout/list_item.xml">
+          <provider editor-type-id="android-designer2">
+            <state />
+          </provider>
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="252">
-              <caret line="20" column="28" lean-forward="false" selection-start-line="20" selection-start-column="28" selection-end-line="20" selection-end-column="28" />
-              <folding />
+            <state relative-caret-position="346">
+              <caret line="51" column="52" lean-forward="false" selection-start-line="51" selection-start-column="52" selection-end-line="51" selection-end-column="52" />
+              <folding>
+                <element signature="e#1073#1108#0" expanded="true" />
+                <element signature="e#1729#1764#0" expanded="true" />
+                <element signature="e#2307#2342#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MainAdapter.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/ftn/mdj/adapters/MainAdapter.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="283">
+              <caret line="94" column="44" lean-forward="false" selection-start-line="94" selection-start-column="44" selection-end-line="94" selection-end-column="44" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#8209#8210#0" expanded="true" />
+                <element signature="e#8258#8259#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -2204,13 +2085,16 @@
         <option value="$PROJECT_DIR$/src/main/java/com/ftn/mdj/threads/RenameListThread.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/ftn/mdj/threads/ArchiveListThread.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/ftn/mdj/utils/ConnectionConfig.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/ftn/mdj/adapters/MainAdapter.java" />
         <option value="$PROJECT_DIR$/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/src/main/java/com/ftn/mdj/dto/ShoppingListShowDTO.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/ftn/mdj/dto/ShoppingListDTO.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/ftn/mdj/utils/DummyCollection.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/ftn/mdj/activities/AddListActivity.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/ftn/mdj/activities/MainActivity.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/ftn/mdj/utils/DummyCollection.java" />
+        <option value="$PROJECT_DIR$/src/main/res/layout/list_item.xml" />
+        <option value="$PROJECT_DIR$/src/main/java/com/ftn/mdj/activities/ShoppingListActivity.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/ftn/mdj/adapters/MainAdapter.java" />
+        <option value="$PROJECT_DIR$/src/main/res/layout/activity_shopping_list.xml" />
       </list>
     </option>
   </component>
@@ -2246,11 +2130,6 @@
             <path>
               <item name="app" type="1abcf292:AndroidViewProjectNode" />
               <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="manifests" type="f94875db:AndroidManifestsGroupNode" />
-            </path>
-            <path>
-              <item name="app" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
               <item name="java" type="edd41e36:AndroidSourceTypeNode" />
             </path>
             <path>
@@ -2276,23 +2155,13 @@
             <path>
               <item name="app" type="1abcf292:AndroidViewProjectNode" />
               <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
-              <item name="mdj" type="cbb59c9e:AndroidPsiDirectoryNode" />
-              <item name="dto" type="462c0819:PsiDirectoryNode" />
+              <item name="res" type="d4f16f75:AndroidResFolderNode" />
             </path>
             <path>
               <item name="app" type="1abcf292:AndroidViewProjectNode" />
               <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
-              <item name="mdj" type="cbb59c9e:AndroidPsiDirectoryNode" />
-              <item name="fragments" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="app" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
-              <item name="mdj" type="cbb59c9e:AndroidPsiDirectoryNode" />
-              <item name="utils" type="462c0819:PsiDirectoryNode" />
+              <item name="res" type="d4f16f75:AndroidResFolderNode" />
+              <item name="layout" type="ddeffd01:AndroidResFolderTypeNode" />
             </path>
           </expand>
           <select />
@@ -2307,8 +2176,19 @@
   <component name="PropertiesComponent">
     <property name="android.sdk.path" value="$USER_HOME$/AppData/Local/Android/Sdk" />
     <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../../Faks/PMA/Ikonice/locker.png" />
     <property name="device.picker.selection" value="Nexus_5X_API_24" />
+    <property name="lastFolderRoot" value="$PROJECT_DIR$/../../../../Faks/PMA/Ikonice/locker.png" />
+    <property name="algorithm" value="Scalr" />
+    <property name="method" value="Automatic" />
+    <property name="sourceResolution" value="XHDPI" />
+    <property name="resolutions" value="XHDPI&#10;XXHDPI&#10;XXXHDPI&#10;HDPI&#10;MDPI" />
+    <property name="format" value="PNG" />
+  </component>
+  <component name="RecentsManager">
+    <key name="android.template.packageName">
+      <recent name="com.ftn.mdj.activities" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -2538,6 +2418,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-9" y="-9" width="1938" height="1048" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Android Profiler" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -2546,7 +2427,8 @@
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3272933" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32760474" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3265306" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Logcat" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -2554,12 +2436,12 @@
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18689582" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Build" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295583" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Build" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32879817" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.216971" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.216971" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3997735" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39909297" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
       <window_info id="Device File Explorer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
@@ -2569,6 +2451,38 @@
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
+    <layout-to-restore>
+      <window_info id="Android Profiler" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
+      <window_info id="Logcat" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="8" side_tool="false" content_ui="combo" />
+      <window_info id="Build" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295583" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3997735" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Device File Explorer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Preview" active="true" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32975295" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3272933" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18689582" sideWeight="0.5" order="5" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.216971" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
+    </layout-to-restore>
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
@@ -2595,12 +2509,6 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/ftn/mdj/activities/MainActivity.java</url>
-          <line>191</line>
-          <properties />
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/ftn/mdj/activities/MainActivity.java</url>
           <line>153</line>
           <properties />
           <option name="timeStamp" value="5" />
@@ -2616,24 +2524,6 @@
           <line>96</line>
           <properties />
           <option name="timeStamp" value="7" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/ftn/mdj/activities/AddListActivity.java</url>
-          <line>45</line>
-          <properties />
-          <option name="timeStamp" value="8" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/ftn/mdj/activities/AddListActivity.java</url>
-          <line>52</line>
-          <properties />
-          <option name="timeStamp" value="10" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/ftn/mdj/activities/MainActivity.java</url>
-          <line>187</line>
-          <properties />
-          <option name="timeStamp" value="11" />
         </line-breakpoint>
       </breakpoints>
       <option name="time" value="12" />
@@ -2752,14 +2642,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/ftn/mdj/adapters/MainAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-252">
-          <caret line="15" column="0" lean-forward="false" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/ftn/mdj/utils/SharedPreferencesManager.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="156">
@@ -2773,27 +2655,6 @@
         <state relative-caret-position="-5787">
           <caret line="67" column="13" lean-forward="false" selection-start-line="67" selection-start-column="13" selection-end-line="67" selection-end-column="13" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/ftn/mdj/dto/ShoppingListDTO.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="20" column="28" lean-forward="false" selection-start-line="20" selection-start-column="28" selection-end-line="20" selection-end-column="28" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/ftn/mdj/utils/DummyCollection.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="378">
-          <caret line="34" column="5" lean-forward="false" selection-start-line="34" selection-start-column="5" selection-end-line="34" selection-end-column="5" />
-          <folding>
-            <element signature="method#initialize#0;class#DummyCollection#0" expanded="false" />
-            <element signature="method#addNewShoppingList#0;class#DummyCollection#0" expanded="false" />
-            <element signature="method#writeLists#0;class#DummyCollection#0" expanded="false" />
-            <element signature="method#readLists#0;class#DummyCollection#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2946,20 +2807,158 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/ftn/mdj/activities/AddListActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="66">
+        <state relative-caret-position="567">
           <caret line="45" column="0" lean-forward="false" selection-start-line="45" selection-start-column="0" selection-end-line="45" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/ftn/mdj/dto/ShoppingListDTO.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="252">
+          <caret line="20" column="28" lean-forward="false" selection-start-line="20" selection-start-column="28" selection-end-line="20" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/ftn/mdj/utils/DummyCollection.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="252">
+          <caret line="23" column="4" lean-forward="false" selection-start-line="23" selection-start-column="4" selection-end-line="23" selection-end-column="4" />
+          <folding>
+            <element signature="method#initialize#0;class#DummyCollection#0" expanded="false" />
+            <element signature="method#addNewShoppingList#0;class#DummyCollection#0" expanded="false" />
+            <element signature="method#writeLists#0;class#DummyCollection#0" expanded="false" />
+            <element signature="method#readLists#0;class#DummyCollection#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/res/drawable/round_button_background.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/res/drawable/ic_launcher_foreground.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/res/layout/activity_main.xml">
+      <provider editor-type-id="android-designer2">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/res/layout/fragment_main.xml">
+      <provider editor-type-id="android-designer2">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="651">
+          <caret line="31" column="45" lean-forward="false" selection-start-line="31" selection-start-column="8" selection-end-line="31" selection-end-column="45" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/ftn/mdj/activities/ShoppingListActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="231">
+          <caret line="11" column="4" lean-forward="true" selection-start-line="11" selection-start-column="4" selection-end-line="11" selection-end-column="4" />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/AppData/Local/Android/Sdk/platforms/android-26/android.jar!/android/app/Activity.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="9513">
+          <caret line="716" column="16" lean-forward="false" selection-start-line="716" selection-start-column="16" selection-end-line="716" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/ftn/mdj/adapters/MainAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="283">
+          <caret line="94" column="44" lean-forward="false" selection-start-line="94" selection-start-column="44" selection-end-line="94" selection-end-column="44" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#8209#8210#0" expanded="true" />
+            <element signature="e#8258#8259#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/res/layout/list_item.xml">
+      <provider editor-type-id="android-designer2">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="346">
+          <caret line="51" column="52" lean-forward="false" selection-start-line="51" selection-start-column="52" selection-end-line="51" selection-end-column="52" />
+          <folding>
+            <element signature="e#1073#1108#0" expanded="true" />
+            <element signature="e#1729#1764#0" expanded="true" />
+            <element signature="e#2307#2342#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/res/layout/activity_maps.xml">
+      <provider editor-type-id="android-designer2">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-189">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/res/layout/app_bar_main.xml">
+      <provider editor-type-id="android-designer2">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="525">
+          <caret line="25" column="49" lean-forward="true" selection-start-line="13" selection-start-column="4" selection-end-line="25" selection-end-column="49" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/res/layout/activity_shopping_list.xml">
+      <provider editor-type-id="android-designer2">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="24" column="42" lean-forward="false" selection-start-line="24" selection-start-column="42" selection-end-line="24" selection-end-column="42" />
+          <folding>
+            <element signature="e#732#754#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/ftn/mdj/activities/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="156">
-          <caret line="191" column="0" lean-forward="false" selection-start-line="191" selection-start-column="0" selection-end-line="191" selection-end-column="0" />
+        <state relative-caret-position="324">
+          <caret line="161" column="10" lean-forward="false" selection-start-line="161" selection-start-column="10" selection-end-line="161" selection-end-column="10" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#onNavigationItemSelected#0;class#MainActivity#0" expanded="false" />
-            <element signature="method#initViews#0;class#MainActivity#0" expanded="false" />
             <element signature="method#singOutUser#0;class#MainActivity#0" expanded="false" />
           </folding>
         </state>

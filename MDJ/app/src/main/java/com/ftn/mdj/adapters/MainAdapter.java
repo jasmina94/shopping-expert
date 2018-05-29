@@ -10,12 +10,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ftn.mdj.R;
+import com.ftn.mdj.activities.LogRegActivity;
 import com.ftn.mdj.activities.MapsActivity;
+import com.ftn.mdj.activities.ShoppingListActivity;
 import com.ftn.mdj.dto.ShoppingListDTO;
 import com.ftn.mdj.fragments.MainFragment;
 import com.ftn.mdj.threads.ArchiveListThread;
@@ -45,6 +48,12 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_item, parent, false);
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                context.startActivity(new Intent(context, ShoppingListActivity.class));
+            }
+        });
         return new ViewHolder(view);
     }
 
@@ -54,6 +63,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
 
         holder.txt_name.setText(shoppingList.getListName());
         holder.txt_status.setText(shoppingList.getBoughtItems() + "/" + shoppingList.getNumberOfItems());
+        holder.img_locker.setVisibility(shoppingList.getIsSecret() ? View.VISIBLE : View.INVISIBLE);
         holder.txt_option_mnu.setOnClickListener(view -> {
             PopupMenu popupMenu = new PopupMenu(context, holder.txt_option_mnu);
             popupMenu.inflate(R.menu.option_menu);
@@ -156,12 +166,14 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
         private TextView txt_name;
         private TextView txt_status;
         private TextView txt_option_mnu;
+        private ImageView img_locker;
 
         public ViewHolder(View itemView) {
             super(itemView);
             txt_name = (TextView) itemView.findViewById(R.id.txt_list_name);
             txt_status = (TextView) itemView.findViewById(R.id.txt_status);
             txt_option_mnu = (TextView) itemView.findViewById(R.id.txt_option_mnu);
+            img_locker = (ImageView)itemView.findViewById(R.id.img_lock);
         }
     }
 }
