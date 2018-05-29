@@ -11,7 +11,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,9 +19,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ftn.mdj.R;
 import com.ftn.mdj.activities.AddListActivity;
-import com.ftn.mdj.activities.MapsActivity;
 import com.ftn.mdj.adapters.MainAdapter;
-import com.ftn.mdj.dto.ShoppingListShowDTO;
+import com.ftn.mdj.dto.ShoppingListDTO;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
@@ -42,7 +40,7 @@ public class MainFragment extends Fragment {
     private TextView mEmptyView;
     private ImageView mEmptyImgView;
 
-    private List<ShoppingListShowDTO> activeShoppingLists;
+    private List<ShoppingListDTO> activeShoppingLists;
 
     public MainFragment(){}
 
@@ -85,17 +83,17 @@ public class MainFragment extends Fragment {
         return rootView;
     }
 
-    public void setActiveShoppingLists(List<ShoppingListShowDTO> shoppingLists) throws IOException {
-        Type listType = new TypeToken<ArrayList<ShoppingListShowDTO>>() {
+    public void setActiveShoppingLists(List<ShoppingListDTO> shoppingLists) throws IOException {
+        Type listType = new TypeToken<ArrayList<ShoppingListDTO>>() {
         }.getType();
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
-        activeShoppingLists = mapper.readValue(mapper.writeValueAsString(shoppingLists), new TypeReference<List<ShoppingListShowDTO>>(){});
+        activeShoppingLists = mapper.readValue(mapper.writeValueAsString(shoppingLists), new TypeReference<List<ShoppingListDTO>>(){});
 //        activeShoppingLists = new Gson().fromJson(mapper.writeValueAsString(shoppingLists), listType);
     }
 
     public void archiveListUI(Long shoppingListId) {
-        Optional<ShoppingListShowDTO> shoppingListShowDTO = activeShoppingLists.stream().filter(e -> e.getId() == shoppingListId).findFirst();
+        Optional<ShoppingListDTO> shoppingListShowDTO = activeShoppingLists.stream().filter(e -> e.getId() == shoppingListId).findFirst();
         activeShoppingLists.remove(shoppingListShowDTO.get());
         System.out.println("Settovao novo");
         getFragmentManager().beginTransaction().detach(this).attach(this).commit();

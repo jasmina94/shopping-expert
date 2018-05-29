@@ -3,21 +3,21 @@ package com.ftn.mdj.threads;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
-import android.widget.Toast;
 
 import com.ftn.mdj.fragments.MainFragment;
 import com.ftn.mdj.utils.GenericResponse;
 import com.ftn.mdj.services.ServiceUtils;
+import com.ftn.mdj.utils.UtilHelper;
 
 import lombok.Getter;
 import retrofit2.Call;
 import retrofit2.Response;
 
 @Getter
-public class WorkerThreadArchiveList extends Thread {
+public class ArchiveListThread extends Thread {
         private Handler handler;
 
-        public WorkerThreadArchiveList(Long shoppingListId, MainFragment mainFragment, Context context) {
+        public ArchiveListThread(Long shoppingListId, MainFragment mainFragment, Context context) {
             handler = new Handler() {
 
                 @Override
@@ -27,15 +27,12 @@ public class WorkerThreadArchiveList extends Thread {
                         @Override
                         public void onResponse(Call<GenericResponse> call, Response<GenericResponse> response) {
                             mainFragment.archiveListUI(shoppingListId);
-
-                            Toast.makeText(context, "Archived", Toast.LENGTH_LONG).show();
+                            UtilHelper.showToastMessage(context, "Archived!", UtilHelper.ToastLength.LONG);
                         }
 
                         @Override
                         public void onFailure(Call<GenericResponse> call, Throwable t) {
-                            Toast.makeText(context, "Error while archiving", Toast.LENGTH_LONG).show();
-
-                            System.out.println("Error sending registration data!");
+                            UtilHelper.showToastMessage(context, "Error while archiving!", UtilHelper.ToastLength.LONG);
                         }
                     });
                     super.handleMessage(msg);

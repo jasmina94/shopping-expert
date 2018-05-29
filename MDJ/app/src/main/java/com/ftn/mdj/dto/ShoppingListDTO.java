@@ -14,7 +14,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ShoppingListShowDTO implements Serializable {
+public class ShoppingListDTO implements Serializable {
 
     private Long id;
 
@@ -31,14 +31,14 @@ public class ShoppingListShowDTO implements Serializable {
 
     private String reminder;
 
-    public ShoppingListShowDTO(String name) {
+    public ShoppingListDTO(String name) {
         this.listName = name;
         this.isSecret = false;
         this.boughtItems = 0;
         this.numberOfItems = 0;
     }
 
-    public ShoppingListShowDTO(Long id, String listName, Boolean isSecret, Integer boughtItems, Integer numberOfItems, Set<String> sharedWith, String reminder) {
+    public ShoppingListDTO(Long id, String listName, Boolean isSecret, Integer boughtItems, Integer numberOfItems, Set<String> sharedWith, String reminder) {
         this.id = id;
         this.listName = listName;
         this.isSecret = isSecret;

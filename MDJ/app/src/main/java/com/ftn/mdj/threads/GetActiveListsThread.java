@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentTransaction;
 
 import com.ftn.mdj.R;
 import com.ftn.mdj.activities.MainActivity;
-import com.ftn.mdj.dto.ShoppingListShowDTO;
+import com.ftn.mdj.dto.ShoppingListDTO;
 import com.ftn.mdj.fragments.MainFragment;
 import com.ftn.mdj.services.ServiceUtils;
 import com.ftn.mdj.utils.GenericResponse;
@@ -19,10 +19,10 @@ import retrofit2.Call;
 import retrofit2.Response;
 
 @Getter
-public class WorkerThreadGetActiveLists extends Thread {
+public class GetActiveListsThread extends Thread {
     private Handler handler;
 
-    public WorkerThreadGetActiveLists(Boolean archived, Long userId, MainActivity mainActivity){
+    public GetActiveListsThread(Boolean archived, Long userId, MainActivity mainActivity){
         handler = new Handler(){
 
             @Override
@@ -31,7 +31,7 @@ public class WorkerThreadGetActiveLists extends Thread {
 
                     @Override
                     public void onResponse(Call<GenericResponse> call, Response<GenericResponse> response) {
-                        List<ShoppingListShowDTO> activeLists = (List<ShoppingListShowDTO>) response.body().getEntity();
+                        List<ShoppingListDTO> activeLists = (List<ShoppingListDTO>) response.body().getEntity();
                         MainFragment fragment = new MainFragment();
                         try {
                             fragment.setActiveShoppingLists(activeLists);
@@ -41,12 +41,12 @@ public class WorkerThreadGetActiveLists extends Thread {
                         FragmentTransaction fragmentTransaction = mainActivity.getSupportFragmentManager().beginTransaction();
                         fragmentTransaction.replace(R.id.fragment_container, fragment);
                         fragmentTransaction.commit();
-                        System.out.println("Meesage recieved successfully!");
+                        System.out.println("Getting lists successfully!");
                     }
 
                     @Override
                     public void onFailure(Call<GenericResponse> call, Throwable t) {
-                        System.out.println("Error sending registration data!");
+                        System.out.println("Error getting active lists!");
                     }
                 });
                 super.handleMessage(msg);

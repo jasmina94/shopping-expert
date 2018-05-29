@@ -16,11 +16,11 @@ import android.widget.Toast;
 
 import com.ftn.mdj.R;
 import com.ftn.mdj.activities.MapsActivity;
-import com.ftn.mdj.dto.ShoppingListShowDTO;
+import com.ftn.mdj.dto.ShoppingListDTO;
 import com.ftn.mdj.fragments.MainFragment;
-import com.ftn.mdj.threads.WorkerThreadArchiveList;
-import com.ftn.mdj.threads.WorkerThreadRenameList;
-import com.ftn.mdj.threads.WorkerThreadSecretList;
+import com.ftn.mdj.threads.ArchiveListThread;
+import com.ftn.mdj.threads.RenameListThread;
+import com.ftn.mdj.threads.SecretListThread;
 
 import java.util.List;
 
@@ -30,12 +30,12 @@ import java.util.List;
 
 public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
 
-    List<ShoppingListShowDTO> activeShoppingLists;
+    List<ShoppingListDTO> activeShoppingLists;
     private Context context;
     private MainFragment mainFragment;
 
 
-    public MainAdapter(List<ShoppingListShowDTO> activeShoppingLists, Context context, MainFragment mainFragment) {
+    public MainAdapter(List<ShoppingListDTO> activeShoppingLists, Context context, MainFragment mainFragment) {
         this.activeShoppingLists = activeShoppingLists;
         this.context = context;
         this.mainFragment = mainFragment;
@@ -50,7 +50,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        final ShoppingListShowDTO shoppingList = activeShoppingLists.get(position);
+        final ShoppingListDTO shoppingList = activeShoppingLists.get(position);
 
         holder.txt_name.setText(shoppingList.getListName());
         holder.txt_status.setText(shoppingList.getBoughtItems() + "/" + shoppingList.getNumberOfItems());
@@ -80,10 +80,10 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
                             if(editName.getText().toString().isEmpty()) {
                                 Toast.makeText(context, "List name must not be empty!", Toast.LENGTH_SHORT).show();
                             } else {
-                                WorkerThreadRenameList workerThreadRenameList = new WorkerThreadRenameList(shoppingList.getId(), editName.getText().toString(), context, mainFragment);
-                                workerThreadRenameList.start();
+                                RenameListThread renameListThread = new RenameListThread(shoppingList.getId(), editName.getText().toString(), context, mainFragment);
+                                renameListThread.start();
                                 Message msg = Message.obtain();
-                                workerThreadRenameList.getHandler().sendMessage(msg);
+                                renameListThread.getHandler().sendMessage(msg);
                                 renameAlertDialog.cancel();
                             }
                         });
@@ -93,10 +93,10 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
                         renameAlertDialog.show();
                         break;
                     case R.id.mnu_archive:
-                        WorkerThreadArchiveList workerThreadArchiveList = new WorkerThreadArchiveList(shoppingList.getId(), mainFragment, context);
-                        workerThreadArchiveList.start();
+                        ArchiveListThread archiveListThread = new ArchiveListThread(shoppingList.getId(), mainFragment, context);
+                        archiveListThread.start();
                         Message msg = Message.obtain();
-                        workerThreadArchiveList.getHandler().sendMessage(msg);
+                        archiveListThread.getHandler().sendMessage(msg);
                         break;
                     case R.id.mnu_share:
                         Toast.makeText(context, "Shared", Toast.LENGTH_LONG).show();
@@ -123,7 +123,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
                             if(password.getText().toString().isEmpty()) {
                                 Toast.makeText(context, "Password can not be empty!", Toast.LENGTH_SHORT).show();
                             } else {
-                                WorkerThreadSecretList workerThreadRenameList = new WorkerThreadSecretList(shoppingList.getId(), password.getText().toString(),!shoppingList.getIsSecret(), context, mainFragment);
+                                SecretListThread workerThreadRenameList = new SecretListThread(shoppingList.getId(), password.getText().toString(),!shoppingList.getIsSecret(), context, mainFragment);
                                 workerThreadRenameList.start();
                                 Message msgSecret = Message.obtain();
                                 workerThreadRenameList.getHandler().sendMessage(msgSecret);
@@ -164,5 +164,4 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
             txt_option_mnu = (TextView) itemView.findViewById(R.id.txt_option_mnu);
         }
     }
-
 }

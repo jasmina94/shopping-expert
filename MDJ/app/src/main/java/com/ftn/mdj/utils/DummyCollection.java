@@ -2,7 +2,7 @@ package com.ftn.mdj.utils;
 
 import android.content.Context;
 
-import com.ftn.mdj.dto.ShoppingListShowDTO;
+import com.ftn.mdj.dto.ShoppingListDTO;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -20,33 +20,25 @@ import java.util.List;
 public class DummyCollection {
 
     private static final String SHOPPING_LIST_FILE = "shopping_lists.txt";
-    private static List<ShoppingListShowDTO> dummies;
+    private static List<ShoppingListDTO> dummies = new ArrayList<>();
 
-    public DummyCollection(){
-        dummies = new ArrayList<>();
-        initialize();
-    }
+//    public DummyCollection(){
+//        dummies = new ArrayList<>();
+//        initialize();
+//    }
 
-    public void initialize(){
+    public static void initialize(){
         for(int i=0; i<10; i++){
-            ShoppingListShowDTO shoppingList = new ShoppingListShowDTO("List " + i);
+            ShoppingListDTO shoppingList = new ShoppingListDTO("List " + i);
             dummies.add(shoppingList);
         }
     }
 
-    public void addNewShoppingList(ShoppingListShowDTO shoppingListDTO){
+    public static void addNewShoppingList(ShoppingListDTO shoppingListDTO){
         dummies.add(shoppingListDTO);
     }
 
-    public List<ShoppingListShowDTO> getDummies(){
-        return dummies;
-    }
-
-    public void setDummies(List<ShoppingListShowDTO> dummies){
-        this.dummies = dummies;
-    }
-
-    public void writeLists(List<ShoppingListShowDTO> list, Context context) {
+    public static void writeLists(List<ShoppingListDTO> list, Context context) {
         String json = new Gson().toJson(list);
         try {
             FileOutputStream fos = context.openFileOutput(SHOPPING_LIST_FILE, context.MODE_PRIVATE);
@@ -58,9 +50,9 @@ public class DummyCollection {
         }
     }
 
-    public List<ShoppingListShowDTO> readLists(Context context) {
+    public static List<ShoppingListDTO> readLists(Context context) {
         String text = "";
-        List<ShoppingListShowDTO> shoppingLists = new ArrayList<>();
+        List<ShoppingListDTO> shoppingLists = new ArrayList<>();
         try {
             FileInputStream fis = context.openFileInput(SHOPPING_LIST_FILE);
             int size = fis.available();
@@ -74,7 +66,7 @@ public class DummyCollection {
             e.printStackTrace();
         }
         if (!text.isEmpty()) {
-            shoppingLists = new Gson().fromJson(text, new TypeToken<List<ShoppingListShowDTO>>() {
+            shoppingLists = new Gson().fromJson(text, new TypeToken<List<ShoppingListDTO>>() {
             }.getType());
         }
         return shoppingLists;

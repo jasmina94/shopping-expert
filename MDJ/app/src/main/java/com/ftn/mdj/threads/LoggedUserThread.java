@@ -8,13 +8,14 @@ import com.ftn.mdj.dto.UserDTO;
 import com.ftn.mdj.services.ServiceUtils;
 import com.ftn.mdj.utils.GenericResponse;
 
+import lombok.Getter;
 import retrofit2.Call;
 import retrofit2.Response;
 
 /**
  * Created by Jasmina on 24/05/2018.
  */
-
+@Getter
 public class LoggedUserThread extends Thread {
     private Handler handler;
     private Handler responseHandler;
@@ -52,9 +53,5 @@ public class LoggedUserThread extends Thread {
         }
 
         Looper.loop();
-    }
-
-    public Handler getHandler(){
-        return this.handler;
     }
 }
