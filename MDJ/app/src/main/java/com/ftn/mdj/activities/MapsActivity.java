@@ -65,14 +65,14 @@ public class MapsActivity extends AppCompatActivity
 
     // A default location (Sydney, Australia) and default zoom to use when location permission is
     // not granted.
-    private final LatLng mDefaultLocation = new LatLng(-33.8523341, 151.2106085);
+    private final LatLng mDefaultLocation = new LatLng(15, 40);
     private static final int DEFAULT_ZOOM = 15;
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     private boolean mLocationPermissionGranted;
 
     // The geographical location where the device is currently located. That is, the last-known
     // location retrieved by the Fused Location Provider.
-    private Location mLastKnownLocation;
+    //private Location mLastKnownLocation;
 
     // Keys for storing activity state.
     private static final String KEY_CAMERA_POSITION = "camera_position";
@@ -92,16 +92,16 @@ public class MapsActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
 
         listId = getIntent().getExtras().getLong("listId");
-
+        Toast.makeText(MapsActivity.this, "da li je osvjezio.", Toast.LENGTH_SHORT).show();
         if(getIntent().getExtras().get("latitude")!=null && getIntent().getExtras().get("longitude")!=null)
         {
             mLatLng = new LatLng((double)getIntent().getExtras().get("latitude"),(double)getIntent().getExtras().get("longitude"));
-            //nakon kreiranja mape treba dodati marker sa ovim duzinama
+            Toast.makeText(MapsActivity.this, "alert za extras.", Toast.LENGTH_SHORT).show();
         }
 
         // Retrieve location and camera position from saved instance state.
         if (savedInstanceState != null) {
-            mLastKnownLocation = savedInstanceState.getParcelable(KEY_LOCATION);
+           // mLastKnownLocation = savedInstanceState.getParcelable(KEY_LOCATION);
             mCameraPosition = savedInstanceState.getParcelable(KEY_CAMERA_POSITION);
         }
 
@@ -145,7 +145,7 @@ public class MapsActivity extends AppCompatActivity
     protected void onSaveInstanceState(Bundle outState) {
         if (mMap != null) {
             outState.putParcelable(KEY_CAMERA_POSITION, mMap.getCameraPosition());
-            outState.putParcelable(KEY_LOCATION, mLastKnownLocation);
+            //outState.putParcelable(KEY_LOCATION, mLastKnownLocation);
             super.onSaveInstanceState(outState);
         }
     }
@@ -258,39 +258,47 @@ public class MapsActivity extends AppCompatActivity
             }
         });
 
-        if (mLastKnownLocation  != null) {
-            addMarker(mLastKnownLocation );
-        }
+        map.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
+            @Override
+            public void onMapLoaded() {
+                //ako vec postoji setovana lokacija da prikaze marker
+                if(mLatLng!=null){
+                    Toast.makeText(MapsActivity.this, "alert za onMapLoaded " + mLatLng.longitude + " "+mLatLng.latitude, Toast.LENGTH_SHORT).show();
+                    mMap.addMarker(new MarkerOptions()
+                            .title("Shopping place")
+                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
+                            .position(mLatLng));
+
+                    CameraPosition cameraPosition = new CameraPosition.Builder()
+                            .target(mLatLng).zoom(14).build();
+
+                    mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                }
+            }
+
+        });
+
+        //if (mLastKnownLocation  != null) {
+        //    addMarker(mLastKnownLocation );
+       // }
     }
 
-    private void addMarker(Location location) {
+   /* private void addMarker(Location location) {
+        System.out.print("addd marker "+location.getLatitude() + " "+location.getLongitude());
         LatLng loc = new LatLng(location.getLatitude(), location.getLongitude());
 
-        if (home != null) {
-            home.remove();
-        }
-
         mLatLng= loc;
-        new AlertDialog.Builder(MapsActivity.this)
-                .setTitle("Shopping place")
-                .setMessage("Do you really want to shop here?")
-                .setIcon(android.R.drawable.alert_dark_frame)
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+        mMap.addMarker(new MarkerOptions()
+                .title("Shopping place")
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
+                .position(new LatLng(45.174248032271855,19.884295389583468)));
 
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        mMap.addMarker(new MarkerOptions()
-                                .title("Shopping place")
-                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
-                                .position(mLatLng));
+        CameraPosition cameraPosition = new CameraPosition.Builder()
+                .target(mLatLng).zoom(14).build();
 
-                        CameraPosition cameraPosition = new CameraPosition.Builder()
-                                .target(mLatLng).zoom(14).build();
-
-                        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-                        Toast.makeText(MapsActivity.this, "You will receive notification near this place.", Toast.LENGTH_SHORT).show();
-                    }})
-                .setNegativeButton(android.R.string.no, null).show();
-    }
+        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+        Toast.makeText(MapsActivity.this, "alert za addmarker novi.", Toast.LENGTH_SHORT).show();
+    }*/
 
     /**
      * Gets the current location of the device, and positions the map's camera.
@@ -308,10 +316,10 @@ public class MapsActivity extends AppCompatActivity
                     public void onComplete(@NonNull Task<Location> task) {
                         if (task.isSuccessful()) {
                             // Set the map's camera position to the current location of the device.
-                            mLastKnownLocation = task.getResult();
-                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                                    new LatLng(mLastKnownLocation.getLatitude(),
-                                            mLastKnownLocation.getLongitude()), DEFAULT_ZOOM));
+                           // mLastKnownLocation = task.getResult();
+                           // mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                            //        new LatLng(mLastKnownLocation.getLatitude(),
+                            //                mLastKnownLocation.getLongitude()), DEFAULT_ZOOM));
                         } else {
                             Log.d(TAG, "Current location is null. Using defaults.");
                             Log.e(TAG, "Exception: %s", task.getException());
@@ -321,6 +329,7 @@ public class MapsActivity extends AppCompatActivity
                         }
                     }
                 });
+
             }
         } catch (SecurityException e)  {
             Log.e("Exception: %s", e.getMessage());
@@ -382,9 +391,10 @@ public class MapsActivity extends AppCompatActivity
             } else {
                 mMap.setMyLocationEnabled(false);
                 mMap.getUiSettings().setMyLocationButtonEnabled(false);
-                mLastKnownLocation = null;
+                //mLastKnownLocation = null;
                 getLocationPermission();
             }
+
         } catch (SecurityException e)  {
             Log.e("Exception: %s", e.getMessage());
         }

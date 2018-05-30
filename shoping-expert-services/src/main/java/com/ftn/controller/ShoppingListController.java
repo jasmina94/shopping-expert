@@ -26,7 +26,7 @@ public class ShoppingListController {
     @Transactional
     @GetMapping("/listsByStatus/{isArchived}/{userId}")
     public GenericResponse<List<ShoppingListShowDto>> getListsByStatus(@PathVariable Boolean isArchived, @PathVariable Long userId) {
-        GenericResponse<List<ShoppingListShowDto>> response = new GenericResponse<>();
+         GenericResponse<List<ShoppingListShowDto>> response = new GenericResponse<>();
         response.setEntity(shoppingListService.getListsByArchivedStatus(userId, isArchived));
         return response;
     }
@@ -86,5 +86,12 @@ public class ShoppingListController {
     public ResponseEntity shareList(@PathVariable Long listId, @PathVariable String sharedWith) {
         shoppingListService.shareList(listId, sharedWith);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+    
+    @Transactional
+    @PutMapping("/updateLocation/{listId}/{latitude}/{longitude}")
+    public GenericResponse updateLocation(@PathVariable Long listId, @PathVariable Double latitude, @PathVariable Double longitude) {
+        shoppingListService.updateLocation(listId, latitude, longitude);
+        return new GenericResponse<>();
     }
 }

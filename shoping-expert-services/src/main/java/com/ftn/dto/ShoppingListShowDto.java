@@ -45,7 +45,7 @@ public class ShoppingListShowDto {
         this.isSecret = shoppingList.getIsSecret();
         this.sharedWith = shoppingList.getSharedWith();
         this.reminder = shoppingList.getReminder();
-        this.latitude = latitude;
-        this.longitude = longitude;
+        this.latitude = shoppingList.getLatitude();
+        this.longitude = shoppingList.getLongitude();
     }
 }
