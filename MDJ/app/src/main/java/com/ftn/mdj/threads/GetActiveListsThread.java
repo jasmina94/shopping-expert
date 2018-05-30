@@ -1,17 +1,13 @@
 package com.ftn.mdj.threads;
 
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
-import android.support.v4.app.FragmentTransaction;
 
-import com.ftn.mdj.R;
-import com.ftn.mdj.activities.MainActivity;
 import com.ftn.mdj.dto.ShoppingListDTO;
-import com.ftn.mdj.fragments.MainFragment;
 import com.ftn.mdj.services.ServiceUtils;
 import com.ftn.mdj.utils.GenericResponse;
 
-import java.io.IOException;
 import java.util.List;
 
 import lombok.Getter;
@@ -21,37 +17,40 @@ import retrofit2.Response;
 @Getter
 public class GetActiveListsThread extends Thread {
     private Handler handler;
+    private Handler responseHandler;
 
-    public GetActiveListsThread(Boolean archived, Long userId, MainActivity mainActivity){
+    public GetActiveListsThread(Handler handlerUI, boolean isArchived, Long userId){
+        responseHandler = handlerUI;
         handler = new Handler(){
 
             @Override
             public void handleMessage(Message msg) {
-                ServiceUtils.listService.listsByStatus(archived, userId).enqueue(new retrofit2.Callback<GenericResponse>(){
+                ServiceUtils.listService.listsByStatus(isArchived, userId).enqueue(new retrofit2.Callback<GenericResponse<List<ShoppingListDTO>>>(){
 
                     @Override
-                    public void onResponse(Call<GenericResponse> call, Response<GenericResponse> response) {
-                        List<ShoppingListDTO> activeLists = (List<ShoppingListDTO>) response.body().getEntity();
-                        MainFragment fragment = new MainFragment();
-                        try {
-                            fragment.setActiveShoppingLists(activeLists);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        FragmentTransaction fragmentTransaction = mainActivity.getSupportFragmentManager().beginTransaction();
-                        fragmentTransaction.replace(R.id.fragment_container, fragment);
-                        fragmentTransaction.commit();
+                    public void onResponse(Call<GenericResponse<List<ShoppingListDTO>>> call, Response<GenericResponse<List<ShoppingListDTO>>> response) {
                         System.out.println("Getting lists successfully!");
+                        responseHandler.sendMessage(ServiceUtils.getHandlerMessageFromResponse(response));
                     }
 
                     @Override
-                    public void onFailure(Call<GenericResponse> call, Throwable t) {
-                        System.out.println("Error getting active lists!");
+                    public void onFailure(Call<GenericResponse<List<ShoppingListDTO>>> call, Throwable t) {
+                        System.out.println("Error getting lists!");
+                        responseHandler.sendMessage(GenericResponse.getGenericServerErrorResponseMessage());
                     }
                 });
                 super.handleMessage(msg);
             }
 
         };
+    }
+
+    @Override
+    public void run() {
+        if (Looper.myLooper() == null) {
+            Looper.prepare();
+        }
+
+        Looper.loop();
     }
 }

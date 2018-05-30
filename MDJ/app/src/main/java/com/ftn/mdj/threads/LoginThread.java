@@ -31,7 +31,7 @@ public class LoginThread extends Thread {
 
                     @Override
                     public void onResponse(Call<GenericResponse<String>> call, Response<GenericResponse<String>> response) {
-                        System.out.println("Meesage recieved successfully!");
+                        System.out.println("Successfully logged in user!");
                         responseHandler.sendMessage(ServiceUtils.getHandlerMessageFromResponse(response));
                     }
 

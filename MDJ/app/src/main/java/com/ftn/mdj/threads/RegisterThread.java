@@ -32,7 +32,7 @@ public class RegisterThread extends Thread {
 
                     @Override
                     public void onResponse(Call<GenericResponse<UserDTO>> call, Response<GenericResponse<UserDTO>> response) {
-                        System.out.println("Meesage recieved successfully!");
+                        System.out.println("Successfully registered user!");
                         responseHandler.sendMessage(ServiceUtils.getHandlerMessageFromResponse(response));
                     }
 

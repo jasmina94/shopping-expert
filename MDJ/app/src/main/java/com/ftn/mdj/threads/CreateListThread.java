@@ -1,38 +1,41 @@
 package com.ftn.mdj.threads;
 
+import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 
+import com.ftn.mdj.dto.ShoppingListDTO;
 import com.ftn.mdj.services.ServiceUtils;
 import com.ftn.mdj.utils.GenericResponse;
+import com.ftn.mdj.utils.UtilHelper;
 
 import lombok.Getter;
 import retrofit2.Call;
 import retrofit2.Response;
 
 @Getter
-public class RenameListThread extends Thread {
+public class CreateListThread extends Thread {
     private Handler handler;
     private Handler responseHandler;
 
-    public RenameListThread(Handler handlerUI, Long shoppingListId, String newListName){
+    public CreateListThread(Handler handlerUI, Long userId, String listName) {
         responseHandler = handlerUI;
-        handler = new Handler(){
+        handler = new Handler() {
 
             @Override
             public void handleMessage(Message msg) {
-                ServiceUtils.listService.rename(shoppingListId, newListName).enqueue(new retrofit2.Callback<GenericResponse<Boolean>>(){
+                ServiceUtils.listService.create(listName, userId).enqueue(new retrofit2.Callback<GenericResponse<ShoppingListDTO>>() {
 
                     @Override
-                    public void onResponse(Call<GenericResponse<Boolean>> call, Response<GenericResponse<Boolean>> response) {
-                        System.out.println("Successfully renamed list!");
+                    public void onResponse(Call<GenericResponse<ShoppingListDTO>> call, Response<GenericResponse<ShoppingListDTO>> response) {
+                        System.out.println("Successfully created new list!");
                         responseHandler.sendMessage(ServiceUtils.getHandlerMessageFromResponse(response));
                     }
 
                     @Override
-                    public void onFailure(Call<GenericResponse<Boolean>> call, Throwable t) {
-                        System.out.println("Error renaming list!");
+                    public void onFailure(Call<GenericResponse<ShoppingListDTO>> call, Throwable t) {
+                        System.out.println("Error while creating new list!");
                         responseHandler.sendMessage(GenericResponse.getGenericServerErrorResponseMessage());
                     }
                 });
@@ -44,11 +47,10 @@ public class RenameListThread extends Thread {
 
     @Override
     public void run() {
-        if(Looper.myLooper() == null) {
+        if (Looper.myLooper() == null) {
             Looper.prepare();
         }
 
         Looper.loop();
     }
-
 }

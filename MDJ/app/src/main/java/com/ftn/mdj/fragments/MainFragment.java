@@ -83,12 +83,13 @@ public class MainFragment extends Fragment {
         return rootView;
     }
 
-    public void setActiveShoppingLists(List<ShoppingListDTO> shoppingLists) throws IOException {
-        Type listType = new TypeToken<ArrayList<ShoppingListDTO>>() {
-        }.getType();
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
-        activeShoppingLists = mapper.readValue(mapper.writeValueAsString(shoppingLists), new TypeReference<List<ShoppingListDTO>>(){});
+    public void setActiveShoppingLists(List<ShoppingListDTO> shoppingLists){ //throws IOException {
+        activeShoppingLists = shoppingLists;
+//        Type listType = new TypeToken<ArrayList<ShoppingListDTO>>() {
+//        }.getType();
+//        ObjectMapper mapper = new ObjectMapper();
+//        mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
+//        activeShoppingLists = mapper.readValue(mapper.writeValueAsString(shoppingLists), new TypeReference<List<ShoppingListDTO>>(){});
 //        activeShoppingLists = new Gson().fromJson(mapper.writeValueAsString(shoppingLists), listType);
     }
 

@@ -1,6 +1,7 @@
 package com.ftn.service;
 
-import com.ftn.dto.ShoppingListShowDto;
+import com.ftn.dto.ShoppingListDTO;
+import com.ftn.entity.ShoppingList;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -10,23 +11,23 @@ import java.util.List;
  */
 public interface IShoppingListService {
 
-    List<ShoppingListShowDto> getListsByArchivedStatus(Long loggedUserId, boolean isArchived);
+    List<ShoppingListDTO> getListsForUserByStatus(Long loggedUserId, boolean isArchived);
 
-    void create(String listName, Long loggedUserId);
+    ShoppingListDTO create(String listName, Long loggedUserId);
 
-    void archive(long listId);
+    ShoppingListDTO archive(long listId);
 
-    void makeSecret(Long listId, String password);
+    boolean makeSecret(Long listId, String password);
 
-    boolean MakePublic(Long listId, String password);
+    boolean makePublic(Long listId, String password);
 
     void addReminder(Long listId, LocalDateTime reminder);
 
-    void revive(long listId);
+    boolean revive(long listId);
 
-    void updateName(long listId, String listName);
+    boolean updateName(long listId, String listName);
 
-    void shareList(Long listId, String sharedWith);
+    boolean shareList(Long listId, String sharedWith);
 
-    void saveUnloggedShoppingList(Long loggedUserId, List<ShoppingListShowDto> list);
+    boolean saveListsFromLocalStorage(Long loggedUserId, List<ShoppingListDTO> list);
 }

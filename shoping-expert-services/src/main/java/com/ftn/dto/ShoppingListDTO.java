@@ -1,7 +1,9 @@
 package com.ftn.dto;
 
 import com.ftn.entity.ShoppingList;
+import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
@@ -11,9 +13,9 @@ import java.util.Set;
 /**
  * Created by milca on 4/25/2018.
  */
-@Getter
-@Setter
-public class ShoppingListShowDto {
+@Data
+@NoArgsConstructor
+public class ShoppingListDTO {
 
     private Long id;
 
@@ -33,9 +35,7 @@ public class ShoppingListShowDto {
 
     //maybe location
 
-    public ShoppingListShowDto() {}
-
-    public ShoppingListShowDto(ShoppingList shoppingList) {
+    public ShoppingListDTO(ShoppingList shoppingList) {
         this.id = shoppingList.getId();
         this.listName = shoppingList.getListName();
         this.isSecret = shoppingList.getIsSecret();

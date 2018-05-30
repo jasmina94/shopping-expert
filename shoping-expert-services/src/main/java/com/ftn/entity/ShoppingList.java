@@ -18,7 +18,7 @@ import java.util.Set;
 @Entity
 @NoArgsConstructor
 @Component
-public class ShoppingList {
+public class  ShoppingList {
 
     @Id
     @GeneratedValue
@@ -35,7 +35,7 @@ public class ShoppingList {
 
     //deletion of the list is only logical, so maybe if we have time we can have restore
     @Column(columnDefinition = "Boolean default false")
-    private Boolean isArchived = false;
+    private Boolean isArchived = false;  //ovo je status - da li je obrisana ili ne
 
     private String accessPassword;
 

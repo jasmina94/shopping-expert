@@ -16,11 +16,11 @@ import retrofit2.Response;
  * Created by Jasmina on 24/05/2018.
  */
 @Getter
-public class LoggedUserThread extends Thread {
+public class GetLoggedUserThread extends Thread {
     private Handler handler;
     private Handler responseHandler;
 
-    public LoggedUserThread(Handler handlerUI) {
+    public GetLoggedUserThread(Handler handlerUI) {
         responseHandler = handlerUI;
         handler = new Handler() {
 
@@ -30,13 +30,13 @@ public class LoggedUserThread extends Thread {
 
                     @Override
                     public void onResponse(Call<GenericResponse<UserDTO>> call, Response<GenericResponse<UserDTO>> response) {
-                        System.out.println("Meesage recieved successfully!");
+                        System.out.println("Successfully received logged user!");
                         responseHandler.sendMessage(ServiceUtils.getHandlerMessageFromResponse(response));
                     }
 
                     @Override
                     public void onFailure(Call<GenericResponse<UserDTO>> call, Throwable t) {
-                        System.out.println("Error sending registration data!");
+                        System.out.println("Error receiving logged user data!");
                         responseHandler.sendMessage(GenericResponse.getGenericServerErrorResponseMessage());
                     }
                 });

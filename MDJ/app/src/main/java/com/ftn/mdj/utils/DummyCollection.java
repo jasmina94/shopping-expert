@@ -6,6 +6,7 @@ import com.ftn.mdj.dto.ShoppingListDTO;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -49,6 +50,14 @@ public class DummyCollection {
     public static List<ShoppingListDTO> readLists(Context context) {
         String text = "";
         List<ShoppingListDTO> shoppingLists = new ArrayList<>();
+        File file = context.getFileStreamPath(SHOPPING_LIST_FILE);
+        if(!file.exists()){
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         try {
             FileInputStream fis = context.openFileInput(SHOPPING_LIST_FILE);
             int size = fis.available();
@@ -68,9 +77,16 @@ public class DummyCollection {
         return shoppingLists;
     }
 
-    public static void emptyList(Context context) throws FileNotFoundException {
-        FileOutputStream fos = context.openFileOutput(SHOPPING_LIST_FILE, context.MODE_PRIVATE);
-        PrintWriter pw = new PrintWriter(fos);
-        pw.close();
+    public static void emptyList(Context context) {
+        List<ShoppingListDTO> list = new ArrayList<>();
+        String json = new Gson().toJson(list);
+        try {
+            FileOutputStream fos = context.openFileOutput(SHOPPING_LIST_FILE, context.MODE_PRIVATE);
+            fos.write(json.getBytes());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

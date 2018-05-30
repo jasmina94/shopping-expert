@@ -1,6 +1,6 @@
 package com.ftn.service.serviceImplementation;
 
-import com.ftn.dto.ShoppingListShowDto;
+import com.ftn.dto.ShoppingListDTO;
 import com.ftn.entity.ShoppingList;
 import com.ftn.repository.ShoppingListRepository;
 import com.ftn.service.IShoppingListItemService;
@@ -8,6 +8,7 @@ import com.ftn.service.IShoppingListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.validation.constraints.Null;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,11 +26,11 @@ public class ShoppingListService implements IShoppingListService {
     private IShoppingListItemService iShoppingListItemService;
 
     @Override
-    public List<ShoppingListShowDto> getListsByArchivedStatus(Long loggedUserId, boolean isArchived) {
+    public List<ShoppingListDTO> getListsForUserByStatus(Long loggedUserId, boolean isArchived) {
         List<ShoppingList> list = shoppingListRepository.findByCreatorIdAndIsArchived(loggedUserId, isArchived);
 
-        List<ShoppingListShowDto> listDto = list.stream().map(l -> {
-            ShoppingListShowDto dto = new ShoppingListShowDto(l);
+        List<ShoppingListDTO> listDto = list.stream().map(l -> {
+            ShoppingListDTO dto = new ShoppingListDTO(l);
             dto.setBoughtItems(iShoppingListItemService.getNumberOfPurchasedItems(l.getId()));
             dto.setNumberOfItems(iShoppingListItemService.getNumberOfItems(l.getId()));
 
@@ -41,43 +42,68 @@ public class ShoppingListService implements IShoppingListService {
     }
 
     @Override
-    public void create(String listName, Long loggedUserId) {
+    public ShoppingListDTO create(String listName, Long loggedUserId) {
+        ShoppingListDTO shoppingListDTO = null;
         ShoppingList shoppingList = new ShoppingList();
-
         shoppingList.setListName(listName);
         shoppingList.setCreatorId(loggedUserId);
-
-        shoppingListRepository.save(shoppingList);
-    }
-
-    @Override
-    public void archive(long listId) {
-        ShoppingList shoppingList = shoppingListRepository.getOne(listId);
-        shoppingList.setIsArchived(true);
-        shoppingListRepository.save(shoppingList);
-    }
-
-    @Override
-    public void makeSecret(Long listId, String password) {
-        ShoppingList shoppingList = shoppingListRepository.getOne(listId);
-
-        shoppingList.setIsSecret(true);
-        shoppingList.setAccessPassword(password);
-
-        shoppingListRepository.save(shoppingList);
-    }
-
-    @Override
-    public boolean MakePublic(Long listId, String password) {
-        ShoppingList shoppingList = shoppingListRepository.getOne(listId);
-
-        if(!shoppingList.getAccessPassword().equals(password))
-            return false;
-        else {
-            shoppingList.setIsSecret(false);
-            shoppingList.setAccessPassword("");
-            return true;
+        try {
+            ShoppingList shoppingListNew = shoppingListRepository.save(shoppingList);
+            shoppingListDTO = new ShoppingListDTO(shoppingListNew);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        return shoppingListDTO;
+    }
+
+    @Override
+    public ShoppingListDTO archive(long listId) {
+        ShoppingListDTO shoppingListDTO = null;
+        try {
+            ShoppingList shoppingList = shoppingListRepository.findById(listId).orElseThrow(NullPointerException::new);
+            shoppingList.setIsArchived(true);
+            shoppingList = shoppingListRepository.save(shoppingList);
+            shoppingListDTO = new ShoppingListDTO(shoppingList);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+        return shoppingListDTO;
+    }
+
+    @Override
+    public boolean makeSecret(Long listId, String password) {
+        boolean success;
+        try {
+            ShoppingList shoppingList = shoppingListRepository.findById(listId).orElseThrow(NullPointerException::new);
+            shoppingList.setIsSecret(true);
+            shoppingList.setAccessPassword(password);
+            shoppingListRepository.save(shoppingList);
+            success = true;
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            success = false;
+        }
+        return success;
+    }
+
+    @Override
+    public boolean makePublic(Long listId, String password) {
+        boolean success;
+        try {
+            ShoppingList shoppingList = shoppingListRepository.findById(listId).orElseThrow(NullPointerException::new);
+            if (!shoppingList.getAccessPassword().equals(password))
+                success = false;
+            else {
+                shoppingList.setIsSecret(false);
+                shoppingList.setAccessPassword("");
+                shoppingListRepository.save(shoppingList);
+                success = true;
+            }
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            success = false;
+        }
+        return success;
     }
 
     @Override
@@ -88,39 +114,60 @@ public class ShoppingListService implements IShoppingListService {
     }
 
     @Override
-    public void revive(long listId) {
-        ShoppingList shoppingList = shoppingListRepository.getOne(listId);
-        shoppingList.setIsArchived(false);
-        shoppingListRepository.save(shoppingList);
+    public boolean revive(long listId) {
+        boolean success;
+        try{
+            ShoppingList shoppingList = shoppingListRepository.findById(listId).orElseThrow(NullPointerException::new);
+            shoppingList.setIsArchived(false);
+            shoppingListRepository.save(shoppingList);
+            success = true;
+        }catch (NullPointerException e){
+            e.printStackTrace();
+            success = false;
+        }
+        return success;
     }
 
     @Override
-    public void updateName(long listId, String listName) {
-        ShoppingList shoppingList = shoppingListRepository.getOne(listId);
-        shoppingList.setListName(listName);
-        shoppingListRepository.save(shoppingList);
+    public boolean updateName(long listId, String listName) {
+        boolean success = true;
+        try {
+            ShoppingList shoppingList = shoppingListRepository.findById(listId).orElseThrow(NullPointerException::new);
+            shoppingList.setListName(listName);
+            shoppingListRepository.save(shoppingList);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            success = false;
+        }
+        return success;
     }
 
     @Override
-    public void shareList(Long listId, String sharedWith) {
+    public boolean shareList(Long listId, String sharedWith) {
         //check if user is registratet if not, send email invitation
         String curentlyLoggedUserName = "Milica";
         String subject = "MDJ - List shared";
         // will add url to
-        String message ="Mr/s " + curentlyLoggedUserName + ", \n " + curentlyLoggedUserName + " has just shared shopping list with you. Click on notification. \n ";
+        String message = "Mr/s " + curentlyLoggedUserName + ", \n " + curentlyLoggedUserName + " has just shared shopping list with you. Click on notification. \n ";
 //        emailService.sendEmail(subject, message, sharedWith);
+        return true;
     }
 
     @Override
-    public void saveUnloggedShoppingList(Long loggedUserId, List<ShoppingListShowDto> listDTO) {
+    public boolean saveListsFromLocalStorage(Long loggedUserId, List<ShoppingListDTO> listDTO) {
+        boolean success = true;
         List<ShoppingList> list = listDTO.stream().map(l -> {
             ShoppingList shoppingList = new ShoppingList();
             shoppingList.setListName(l.getListName());
             shoppingList.setCreatorId(loggedUserId);
             return shoppingList;
         }).collect(Collectors.toList());
-
-        shoppingListRepository.saveAll(list);
+        try {
+            shoppingListRepository.saveAll(list);
+        } catch (Exception e) {
+            success = false;
+        }
+        return success;
     }
 
 }

@@ -2,6 +2,7 @@ package com.ftn.mdj.threads;
 
 import android.content.Context;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 
 import com.ftn.mdj.activities.MainActivity;
@@ -19,31 +20,40 @@ import retrofit2.Response;
 @Getter
 public class UploadListThread extends Thread {
     private Handler handler;
+    private Handler responseHandler;
 
-    public UploadListThread(Long userId, List<ShoppingListDTO> shoppingListShowDtos, Context context, MainActivity mainActivity){
-        handler = new Handler(){
+    public UploadListThread(Handler responseHandler, Long userId, List<ShoppingListDTO> lists){
+        this.responseHandler = responseHandler;
+        this.handler = new Handler(){
 
             @Override
             public void handleMessage(Message msg) {
-                ServiceUtils.listService.uploadList(userId, shoppingListShowDtos).enqueue(new retrofit2.Callback<GenericResponse>(){
+                ServiceUtils.listService.uploadList(userId, lists).enqueue(new retrofit2.Callback<GenericResponse>(){
 
                     @Override
                     public void onResponse(Call<GenericResponse> call, Response<GenericResponse> response) {
-                        GetActiveListsThread getActiveListsThread = new GetActiveListsThread(false, userId, mainActivity);
-                        getActiveListsThread.start();
-                        Message msg = Message.obtain();
-                        getActiveListsThread.getHandler().sendMessage(msg);
-                        UtilHelper.showToastMessage(context, "Uploaded list!", UtilHelper.ToastLength.LONG);
+                        System.out.println("Successfully uploaded lists!");
+                        responseHandler.sendMessage(ServiceUtils.getHandlerMessageFromResponse(response));
                     }
 
                     @Override
                     public void onFailure(Call<GenericResponse> call, Throwable t) {
-                        UtilHelper.showToastMessage(context, "Error uploading data!", UtilHelper.ToastLength.LONG);
+                        System.out.println("Error uploading list to server!");
+                        responseHandler.sendMessage(GenericResponse.getGenericServerErrorResponseMessage());
                     }
                 });
                 super.handleMessage(msg);
             }
 
         };
+    }
+
+    @Override
+    public void run() {
+        if (Looper.myLooper() == null) {
+            Looper.prepare();
+        }
+
+        Looper.loop();
     }
 }
