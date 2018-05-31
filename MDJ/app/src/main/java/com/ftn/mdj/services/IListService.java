@@ -30,7 +30,7 @@ public interface IListService {
     @DELETE(USER_PREFIX + "/archive/{listId}")
     Call<GenericResponse<ShoppingListDTO>> archive(@Path("listId") Long listId);
 
-    @PUT(USER_PREFIX + "/rename/{listId}/{listName}")
+    @PUT(USER_PREFIX + "/updateName/{listId}/{listName}")
     Call<GenericResponse<Boolean>> rename(@Path("listId") Long listId, @Path("listName") String listName);
 
     @PUT(USER_PREFIX + "/makeSecret/{listId}/{password}")

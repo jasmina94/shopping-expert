@@ -4,6 +4,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 
+import com.ftn.mdj.fragments.MainFragment;
 import com.ftn.mdj.services.ServiceUtils;
 import com.ftn.mdj.utils.GenericResponse;
 
@@ -16,7 +17,7 @@ public class RenameListThread extends Thread {
     private Handler handler;
     private Handler responseHandler;
 
-    public RenameListThread(Handler handlerUI, Long shoppingListId, String newListName){
+    public RenameListThread(Handler handlerUI, Long shoppingListId, String newListName, MainFragment mainFragment){
         responseHandler = handlerUI;
         handler = new Handler(){
 
@@ -27,6 +28,7 @@ public class RenameListThread extends Thread {
                     @Override
                     public void onResponse(Call<GenericResponse<Boolean>> call, Response<GenericResponse<Boolean>> response) {
                         System.out.println("Successfully renamed list!");
+                        mainFragment.renameListInArray(shoppingListId, newListName);
                         responseHandler.sendMessage(ServiceUtils.getHandlerMessageFromResponse(response));
                     }
 

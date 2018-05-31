@@ -18,6 +18,7 @@ import com.ftn.mdj.utils.SharedPreferencesManager;
 import com.ftn.mdj.utils.UtilHelper;
 
 import java.util.List;
+import java.util.UUID;
 
 public class AddListActivity extends AppCompatActivity {
 
@@ -67,9 +68,16 @@ public class AddListActivity extends AppCompatActivity {
                     Message msg = Message.obtain();
                     workerThread.getHandler().sendMessage(msg);
                 }else {
+                    Long id;
+                    List<ShoppingListDTO> lists = DummyCollection.readLists(this.getApplicationContext());
+                    if(lists.isEmpty()) {
+                        id = Long.valueOf(1);
+                    } else {
+                        id = lists.get(lists.size() - 1).getId() + 1;
+                    }
                     String listName = ((TextView) findViewById(R.id.new_list_name)).getText().toString().trim();
                     ShoppingListDTO newList = new ShoppingListDTO(listName);
-                    List<ShoppingListDTO> lists = DummyCollection.readLists(this.getApplicationContext());
+                    newList.setId(id);
                     lists.add(newList);
                     DummyCollection.writeLists(lists, this.getApplicationContext());
                 }
