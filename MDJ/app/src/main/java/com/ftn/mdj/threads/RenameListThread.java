@@ -4,38 +4,35 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 
-import com.ftn.mdj.dto.UserDTO;
 import com.ftn.mdj.services.ServiceUtils;
 import com.ftn.mdj.utils.GenericResponse;
 
+import lombok.Getter;
 import retrofit2.Call;
 import retrofit2.Response;
 
-/**
- * Created by Jasmina on 24/05/2018.
- */
-
-public class LoggedUserThread extends Thread {
+@Getter
+public class RenameListThread extends Thread {
     private Handler handler;
     private Handler responseHandler;
 
-    public LoggedUserThread(Handler handlerUI) {
+    public RenameListThread(Handler handlerUI, Long shoppingListId, String newListName){
         responseHandler = handlerUI;
-        handler = new Handler() {
+        handler = new Handler(){
 
             @Override
             public void handleMessage(Message msg) {
-                ServiceUtils.userService.getLoggedInUser().enqueue(new retrofit2.Callback<GenericResponse<UserDTO>>() {
+                ServiceUtils.listService.rename(shoppingListId, newListName).enqueue(new retrofit2.Callback<GenericResponse<Boolean>>(){
 
                     @Override
-                    public void onResponse(Call<GenericResponse<UserDTO>> call, Response<GenericResponse<UserDTO>> response) {
-                        System.out.println("Meesage recieved successfully!");
+                    public void onResponse(Call<GenericResponse<Boolean>> call, Response<GenericResponse<Boolean>> response) {
+                        System.out.println("Successfully renamed list!");
                         responseHandler.sendMessage(ServiceUtils.getHandlerMessageFromResponse(response));
                     }
 
                     @Override
-                    public void onFailure(Call<GenericResponse<UserDTO>> call, Throwable t) {
-                        System.out.println("Error sending registration data!");
+                    public void onFailure(Call<GenericResponse<Boolean>> call, Throwable t) {
+                        System.out.println("Error renaming list!");
                         responseHandler.sendMessage(GenericResponse.getGenericServerErrorResponseMessage());
                     }
                 });
@@ -47,14 +44,11 @@ public class LoggedUserThread extends Thread {
 
     @Override
     public void run() {
-        if (Looper.myLooper() == null) {
+        if(Looper.myLooper() == null) {
             Looper.prepare();
         }
 
         Looper.loop();
     }
 
-    public Handler getHandler(){
-        return this.handler;
-    }
 }

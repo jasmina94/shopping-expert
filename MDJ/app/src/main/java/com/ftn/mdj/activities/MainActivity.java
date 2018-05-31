@@ -23,19 +23,20 @@ import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
 import com.ftn.mdj.R;
-import com.ftn.mdj.dto.ShoppingListShowDTO;
+import com.ftn.mdj.dto.ShoppingListDTO;
 import com.ftn.mdj.dto.UserDTO;
 import com.ftn.mdj.fragments.MainFragment;
 import com.ftn.mdj.services.MDJInterceptor;
-import com.ftn.mdj.threads.LoggedUserThread;
-import com.ftn.mdj.threads.WorkerThreadGetActiveLists;
+import com.ftn.mdj.threads.GetLoggedUserThread;
+import com.ftn.mdj.threads.GetActiveListsThread;
+import com.ftn.mdj.threads.UploadListThread;
 import com.ftn.mdj.utils.DummyCollection;
 import com.ftn.mdj.utils.GenericResponse;
 import com.ftn.mdj.utils.SharedPreferencesManager;
+import com.ftn.mdj.utils.UtilHelper;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -50,13 +51,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToggle;
 
-    private List<ShoppingListShowDTO> activeLists = new ArrayList<>();
-
-    private  boolean userLogedIn = false;
     private Handler handler;
+    private Handler activeListHandler;
+    private Handler uploadListHandler;
 
     private FirebaseAuth mAuth;
-
+    private boolean userIsLoggedIn = false;
     private SharedPreferencesManager sharedPreferenceManager;
 
     @Override
@@ -67,37 +67,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mAuth = FirebaseAuth.getInstance();
 
         sharedPreferenceManager = SharedPreferencesManager.getInstance(this.getApplicationContext()); //Initialize ShPref manager
-
-        //TODO : Change this to show lists from database if loged in or from file if not
-        List<ShoppingListShowDTO> lists = new ArrayList<>();
-//        DummyCollection dummyCollection = new DummyCollection();
-//        dummyCollection.writeLists(dummyCollection.getDummies(), this.getApplicationContext());
-        //List<ShoppingListDTO> lists = dummyCollection.readLists(this.getApplicationContext());
-
-//        MainFragment fragment = new MainFragment();
-//        fragment.setActiveShoppingLists(lists);
-//        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-//        fragmentTransaction.replace(R.id.fragment_container, fragment);
-//        fragmentTransaction.commit();
-
         initViews();
         setupHandler();
+        setActiveListHandler();
+        setUploadListHandler();
     }
 
     @Override
     protected void onResume() {
         checkIfUserLogin();
         super.onResume();
-    }
-
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        WorkerThreadGetActiveLists workerThreadGetActiveLists = new WorkerThreadGetActiveLists(false, (long) 1, this);
-        workerThreadGetActiveLists.start();
-        Message msg = Message.obtain();
-        workerThreadGetActiveLists.getHandler().sendMessage(msg);
     }
 
     @Override
@@ -119,36 +98,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 singOutUser();
             }
         }
-
-        //Close navigation drawer
         mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    private void changeDrawerContent(){
-        View headerView = mNavigationView.getHeaderView(0);
-        TextView emailText = headerView.findViewById(R.id.user_email);
-        Button button = headerView.findViewById(R.id.btn_sign_in);
-        if(userLogedIn){
-            button.setVisibility(View.INVISIBLE);
-            emailText.setVisibility(View.VISIBLE);
-            emailText.setText("logedin@email.com"); //Put here email of logged in user if exists
-        }else {
-            emailText.setVisibility(View.INVISIBLE);
-            Menu navMenu = mNavigationView.getMenu();
-            navMenu.findItem(R.id.mnu_logout).setVisible(false);
-        }
-    }
-
-    private void setSignInUpListener() {
-        View headerView = mNavigationView.getHeaderView(0);
-        Button button = headerView.findViewById(R.id.btn_sign_in);
-        button.setOnClickListener(view -> {
-            Context context = view.getContext();
-            Toast.makeText(context, "Change activity", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(context, LogRegActivity.class);
-            startActivity(intent);
-        });
     }
 
     private void initViews() {
@@ -182,11 +133,53 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void handleMessage(Message msg) {
                 GenericResponse<UserDTO> response = (GenericResponse<UserDTO>) msg.obj;
                 if (response.isSuccessfulOperation()) {
-                    //Stavljam njegov ID u shared pref
                     sharedPreferenceManager.put(SharedPreferencesManager.Key.USER_ID, response.getEntity().getId().intValue());
                     updateUI(true, response.getEntity().getEmail());
+                    loadLoggedUserLists();
                 } else {
                     updateUI(false, null);
+                }
+            }
+        };
+    }
+
+    //Ovde dobavljam aktivne liste za odredjenog korisnika i prebacujem na glavni fragment
+    private void setActiveListHandler(){
+        activeListHandler = new Handler(Looper.getMainLooper()){
+            @Override
+            public void handleMessage(Message msg) {
+                GenericResponse<List<ShoppingListDTO>> response = (GenericResponse<List<ShoppingListDTO>>) msg.obj;
+                if(response.isSuccessfulOperation()){
+                    MainFragment fragment = new MainFragment();
+                    fragment.setActiveShoppingLists(response.getEntity());
+                    FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.fragment_container, fragment);
+                    fragmentTransaction.commit();
+                }else{
+                    UtilHelper.showToastMessage(getApplicationContext(),"Error while getting active list from server!", UtilHelper.ToastLength.LONG);
+                }
+            }
+        };
+    }
+
+    //Ove radim cuvanje listi iz local storage-a u bazu
+    private void setUploadListHandler(){
+        uploadListHandler = new Handler(Looper.getMainLooper()){
+            @Override
+            public void handleMessage(Message msg) {
+                GenericResponse<Boolean> response = (GenericResponse<Boolean>) msg.obj;
+                if(response.isSuccessfulOperation()){
+                    //Ako je uspesno obavio cuvanje moram pozvati nit koja radi na dobavljanju aktivnih listi za tog korisnika
+                    UtilHelper.showToastMessage(getApplicationContext(), "Successfully uploaded lists from local storage to server!", UtilHelper.ToastLength.LONG);
+                    DummyCollection.emptyList(getApplicationContext());
+                    long userId = sharedPreferenceManager.getInt(SharedPreferencesManager.Key.USER_ID.name());
+                    GetActiveListsThread getActiveListsThread = new GetActiveListsThread(activeListHandler,false, userId);
+                    getActiveListsThread.start();
+                    Message message = Message.obtain();
+                    getActiveListsThread.getHandler().sendMessage(message);
+                }else {
+                    UtilHelper.showToastMessage(getApplicationContext(), "Error while uploading lists from local storage to server!",
+                            UtilHelper.ToastLength.LONG);
                 }
             }
         };
@@ -199,21 +192,49 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             FirebaseUser currentUser = mAuth.getCurrentUser();
             if(currentUser != null){
                 updateUI(true, currentUser.getEmail());
+                loadLoggedUserLists();;
             }else {
                 updateUI(false, null);
+                loadNotLoggedUserLists();
             }
-        }else { //Ako se logovao kao obicni korisnik proveri jwt dobavi ko je
+        }else {
             if (jwtVal != null && !jwtVal.isEmpty()) {
-                LoggedUserThread loggedUserThread = new LoggedUserThread(handler);
-                loggedUserThread.start();
+                GetLoggedUserThread getLoggedUserThread = new GetLoggedUserThread(handler);
+                getLoggedUserThread.start();
                 Message msg = Message.obtain();
-                loggedUserThread.getHandler().sendMessage(msg);
+                getLoggedUserThread.getHandler().sendMessage(msg);
             } else {
                 updateUI(false, null);
+                loadNotLoggedUserLists();
             }
         }
     }
 
+    private void loadLoggedUserLists(){
+        List<ShoppingListDTO> lists = DummyCollection.readLists(this.getApplicationContext());
+        long userId = sharedPreferenceManager.getInt(SharedPreferencesManager.Key.USER_ID.name());
+        if(!lists.isEmpty()) {
+            UploadListThread uploadListThread = new UploadListThread(uploadListHandler, userId, lists);
+            uploadListThread.start();
+            Message msg = Message.obtain();
+            uploadListThread.getHandler().sendMessage(msg);
+        } else {
+            GetActiveListsThread getActiveListsThread = new GetActiveListsThread(activeListHandler, false, userId);
+            getActiveListsThread.start();
+            Message msg = Message.obtain();
+            getActiveListsThread.getHandler().sendMessage(msg);
+        }
+    }
+
+    private void loadNotLoggedUserLists(){
+        List<ShoppingListDTO> lists = DummyCollection.readLists(this.getApplicationContext());
+        MainFragment fragment = new MainFragment();
+
+        fragment.setActiveShoppingLists(lists);
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container, fragment);
+        fragmentTransaction.commit();
+    }
 
     private void updateUI(boolean loggedIn, String userEmail){
         View headerView = mNavigationView.getHeaderView(0);
@@ -231,7 +252,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-
     private void singOutUser() {
         String type = sharedPreferenceManager.getString(SharedPreferencesManager.Key.SIGN_IN_TYPE.name());
         if(type.equals(SIGN_IN_INNER)) {
@@ -239,7 +259,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }else if(type.equals(SIGN_IN_FACEBOOK)){
             mAuth.signOut();
             LoginManager.getInstance().logOut();
-        }else {
+        }else if(type.equals(SIGN_IN_GOOGLE)){
             mAuth.signOut();
         }
         sharedPreferenceManager.put(SharedPreferencesManager.Key.SIGN_IN_TYPE, null);
@@ -248,6 +268,4 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Intent intent = new Intent(MainActivity.this, MainActivity.class);
         startActivity(intent);
     }
-
-
 }

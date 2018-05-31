@@ -9,13 +9,14 @@ import com.ftn.mdj.dto.UserDTO;
 import com.ftn.mdj.services.ServiceUtils;
 import com.ftn.mdj.utils.GenericResponse;
 
+import lombok.Getter;
 import retrofit2.Call;
 import retrofit2.Response;
 
 /**
  * Created by Jasmina on 24/05/2018.
  */
-
+@Getter
 public class RegisterThread extends Thread {
     private Handler handler;
     private Handler responseHandler;
@@ -31,7 +32,7 @@ public class RegisterThread extends Thread {
 
                     @Override
                     public void onResponse(Call<GenericResponse<UserDTO>> call, Response<GenericResponse<UserDTO>> response) {
-                        System.out.println("Meesage recieved successfully!");
+                        System.out.println("Successfully registered user!");
                         responseHandler.sendMessage(ServiceUtils.getHandlerMessageFromResponse(response));
                     }
 
@@ -54,9 +55,5 @@ public class RegisterThread extends Thread {
         }
 
         Looper.loop();
-    }
-
-    public Handler getHandler(){
-        return handler;
     }
 }
