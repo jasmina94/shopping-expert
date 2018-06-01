@@ -27,13 +27,12 @@ import com.ftn.mdj.dto.ShoppingListDTO;
 import com.ftn.mdj.dto.UserDTO;
 import com.ftn.mdj.fragments.MainFragment;
 import com.ftn.mdj.services.MDJInterceptor;
-import com.ftn.mdj.threads.GetLoggedUserThread;
 import com.ftn.mdj.threads.GetActiveListsThread;
+import com.ftn.mdj.threads.GetLoggedUserThread;
 import com.ftn.mdj.threads.UploadListThread;
 import com.ftn.mdj.utils.DummyCollection;
 import com.ftn.mdj.utils.GenericResponse;
 import com.ftn.mdj.utils.SharedPreferencesManager;
-import com.ftn.mdj.utils.UtilHelper;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -41,6 +40,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    public static MainActivity instance = null;
     private final static String SIGN_IN_FACEBOOK = "fb";
     private final static String SIGN_IN_GOOGLE = "google";
     private final static String SIGN_IN_INNER = "mdj";
@@ -69,12 +69,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         sharedPreferenceManager = SharedPreferencesManager.getInstance(this.getApplicationContext()); //Initialize ShPref manager
         initViews();
         setupHandler();
-        setActiveListHandler();
-        setUploadListHandler();
     }
 
     @Override
     protected void onResume() {
+        instance = this;
         checkIfUserLogin();
         super.onResume();
     }
@@ -145,48 +144,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         };
     }
 
-    //Ovde dobavljam aktivne liste za odredjenog korisnika i prebacujem na glavni fragment
-    private void setActiveListHandler(){
-        activeListHandler = new Handler(Looper.getMainLooper()){
-            @Override
-            public void handleMessage(Message msg) {
-                GenericResponse<List<ShoppingListDTO>> response = (GenericResponse<List<ShoppingListDTO>>) msg.obj;
-                if(response.isSuccessfulOperation()){
-                    MainFragment fragment = new MainFragment();
-                    fragment.setActiveShoppingLists(response.getEntity());
-                    FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                    fragmentTransaction.replace(R.id.fragment_container, fragment);
-                    fragmentTransaction.commit();
-                }else{
-                    UtilHelper.showToastMessage(getApplicationContext(),"Error while getting active list from server!", UtilHelper.ToastLength.LONG);
-                }
-            }
-        };
-    }
-
-    //Ove radim cuvanje listi iz local storage-a u bazu
-    private void setUploadListHandler(){
-        uploadListHandler = new Handler(Looper.getMainLooper()){
-            @Override
-            public void handleMessage(Message msg) {
-                GenericResponse<Boolean> response = (GenericResponse<Boolean>) msg.obj;
-                if(response.isSuccessfulOperation()){
-                    //Ako je uspesno obavio cuvanje moram pozvati nit koja radi na dobavljanju aktivnih listi za tog korisnika
-                    UtilHelper.showToastMessage(getApplicationContext(), "Successfully uploaded lists from local storage to server!", UtilHelper.ToastLength.LONG);
-                    DummyCollection.emptyList(getApplicationContext());
-                    long userId = sharedPreferenceManager.getInt(SharedPreferencesManager.Key.USER_ID.name());
-                    GetActiveListsThread getActiveListsThread = new GetActiveListsThread(activeListHandler,false, userId);
-                    getActiveListsThread.start();
-                    Message message = Message.obtain();
-                    getActiveListsThread.getHandler().sendMessage(message);
-                }else {
-                    UtilHelper.showToastMessage(getApplicationContext(), "Error while uploading lists from local storage to server!",
-                            UtilHelper.ToastLength.LONG);
-                }
-            }
-        };
-    }
-
     private void checkIfUserLogin() {
         String type = sharedPreferenceManager.getString(SharedPreferencesManager.Key.SIGN_IN_TYPE.name());
         String jwtVal = sharedPreferenceManager.getString(SharedPreferencesManager.Key.JWT_KEY.name());
@@ -217,12 +174,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         long userId = sharedPreferenceManager.getInt(SharedPreferencesManager.Key.USER_ID.name());
         if(!lists.isEmpty()) {
             lists.forEach(l -> l.setId(null));
-            UploadListThread uploadListThread = new UploadListThread(uploadListHandler, userId, lists);
+            UploadListThread uploadListThread = new UploadListThread(userId, lists);
             uploadListThread.start();
             Message msg = Message.obtain();
             uploadListThread.getHandler().sendMessage(msg);
         } else {
-            GetActiveListsThread getActiveListsThread = new GetActiveListsThread(activeListHandler, false, userId);
+            GetActiveListsThread getActiveListsThread = new GetActiveListsThread(false, userId);
             getActiveListsThread.start();
             Message msg = Message.obtain();
             getActiveListsThread.getHandler().sendMessage(msg);

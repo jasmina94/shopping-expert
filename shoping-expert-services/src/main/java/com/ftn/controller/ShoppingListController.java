@@ -1,7 +1,6 @@
 package com.ftn.controller;
 
 import com.ftn.dto.ShoppingListDTO;
-import com.ftn.entity.ShoppingList;
 import com.ftn.service.IShoppingListService;
 import com.ftn.util.GenericResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,11 +52,12 @@ public class ShoppingListController {
         GenericResponse<ShoppingListDTO> response = new GenericResponse<>();
         ShoppingListDTO shoppingListDTO = shoppingListService.create(listName, userId);
         if(shoppingListDTO != null){
+//            response.setSuccessfulOperation(true);
             response.success(shoppingListDTO);
         }else {
             response.error("Server side error while creating new list.");
         }
-        return new GenericResponse<>();
+        return response;
     }
 
     @Transactional
@@ -113,10 +113,10 @@ public class ShoppingListController {
     }
 
     @Transactional
-    @PutMapping("/makePublic/{listId}/{password}")
-    public GenericResponse<Boolean> makePublic(@PathVariable Long listId, @PathVariable @NotEmpty String password) {
+    @PutMapping("/makePublic/{listId}")
+    public GenericResponse<Boolean> makePublic(@PathVariable Long listId) {
         GenericResponse<Boolean> response = new GenericResponse<>();
-        boolean result = shoppingListService.makePublic(listId, password);
+        boolean result = shoppingListService.makePublic(listId);
         if(result){
             response.success(true);
         }else {

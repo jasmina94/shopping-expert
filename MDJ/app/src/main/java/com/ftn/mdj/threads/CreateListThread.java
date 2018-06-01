@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 
+import com.ftn.mdj.activities.MainActivity;
 import com.ftn.mdj.dto.ShoppingListDTO;
 import com.ftn.mdj.services.ServiceUtils;
 import com.ftn.mdj.utils.GenericResponse;
@@ -18,9 +19,10 @@ import retrofit2.Response;
 public class CreateListThread extends Thread {
     private Handler handler;
     private Handler responseHandler;
+    private Context context;
 
-    public CreateListThread(Handler handlerUI, Long userId, String listName) {
-        responseHandler = handlerUI;
+    public CreateListThread(Long userId, String listName) {
+        this.context = MainActivity.instance.getApplicationContext();
         handler = new Handler() {
 
             @Override
@@ -50,6 +52,17 @@ public class CreateListThread extends Thread {
         if (Looper.myLooper() == null) {
             Looper.prepare();
         }
+        responseHandler = new Handler(Looper.getMainLooper()) {
+            @Override
+            public void handleMessage(Message msg) {
+                GenericResponse<ShoppingListDTO> response = (GenericResponse<ShoppingListDTO>) msg.obj;
+                if (response.isSuccessfulOperation()) {
+                    UtilHelper.showToastMessage(context, "Successfully created list!", UtilHelper.ToastLength.SHORT);
+                } else {
+                    UtilHelper.showToastMessage(context, "Error while creating list!", UtilHelper.ToastLength.SHORT);
+                }
+            }
+        };
 
         Looper.loop();
     }

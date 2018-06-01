@@ -8,7 +8,6 @@ import com.ftn.service.IShoppingListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.validation.constraints.Null;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -87,18 +86,14 @@ public class ShoppingListService implements IShoppingListService {
     }
 
     @Override
-    public boolean makePublic(Long listId, String password) {
+    public boolean makePublic(Long listId) {
         boolean success;
         try {
             ShoppingList shoppingList = shoppingListRepository.findById(listId).orElseThrow(NullPointerException::new);
-            if (!shoppingList.getAccessPassword().equals(password))
-                success = false;
-            else {
                 shoppingList.setIsSecret(false);
                 shoppingList.setAccessPassword("");
                 shoppingListRepository.save(shoppingList);
                 success = true;
-            }
         } catch (NullPointerException e) {
             e.printStackTrace();
             success = false;
@@ -160,6 +155,8 @@ public class ShoppingListService implements IShoppingListService {
             ShoppingList shoppingList = new ShoppingList();
             shoppingList.setListName(l.getListName());
             shoppingList.setCreatorId(loggedUserId);
+            shoppingList.setIsSecret(l.getIsSecret());
+            shoppingList.setAccessPassword(l.getAccessPassword());
             return shoppingList;
         }).collect(Collectors.toList());
         try {

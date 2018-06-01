@@ -36,7 +36,7 @@ public interface IListService {
     @PUT(USER_PREFIX + "/makeSecret/{listId}/{password}")
     Call<GenericResponse<Boolean>> makeSecret(@Path("listId") Long listId, @Path("password") String password);
 
-    @PUT(USER_PREFIX + "/makePublic/{listId}/{password}")
-    Call<GenericResponse<Boolean>> makePublic(@Path("listId") Long listId, @Path("password") String password);
+    @PUT(USER_PREFIX + "/makePublic/{listId}")
+    Call<GenericResponse<Boolean>> makePublic(@Path("listId") Long listId);
 
 }

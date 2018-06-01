@@ -19,7 +19,7 @@ public interface IShoppingListService {
 
     boolean makeSecret(Long listId, String password);
 
-    boolean makePublic(Long listId, String password);
+    boolean makePublic(Long listId);
 
     void addReminder(Long listId, LocalDateTime reminder);
 
