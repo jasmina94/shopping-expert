@@ -143,14 +143,13 @@ public class ShoppingListService implements IShoppingListService {
     }
 
     @Override
-    public boolean shareList(Long listId, String sharedWith) {
+    public void shareList(Long listId, String sharedWith) {
         //check if user is registratet if not, send email invitation
         String curentlyLoggedUserName = "Milica";
         String subject = "MDJ - List shared";
         // will add url to
         String message = "Mr/s " + curentlyLoggedUserName + ", \n " + curentlyLoggedUserName + " has just shared shopping list with you. Click on notification. \n ";
 //        emailService.sendEmail(subject, message, sharedWith);
-        return true;
     }
 
     @Override

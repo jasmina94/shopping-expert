@@ -236,7 +236,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fragment.setActiveShoppingLists(lists);
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, fragment);
-        fragmentTransaction.commit();
+        fragmentTransaction.commitAllowingStateLoss();
     }
 
     private void updateUI(boolean loggedIn, String userEmail){

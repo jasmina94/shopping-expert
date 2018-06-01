@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -23,15 +25,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ftn.mdj.R;
-import com.ftn.mdj.threads.WorkerThreadAddLocation;
-import com.ftn.mdj.threads.WorkerThreadRenameList;
-import com.google.android.gms.common.api.GoogleApiClient;
+import com.ftn.mdj.threads.AddLocationThread;
+import com.ftn.mdj.utils.GenericResponse;
+import com.ftn.mdj.utils.UtilHelper;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.location.places.PlaceDetectionClient;
-import com.google.android.gms.location.places.PlaceLikelihood;
-import com.google.android.gms.location.places.PlaceLikelihoodBufferResponse;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -86,6 +86,7 @@ public class MapsActivity extends AppCompatActivity
     private Toolbar mToolbar;
 
     private Long listId;
+    private Handler locationHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,6 +126,8 @@ public class MapsActivity extends AppCompatActivity
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        setLocationHandler();
     }
 
     @Override
@@ -215,10 +218,15 @@ public class MapsActivity extends AppCompatActivity
 
                                 mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
-                                WorkerThreadAddLocation workerThreadAddLocation = new WorkerThreadAddLocation(listId, mLatLng.longitude, mLatLng.latitude, MapsActivity.this);
-                                workerThreadAddLocation.start();
+                                AddLocationThread addLocationThread = new AddLocationThread(locationHandler, listId, mLatLng.longitude, mLatLng.latitude);
+                                addLocationThread.start();
                                 Message msg = Message.obtain();
-                                workerThreadAddLocation.getHandler().sendMessage(msg);
+                                addLocationThread.getHandler().sendMessage(msg);
+
+                                /*RenameListThread renameListThread = new RenameListThread(renameHandler, shoppingListDTO.getId(), editName.getText().toString(), mainFragment);
+                                renameListThread.start();
+                                Message msg = Message.obtain();
+                                renameListThread.getHandler().sendMessage(msg);*/
 
                                 Toast.makeText(MapsActivity.this, "You will receive notification near this place.", Toast.LENGTH_SHORT).show();
                                 //go back to main activity
@@ -398,5 +406,20 @@ public class MapsActivity extends AppCompatActivity
         } catch (SecurityException e)  {
             Log.e("Exception: %s", e.getMessage());
         }
+    }
+
+    private void setLocationHandler(){
+        locationHandler = new Handler(Looper.getMainLooper()) {
+            @Override
+            public void handleMessage(Message msg) {
+                GenericResponse<Boolean> response = (GenericResponse<Boolean>) msg.obj;
+                if (response.isSuccessfulOperation()) {
+                    UtilHelper.showToastMessage(MapsActivity.this, "Successfully added location!", UtilHelper.ToastLength.SHORT);
+                    //mainFragment.restartFragment();
+                } else {
+                    UtilHelper.showToastMessage(MapsActivity.this, "Error while adding location!", UtilHelper.ToastLength.SHORT);
+                }
+            }
+        };
     }
 }

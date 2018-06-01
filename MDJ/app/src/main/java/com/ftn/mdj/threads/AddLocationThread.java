@@ -2,6 +2,7 @@ package com.ftn.mdj.threads;
 
 import android.content.Context;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.widget.Toast;
 
@@ -14,10 +15,10 @@ import retrofit2.Response;
 import lombok.Getter;
 
 @Getter
-public class WorkerThreadAddLocation extends Thread {
-    private Handler handler;
+public class AddLocationThread extends Thread {
+    /*private Handler handler;
 
-    public WorkerThreadAddLocation(Long shoppingListId, Double latitude, Double longitude, Context context) {
+    public AddLocationThread(Long shoppingListId, Double latitude, Double longitude, Context context) {
         handler = new Handler() {
 
             @Override
@@ -38,5 +39,42 @@ public class WorkerThreadAddLocation extends Thread {
             }
 
         };
+    }*/
+    private Handler handler;
+    private Handler responseHandler;
+
+    public AddLocationThread(Handler handlerUI, Long shoppingListId, Double latitude, Double longitude){
+        responseHandler = handlerUI;
+        handler = new Handler(){
+
+            @Override
+            public void handleMessage(Message msg) {
+                ServiceUtils.listService.updateLocation(shoppingListId, latitude, longitude).enqueue(new retrofit2.Callback<GenericResponse>(){
+
+                    @Override
+                    public void onResponse(Call<GenericResponse> call, Response<GenericResponse> response) {
+                        System.out.println("Successfully added location!");
+                        responseHandler.sendMessage(ServiceUtils.getHandlerMessageFromResponse(response));
+                    }
+
+                    @Override
+                    public void onFailure(Call<GenericResponse> call, Throwable t) {
+                        System.out.println("Error adding location!");
+                        responseHandler.sendMessage(GenericResponse.getGenericServerErrorResponseMessage());
+                    }
+                });
+                super.handleMessage(msg);
+            }
+
+        };
+    }
+
+    @Override
+    public void run() {
+        if(Looper.myLooper() == null) {
+            Looper.prepare();
+        }
+
+        Looper.loop();
     }
 }
