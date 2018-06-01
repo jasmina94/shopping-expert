@@ -26,6 +26,8 @@ public class ShoppingListDTO implements Serializable {
 
     private Integer numberOfItems;
 
+    private String accessPassword;
+
     //emails of users that list is shared with
     private Set<String> sharedWith = new HashSet<>();
 

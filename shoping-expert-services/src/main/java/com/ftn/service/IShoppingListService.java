@@ -11,7 +11,7 @@ import java.util.List;
  */
 public interface IShoppingListService {
 
-    List<ShoppingListDTO> getListsForUserByStatus(Long loggedUserId, boolean isArchived);
+	List<ShoppingListDTO> getListsForUserByStatus(Long loggedUserId, boolean isArchived);
 
     ShoppingListDTO create(String listName, Long loggedUserId);
 
@@ -19,7 +19,7 @@ public interface IShoppingListService {
 
     boolean makeSecret(Long listId, String password);
 
-    boolean makePublic(Long listId, String password);
+    boolean makePublic(Long listId);
 
     void addReminder(Long listId, LocalDateTime reminder);
 
@@ -27,9 +27,9 @@ public interface IShoppingListService {
 
     boolean updateName(long listId, String listName);
 
-    void shareList(Long listId, String sharedWith);
-    
-    boolean updateLocation(long listId, Double latitude, Double longitude);
+    boolean shareList(Long listId, String sharedWith);
 
     boolean saveListsFromLocalStorage(Long loggedUserId, List<ShoppingListDTO> list);
+    
+    boolean updateLocation(long listId, Double latitude, Double longitude);
 }

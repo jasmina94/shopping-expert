@@ -2,8 +2,6 @@ package com.ftn.mdj.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
@@ -13,12 +11,9 @@ import com.ftn.mdj.R;
 import com.ftn.mdj.dto.ShoppingListDTO;
 import com.ftn.mdj.threads.CreateListThread;
 import com.ftn.mdj.utils.DummyCollection;
-import com.ftn.mdj.utils.GenericResponse;
 import com.ftn.mdj.utils.SharedPreferencesManager;
-import com.ftn.mdj.utils.UtilHelper;
 
 import java.util.List;
-import java.util.UUID;
 
 public class AddListActivity extends AppCompatActivity {
 
@@ -26,8 +21,6 @@ public class AddListActivity extends AppCompatActivity {
     private Button btn_dismiss;
 
     private SharedPreferencesManager sharedPreferenceManager;
-
-    private Handler createListHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,21 +34,6 @@ public class AddListActivity extends AppCompatActivity {
         btn_dismiss.setOnClickListener(view -> finish());
 
         setupSubmit();
-        setCreateListHandler();
-    }
-
-    private void setCreateListHandler(){
-        createListHandler = new Handler(Looper.getMainLooper()) {
-            @Override
-            public void handleMessage(Message msg) {
-                GenericResponse<ShoppingListDTO> response = (GenericResponse<ShoppingListDTO>) msg.obj;
-                if (response.isSuccessfulOperation()) {
-                    UtilHelper.showToastMessage(getApplicationContext(), "Successfully created list!", UtilHelper.ToastLength.SHORT);
-                } else {
-                    UtilHelper.showToastMessage(getApplicationContext(), "Error while creating list!", UtilHelper.ToastLength.SHORT);
-                }
-            }
-        };
     }
 
     private void setupSubmit() {
@@ -63,7 +41,7 @@ public class AddListActivity extends AppCompatActivity {
                 long loggedUserId = sharedPreferenceManager.getInt(SharedPreferencesManager.Key.USER_ID.name());
                 if(loggedUserId != 0) {
                     String listName = ((TextView) findViewById(R.id.new_list_name)).getText().toString().trim();
-                    CreateListThread workerThread = new CreateListThread(createListHandler, loggedUserId, listName);
+                    CreateListThread workerThread = new CreateListThread(loggedUserId, listName);
                     workerThread.start();
                     Message msg = Message.obtain();
                     workerThread.getHandler().sendMessage(msg);

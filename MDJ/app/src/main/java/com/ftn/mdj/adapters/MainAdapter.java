@@ -18,8 +18,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ftn.mdj.R;
-import com.ftn.mdj.activities.LogRegActivity;
-import com.ftn.mdj.activities.MainActivity;
 import com.ftn.mdj.activities.MapsActivity;
 import com.ftn.mdj.activities.ShoppingListActivity;
 import com.ftn.mdj.dto.ShoppingListDTO;
@@ -45,8 +43,6 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
     private Context context;
     private MainFragment mainFragment;
 
-    private Handler archiveHandler;
-    private Handler renameHandler;
     private Handler secretHandler;
 
     private AlertDialog renameAlertDialog;
@@ -61,68 +57,14 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
         sharedPreferenceManager = SharedPreferencesManager.getInstance(context);
         this.isUserLogedIn = sharedPreferenceManager.getInt(SharedPreferencesManager.Key.USER_ID.name()) != 0;
 
-        setArchiveHandler();
-        setRenameHandler();
-        setSecretHandler();
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_item, parent, false);
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                context.startActivity(new Intent(context, ShoppingListActivity.class));
-            }
-        });
+        view.setOnClickListener(view1 -> context.startActivity(new Intent(context, ShoppingListActivity.class)));
         return new ViewHolder(view);
-    }
-
-    private void setArchiveHandler(){
-        archiveHandler = new Handler(Looper.getMainLooper()) {
-            @Override
-            public void handleMessage(Message msg) {
-                GenericResponse<ShoppingListDTO> response = (GenericResponse<ShoppingListDTO>) msg.obj;
-                if (response.isSuccessfulOperation()) {
-                    ShoppingListDTO shoppingListDTO = response.getEntity();
-                    mainFragment.archiveListUI(shoppingListDTO.getId());
-                    UtilHelper.showToastMessage(mainFragment.getContext(), "Successfully archived list!", UtilHelper.ToastLength.SHORT);
-                } else {
-                    UtilHelper.showToastMessage(mainFragment.getContext(), "Error while archiving list!", UtilHelper.ToastLength.SHORT);
-                }
-            }
-        };
-    }
-
-    private void setRenameHandler(){
-        renameHandler = new Handler(Looper.getMainLooper()) {
-            @Override
-            public void handleMessage(Message msg) {
-                GenericResponse<Boolean> response = (GenericResponse<Boolean>) msg.obj;
-                if (response.isSuccessfulOperation()) {
-                    UtilHelper.showToastMessage(mainFragment.getContext(), "Successfully renamed list!", UtilHelper.ToastLength.SHORT);
-                    mainFragment.restartFragment();
-                } else {
-                    UtilHelper.showToastMessage(mainFragment.getContext(), "Error while renaming list!", UtilHelper.ToastLength.SHORT);
-                }
-            }
-        };
-    }
-
-    private void setSecretHandler(){
-        secretHandler = new Handler(Looper.getMainLooper()) {
-            @Override
-            public void handleMessage(Message msg) {
-                GenericResponse<Boolean> response = (GenericResponse<Boolean>) msg.obj;
-                if (response.isSuccessfulOperation()) {
-                    UtilHelper.showToastMessage(mainFragment.getContext(), "Successfully changed list privacy!", UtilHelper.ToastLength.SHORT);
-                    mainFragment.restartFragment();
-                } else {
-                    UtilHelper.showToastMessage(mainFragment.getContext(), "Error while changing list privacy!", UtilHelper.ToastLength.SHORT);
-                }
-            }
-        };
     }
 
     @Override
@@ -145,6 +87,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
                         break;
                     case R.id.mnu_archive:
                         archiveList(shoppingListDTO);
+                        break;
                     case R.id.mnu_share:
                         Toast.makeText(context, "Shared", Toast.LENGTH_LONG).show();
                         break;
@@ -169,7 +112,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
     private void archiveList(ShoppingListDTO shoppingListDTO){
         long listId = shoppingListDTO.getId();
         if(isUserLogedIn) {
-            ArchiveListThread archiveListThread = new ArchiveListThread(archiveHandler, listId);
+            ArchiveListThread archiveListThread = new ArchiveListThread(listId);
             archiveListThread.start();
             Message msg = Message.obtain();
             archiveListThread.getHandler().sendMessage(msg);
@@ -206,7 +149,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
             } else {
                 long loggedUserId = sharedPreferenceManager.getInt(SharedPreferencesManager.Key.USER_ID.name());
                 if(loggedUserId != 0) {
-                    RenameListThread renameListThread = new RenameListThread(renameHandler, shoppingListDTO.getId(), editName.getText().toString(), mainFragment);
+                    RenameListThread renameListThread = new RenameListThread(shoppingListDTO.getId(), editName.getText().toString());
                     renameListThread.start();
                     Message msg = Message.obtain();
                     renameListThread.getHandler().sendMessage(msg);
@@ -254,21 +197,30 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
                 Toast.makeText(context, "Password can not be empty!", Toast.LENGTH_SHORT).show();
             } else {
                 if(isUserLogedIn) {
-                    SecretListThread workerThreadRenameList = new SecretListThread(secretHandler, shoppingListDTO.getId(), password.getText().toString(), !shoppingListDTO.getIsSecret());
-                    workerThreadRenameList.start();
-                    Message msgSecret = Message.obtain();
-                    workerThreadRenameList.getHandler().sendMessage(msgSecret);
+                    if(shoppingListDTO.getIsSecret() && !password.getText().toString().equals(shoppingListDTO.getAccessPassword())) {
+                        Toast.makeText(context, "Wrong password!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        SecretListThread workerThreadRenameList = new SecretListThread(shoppingListDTO.getId(), password.getText().toString(), !shoppingListDTO.getIsSecret());
+                        workerThreadRenameList.start();
+                        Message msgSecret = Message.obtain();
+                        workerThreadRenameList.getHandler().sendMessage(msgSecret);
+                    }
                 } else {
-                    List<ShoppingListDTO> lists = DummyCollection.readLists(context);
-                    lists.forEach(l -> {
-                        if(l.getId() == shoppingListDTO.getId()) {
-                            l.setIsSecret(!shoppingListDTO.getIsSecret());
-                            return;
-                        }
-                    });
-                    DummyCollection.writeLists(lists, context);
-                    mainFragment.setActiveShoppingLists(lists);
-                    mainFragment.restartFragment();
+                    if(shoppingListDTO.getIsSecret() && !password.getText().toString().equals(shoppingListDTO.getAccessPassword())) {
+                        Toast.makeText(context, "Wrong password!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        List<ShoppingListDTO> lists = DummyCollection.readLists(context);
+                        lists.forEach(l -> {
+                            if (l.getId() == shoppingListDTO.getId()) {
+                                l.setIsSecret(!shoppingListDTO.getIsSecret());
+                                l.setAccessPassword(password.getText().toString());
+                                return;
+                            }
+                        });
+                        DummyCollection.writeLists(lists, context);
+                        mainFragment.setActiveShoppingLists(lists);
+                        mainFragment.restartFragment();
+                    }
                 }
                 secretAlertDialog.cancel();
             }
@@ -280,22 +232,6 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
         secretAlertDialog.show();
     }
 
-    public void archiveListUI(Long shoppingListId) {
-        Optional<ShoppingListDTO> shoppingListShowDTO = activeShoppingLists.stream().filter(e -> e.getId() == shoppingListId).findFirst();
-        activeShoppingLists.remove(shoppingListShowDTO.get());
-        System.out.println("Settovao novo");
-    }
-
-    public void renameListInArray(Long shoppingListId, String listName) {
-        activeShoppingLists.forEach(e -> {
-            if(e.getId() == shoppingListId) {
-                e.setListName(listName);
-                return;
-            }
-        });
-        System.out.println("Settovao novo IME");
-    }
-
     public void addLocation(ShoppingListDTO shoppingListDTO) {
         Intent intent = new Intent(context, MapsActivity.class);
         if(shoppingListDTO.getLatitude() != null && shoppingListDTO.getLongitude() != null){
@@ -305,7 +241,6 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
         intent.putExtra("listId",shoppingListDTO.getId());
         context.startActivity(intent);
     }
-
 
     @Override
     public int getItemCount() {

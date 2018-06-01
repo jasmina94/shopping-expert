@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 
+import com.ftn.mdj.activities.MainActivity;
 import com.ftn.mdj.dto.ShoppingListDTO;
 import com.ftn.mdj.fragments.MainFragment;
 import com.ftn.mdj.utils.GenericResponse;
@@ -18,10 +19,11 @@ import retrofit2.Response;
 @Getter
 public class ArchiveListThread extends Thread {
     private Handler handler;
-    private Handler responseHandler;
+    private Handler archiveHandler;
+    private Context context;
 
-    public ArchiveListThread(Handler handlerUI, Long shoppingListId) {
-        responseHandler = handlerUI;
+    public ArchiveListThread(Long shoppingListId) {
+        this.context = MainActivity.instance.getApplicationContext();
         handler = new Handler() {
 
             @Override
@@ -31,13 +33,14 @@ public class ArchiveListThread extends Thread {
                     @Override
                     public void onResponse(Call<GenericResponse<ShoppingListDTO>> call, Response<GenericResponse<ShoppingListDTO>> response) {
                         System.out.println("Successfully archived list!");
-                        responseHandler.sendMessage(ServiceUtils.getHandlerMessageFromResponse(response));
+                        MainFragment.instance.archiveListUI(shoppingListId);
+                        archiveHandler.sendMessage(ServiceUtils.getHandlerMessageFromResponse(response));
                     }
 
                     @Override
                     public void onFailure(Call<GenericResponse<ShoppingListDTO>> call, Throwable t) {
                         System.out.println("Error while archiving list!");
-                        responseHandler.sendMessage(GenericResponse.getGenericServerErrorResponseMessage());
+                        archiveHandler.sendMessage(GenericResponse.getGenericServerErrorResponseMessage());
                     }
                 });
                 super.handleMessage(msg);
@@ -51,7 +54,18 @@ public class ArchiveListThread extends Thread {
         if (Looper.myLooper() == null) {
             Looper.prepare();
         }
-
+        archiveHandler = new Handler(Looper.getMainLooper()) {
+            @Override
+            public void handleMessage(Message msg) {
+                GenericResponse<ShoppingListDTO> response = (GenericResponse<ShoppingListDTO>) msg.obj;
+                if (response.isSuccessfulOperation()) {
+                    MainFragment.instance.restartFragment();
+                    UtilHelper.showToastMessage(MainFragment.instance.getContext(), "Successfully archived list!", UtilHelper.ToastLength.SHORT);
+                } else {
+                    UtilHelper.showToastMessage(MainFragment.instance.getContext(), "Error while archiving list!", UtilHelper.ToastLength.SHORT);
+                }
+            }
+        };
         Looper.loop();
     }
 }

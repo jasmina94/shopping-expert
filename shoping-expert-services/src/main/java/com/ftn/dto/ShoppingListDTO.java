@@ -33,6 +33,8 @@ public class ShoppingListDTO {
     private Set<String> sharedWith = new HashSet<>();
 
     private LocalDateTime reminder;
+    
+    private String accessPassword;
     //same for time and date of completion, need to investigate how reminders work
 
     private Double latitude;
@@ -45,6 +47,7 @@ public class ShoppingListDTO {
         this.isSecret = shoppingList.getIsSecret();
         this.sharedWith = shoppingList.getSharedWith();
         this.reminder = shoppingList.getReminder();
+        this.accessPassword = shoppingList.getAccessPassword();
         this.latitude = shoppingList.getLatitude();
         this.longitude = shoppingList.getLongitude();
     }

@@ -1,17 +1,17 @@
 package com.ftn.service.serviceImplementation;
 
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.ftn.dto.ShoppingListDTO;
 import com.ftn.entity.ShoppingList;
 import com.ftn.repository.ShoppingListRepository;
 import com.ftn.service.IShoppingListItemService;
 import com.ftn.service.IShoppingListService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import javax.validation.constraints.Null;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by milca on 4/25/2018.
@@ -87,18 +87,14 @@ public class ShoppingListService implements IShoppingListService {
     }
 
     @Override
-    public boolean makePublic(Long listId, String password) {
+    public boolean makePublic(Long listId) {
         boolean success;
         try {
             ShoppingList shoppingList = shoppingListRepository.findById(listId).orElseThrow(NullPointerException::new);
-            if (!shoppingList.getAccessPassword().equals(password))
-                success = false;
-            else {
                 shoppingList.setIsSecret(false);
                 shoppingList.setAccessPassword("");
                 shoppingListRepository.save(shoppingList);
                 success = true;
-            }
         } catch (NullPointerException e) {
             e.printStackTrace();
             success = false;
@@ -143,13 +139,14 @@ public class ShoppingListService implements IShoppingListService {
     }
 
     @Override
-    public void shareList(Long listId, String sharedWith) {
+    public boolean shareList(Long listId, String sharedWith) {
         //check if user is registratet if not, send email invitation
         String curentlyLoggedUserName = "Milica";
         String subject = "MDJ - List shared";
         // will add url to
         String message = "Mr/s " + curentlyLoggedUserName + ", \n " + curentlyLoggedUserName + " has just shared shopping list with you. Click on notification. \n ";
 //        emailService.sendEmail(subject, message, sharedWith);
+        return true;
     }
 
     @Override
@@ -159,6 +156,8 @@ public class ShoppingListService implements IShoppingListService {
             ShoppingList shoppingList = new ShoppingList();
             shoppingList.setListName(l.getListName());
             shoppingList.setCreatorId(loggedUserId);
+            shoppingList.setIsSecret(l.getIsSecret());
+            shoppingList.setAccessPassword(l.getAccessPassword());
             return shoppingList;
         }).collect(Collectors.toList());
         try {

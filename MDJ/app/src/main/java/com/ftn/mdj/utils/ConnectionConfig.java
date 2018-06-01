@@ -7,5 +7,5 @@ package com.ftn.mdj.utils;
 public class ConnectionConfig {
 
     //TODO : Change localhost to exact address when testing on phone
-    public static final String SERVICE_PATH = "http://192.168.15.158:8080";
+    public static final String SERVICE_PATH = "http://192.168.15.160:8080";
 }

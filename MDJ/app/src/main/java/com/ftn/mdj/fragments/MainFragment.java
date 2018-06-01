@@ -34,6 +34,8 @@ import java.util.Optional;
  */
 public class MainFragment extends Fragment {
 
+    public static MainFragment instance;
+
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private FloatingActionButton mBtnAddList;
@@ -42,7 +44,9 @@ public class MainFragment extends Fragment {
 
     private List<ShoppingListDTO> activeShoppingLists;
 
-    public MainFragment(){}
+    public MainFragment(){
+        this.instance = this;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -96,9 +100,6 @@ public class MainFragment extends Fragment {
     public void archiveListUI(Long shoppingListId) {
         Optional<ShoppingListDTO> shoppingListShowDTO = activeShoppingLists.stream().filter(e -> e.getId() == shoppingListId).findFirst();
         activeShoppingLists.remove(shoppingListShowDTO.get());
-        System.out.println("Settovao novo");
-        getFragmentManager().beginTransaction().detach(this).attach(this).commit();
-
     }
 
     public void renameListInArray(Long shoppingListId, String listName) {
@@ -108,8 +109,15 @@ public class MainFragment extends Fragment {
                 return;
             }
         });
-        System.out.println("Settovao novo IME");
-        getFragmentManager().beginTransaction().detach(this).attach(this).commit();
+    }
+
+    public void changeListPrivacy(Long shoppingListId, Boolean isPublic) {
+        activeShoppingLists.forEach(e -> {
+            if(e.getId() == shoppingListId) {
+                e.setIsSecret(isPublic);
+                return;
+            }
+        });
     }
 
     public void restartFragment() {
