@@ -137,6 +137,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     updateUI(true, response.getEntity().getEmail());
                     loadLoggedUserLists();
                 } else {
+                    sharedPreferenceManager.put(SharedPreferencesManager.Key.USER_ID, null);
+                    loadNotLoggedUserLists();
                     updateUI(false, null);
                 }
             }
@@ -214,6 +216,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         List<ShoppingListDTO> lists = DummyCollection.readLists(this.getApplicationContext());
         long userId = sharedPreferenceManager.getInt(SharedPreferencesManager.Key.USER_ID.name());
         if(!lists.isEmpty()) {
+            lists.forEach(l -> l.setId(null));
             UploadListThread uploadListThread = new UploadListThread(uploadListHandler, userId, lists);
             uploadListThread.start();
             Message msg = Message.obtain();
@@ -226,7 +229,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    private void loadNotLoggedUserLists(){
+    public void loadNotLoggedUserLists(){
         List<ShoppingListDTO> lists = DummyCollection.readLists(this.getApplicationContext());
         MainFragment fragment = new MainFragment();
 
