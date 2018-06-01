@@ -152,14 +152,12 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
                         changeListPrivacy(shoppingListDTO);
                         break;
                     case R.id.mnu_location:
-                        Intent intent = new Intent(context, MapsActivity.class);
-                        if(shoppingListDTO.getLatitude() != null && shoppingListDTO.getLongitude() != null){
-                            Toast.makeText(context, "Extrassss!", Toast.LENGTH_SHORT).show();
-                            intent.putExtra("latitude",shoppingListDTO.getLatitude());
-                            intent.putExtra("longitude",shoppingListDTO.getLongitude());
+                        if(isUserLogedIn){
+                            addLocation(shoppingListDTO);
+                        }else{
+                            Toast.makeText(context, "Sign in to add shopping place.", Toast.LENGTH_LONG).show();
                         }
-                        intent.putExtra("listId",shoppingListDTO.getId());
-                        context.startActivity(intent);
+
                         break;
                 }
                 return false;
@@ -296,6 +294,16 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
             }
         });
         System.out.println("Settovao novo IME");
+    }
+
+    public void addLocation(ShoppingListDTO shoppingListDTO) {
+        Intent intent = new Intent(context, MapsActivity.class);
+        if(shoppingListDTO.getLatitude() != null && shoppingListDTO.getLongitude() != null){
+            intent.putExtra("latitude",shoppingListDTO.getLatitude());
+            intent.putExtra("longitude",shoppingListDTO.getLongitude());
+        }
+        intent.putExtra("listId",shoppingListDTO.getId());
+        context.startActivity(intent);
     }
 
 

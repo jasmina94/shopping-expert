@@ -29,7 +29,7 @@ public interface IShoppingListService {
 
     void shareList(Long listId, String sharedWith);
     
-    void updateLocation(long listId, Double latitude, Double longitude);
+    boolean updateLocation(long listId, Double latitude, Double longitude);
 
     boolean saveListsFromLocalStorage(Long loggedUserId, List<ShoppingListDTO> list);
 }

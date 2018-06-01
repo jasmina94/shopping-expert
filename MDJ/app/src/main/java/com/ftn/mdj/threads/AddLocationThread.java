@@ -16,30 +16,6 @@ import lombok.Getter;
 
 @Getter
 public class AddLocationThread extends Thread {
-    /*private Handler handler;
-
-    public AddLocationThread(Long shoppingListId, Double latitude, Double longitude, Context context) {
-        handler = new Handler() {
-
-            @Override
-            public void handleMessage(Message msg) {
-                ServiceUtils.listService.updateLocation(shoppingListId, latitude, longitude).enqueue(new retrofit2.Callback<GenericResponse>() {
-
-                    @Override
-                    public void onResponse(Call<GenericResponse> call, Response<GenericResponse> response) {
-                        Toast.makeText(context, "location", Toast.LENGTH_LONG).show();
-                    }
-
-                    @Override
-                    public void onFailure(Call<GenericResponse> call, Throwable t) {
-                        Toast.makeText(context, "Error while adding location", Toast.LENGTH_LONG).show();
-                    }
-                });
-                super.handleMessage(msg);
-            }
-
-        };
-    }*/
     private Handler handler;
     private Handler responseHandler;
 
@@ -49,16 +25,16 @@ public class AddLocationThread extends Thread {
 
             @Override
             public void handleMessage(Message msg) {
-                ServiceUtils.listService.updateLocation(shoppingListId, latitude, longitude).enqueue(new retrofit2.Callback<GenericResponse>(){
+                ServiceUtils.listService.updateLocation(shoppingListId, latitude, longitude).enqueue(new retrofit2.Callback<GenericResponse<Boolean>>(){
 
                     @Override
-                    public void onResponse(Call<GenericResponse> call, Response<GenericResponse> response) {
+                    public void onResponse(Call<GenericResponse<Boolean>> call, Response<GenericResponse<Boolean>> response) {
                         System.out.println("Successfully added location!");
                         responseHandler.sendMessage(ServiceUtils.getHandlerMessageFromResponse(response));
                     }
 
                     @Override
-                    public void onFailure(Call<GenericResponse> call, Throwable t) {
+                    public void onFailure(Call<GenericResponse<Boolean>> call, Throwable t) {
                         System.out.println("Error adding location!");
                         responseHandler.sendMessage(GenericResponse.getGenericServerErrorResponseMessage());
                     }

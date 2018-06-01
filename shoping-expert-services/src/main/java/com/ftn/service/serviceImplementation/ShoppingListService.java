@@ -170,11 +170,18 @@ public class ShoppingListService implements IShoppingListService {
     }
     
     @Override
-    public void updateLocation(long listId, Double latitude, Double longitude) {
-        ShoppingList shoppingList = shoppingListRepository.getOne(listId);
-        shoppingList.setLatitude(latitude);
-        shoppingList.setLongitude(longitude);
-        shoppingListRepository.save(shoppingList);
+    public boolean updateLocation(long listId, Double latitude, Double longitude) {
+        boolean success = true;
+        try {
+            ShoppingList shoppingList = shoppingListRepository.findById(listId).orElseThrow(NullPointerException::new);
+            shoppingList.setLatitude(latitude);
+            shoppingList.setLongitude(longitude);
+            shoppingListRepository.save(shoppingList);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            success = false;
+        }
+        return success;
     }
 
 }
