@@ -1,5 +1,8 @@
 package com.ftn.mdj.dto;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.io.Serializable;
 import java.lang.String;
 import java.util.HashSet;
@@ -14,7 +17,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ShoppingListDTO implements Serializable {
+public class ShoppingListDTO implements Serializable{
 
     private Long id;
 

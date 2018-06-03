@@ -28,6 +28,7 @@ import com.ftn.mdj.dto.UserDTO;
 import com.ftn.mdj.fragments.MainFragment;
 import com.ftn.mdj.services.MDJInterceptor;
 import com.ftn.mdj.threads.GetActiveListsThread;
+import com.ftn.mdj.threads.GetArchivedListsThread;
 import com.ftn.mdj.threads.GetLoggedUserThread;
 import com.ftn.mdj.threads.UploadListThread;
 import com.ftn.mdj.utils.DummyCollection;
@@ -82,7 +83,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.mnu_trash: {
-                Toast.makeText(MainActivity.this, "Show trash fragment!", Toast.LENGTH_SHORT).show();
+                long userId = sharedPreferenceManager.getInt(SharedPreferencesManager.Key.USER_ID.name());
+                GetArchivedListsThread getArchivedListsThread = new GetArchivedListsThread(userId);
+                getArchivedListsThread.start();
+                Message msg = Message.obtain();
+                getArchivedListsThread.getHandler().sendMessage(msg);
                 break;
             }
             case R.id.mnu_help: {
