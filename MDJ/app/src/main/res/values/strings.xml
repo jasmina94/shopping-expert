@@ -87,4 +87,6 @@
     <string name="rename_list">Rename List</string>
     <string name="new_list_name">New list name</string>
     <string name="no_trash">No list in trash.</string>
+    <string name="title_trash">Trash</string>
+    <string name="title_map">Shopping place</string>
 </resources>

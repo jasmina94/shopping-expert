@@ -110,7 +110,7 @@ public class ShoppingListService implements IShoppingListService {
     }
 
     @Override
-    public boolean revive(long listId) {
+    public boolean restore(long listId) {
         boolean success;
         try{
             ShoppingList shoppingList = shoppingListRepository.findById(listId).orElseThrow(NullPointerException::new);
@@ -182,5 +182,18 @@ public class ShoppingListService implements IShoppingListService {
         }
         return success;
     }
+
+	@Override
+	public boolean deleteList(long listId) {
+		boolean success = true;
+        try {
+            ShoppingList shoppingList = shoppingListRepository.findById(listId).orElseThrow(NullPointerException::new);
+            shoppingListRepository.delete(shoppingList);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            success = false;
+        }
+        return success;
+	}
 
 }

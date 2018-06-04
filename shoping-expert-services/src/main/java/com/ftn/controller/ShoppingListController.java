@@ -87,10 +87,10 @@ public class ShoppingListController {
     }
 
     @Transactional
-    @DeleteMapping("/revive/{listId}")
-    public GenericResponse<Boolean> revive(@PathVariable Long listId) {
+    @PutMapping("/restore/{listId}")
+    public GenericResponse<Boolean> restore(@PathVariable Long listId) {
         GenericResponse<Boolean> response = new GenericResponse<>();
-        boolean result = shoppingListService.revive(listId);
+        boolean result = shoppingListService.restore(listId);
         if(result){
             response.success(true);
         }else {
@@ -141,8 +141,29 @@ public class ShoppingListController {
     
     @Transactional
     @PutMapping("/updateLocation/{listId}/{latitude}/{longitude}")
-    public GenericResponse updateLocation(@PathVariable Long listId, @PathVariable Double latitude, @PathVariable Double longitude) {
-        shoppingListService.updateLocation(listId, latitude, longitude);
-        return new GenericResponse<>();
+    public GenericResponse<Boolean> updateLocation(@PathVariable Long listId, @PathVariable Double latitude, @PathVariable Double longitude) {
+        GenericResponse<Boolean> response = new GenericResponse<>();
+        boolean result = shoppingListService.updateLocation(listId, latitude, longitude);
+        if(result){
+            response.success(true);
+        }else {
+            response.error("Server side error while activating list.");
+        }
+        return response;
     }
+    
+    @Transactional
+    @DeleteMapping("/deleteList/{listId}")
+    public GenericResponse<Boolean> deleteList(@PathVariable Long listId) {
+        GenericResponse<Boolean> response = new GenericResponse<>();
+        boolean result = shoppingListService.deleteList(listId);
+        if(result){
+            response.success(true);
+        }else {
+            response.error("Server side error while activating list.");
+        }
+        return response;
+    }
+    
+    
 }

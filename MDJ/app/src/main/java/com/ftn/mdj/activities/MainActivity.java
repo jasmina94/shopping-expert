@@ -211,9 +211,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             emailText.setVisibility(View.VISIBLE);
             emailText.setText(userEmail);
             navMenu.findItem(R.id.mnu_logout).setVisible(true);
+            navMenu.findItem(R.id.mnu_trash).setVisible(true);
         } else {
             emailText.setVisibility(View.INVISIBLE);
             navMenu.findItem(R.id.mnu_logout).setVisible(false);
+            navMenu.findItem(R.id.mnu_trash).setVisible(false);
         }
     }
 

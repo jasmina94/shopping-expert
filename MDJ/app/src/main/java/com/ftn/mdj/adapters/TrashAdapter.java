@@ -2,20 +2,19 @@ package com.ftn.mdj.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Message;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ftn.mdj.R;
 import com.ftn.mdj.activities.ShoppingListActivity;
-import com.ftn.mdj.activities.TrashActivity;
 import com.ftn.mdj.dto.ShoppingListDTO;
-import com.ftn.mdj.fragments.MainFragment;
+import com.ftn.mdj.threads.DeleteListThread;
+import com.ftn.mdj.threads.RestoreListThread;
 import com.ftn.mdj.utils.SharedPreferencesManager;
 
 import java.util.List;
@@ -38,7 +37,7 @@ public class TrashAdapter extends RecyclerView.Adapter<TrashAdapter.ViewHolder> 
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.trash_list_item, parent, false);
-        view.setOnClickListener(view1 -> context.startActivity(new Intent(context, TrashActivity.class)));
+        view.setOnClickListener(view1 -> context.startActivity(new Intent(context, ShoppingListActivity.class)));
         return new ViewHolder(view);
     }
 
@@ -54,11 +53,17 @@ public class TrashAdapter extends RecyclerView.Adapter<TrashAdapter.ViewHolder> 
             popupMenu.inflate(R.menu.trash_option_menu);
             popupMenu.setOnMenuItemClickListener(menuItem -> {
                 switch (menuItem.getItemId()){
-                    case R.id.mnu_recover:
-                        //Toast.makeText(context, "Recover", Toast.LENGTH_LONG).show();
+                    case R.id.mnu_restore:
+                        RestoreListThread restoreListThread = new RestoreListThread(shoppingListDTO.getId());
+                        restoreListThread.start();
+                        Message msg = Message.obtain();
+                        restoreListThread.getHandler().sendMessage(msg);
                         break;
                     case R.id.mnu_delete:
-                        //Toast.makeText(context, "Delete", Toast.LENGTH_LONG).show();
+                        DeleteListThread deleteListThread = new DeleteListThread(shoppingListDTO.getId());
+                        deleteListThread.start();
+                        Message msgg = Message.obtain();
+                        deleteListThread.getHandler().sendMessage(msgg);
                         break;
                 }
                 return false;

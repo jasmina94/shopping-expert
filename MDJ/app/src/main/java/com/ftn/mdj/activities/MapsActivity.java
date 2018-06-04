@@ -389,8 +389,7 @@ public class MapsActivity extends AppCompatActivity
             public void handleMessage(Message msg) {
                 GenericResponse<Boolean> response = (GenericResponse<Boolean>) msg.obj;
                 if (response.isSuccessfulOperation()) {
-                    UtilHelper.showToastMessage(MapsActivity.this, "Successfully added location!", UtilHelper.ToastLength.SHORT);
-                    //mainFragment.restartFragment();
+                    //UtilHelper.showToastMessage(MapsActivity.this, "Successfully added location!", UtilHelper.ToastLength.SHORT);
                 } else {
                     UtilHelper.showToastMessage(MapsActivity.this, "Error while adding location!", UtilHelper.ToastLength.SHORT);
                 }

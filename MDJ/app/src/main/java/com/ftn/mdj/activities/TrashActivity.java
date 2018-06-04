@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -24,6 +25,8 @@ import java.util.List;
 
 public class TrashActivity extends AppCompatActivity {
 
+    public static TrashActivity instance;
+
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private FloatingActionButton mBtnAddList;
@@ -38,9 +41,9 @@ public class TrashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trash);
 
-        ArrayList<ShoppingListDTO> list = (ArrayList<ShoppingListDTO>) getIntent().getSerializableExtra("archivedShoppingLists");
+        instance = this;
 
-        archivedShoppingLists = list;
+        archivedShoppingLists = (ArrayList<ShoppingListDTO>) getIntent().getSerializableExtra("archivedShoppingLists");
 
         mRecyclerView = (RecyclerView)findViewById(R.id.trash_recycler_view);
         mRecyclerView.setHasFixedSize(true);
@@ -52,8 +55,6 @@ public class TrashActivity extends AppCompatActivity {
         mEmptyView = (TextView) findViewById(R.id.trash_empty_view);
         mEmptyImgView = (ImageView) findViewById(R.id.trash_empty_view_img);
 
-        Toast.makeText(TrashActivity.this, "trash", Toast.LENGTH_SHORT).show();
-
         if(archivedShoppingLists.size()!=0){
             mRecyclerView.setVisibility(View.VISIBLE);
             mEmptyView.setVisibility(View.INVISIBLE);
@@ -63,9 +64,20 @@ public class TrashActivity extends AppCompatActivity {
             mEmptyView.setVisibility(View.VISIBLE);
             mEmptyImgView.setVisibility(View.VISIBLE);
         }
-        /*mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar_trash);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);*/
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        int id = item.getItemId();
+
+        if(id==android.R.id.home){
+            this.finish();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

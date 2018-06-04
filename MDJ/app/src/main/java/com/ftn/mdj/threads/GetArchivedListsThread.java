@@ -41,13 +41,13 @@ public class GetArchivedListsThread extends Thread{
 
                     @Override
                     public void onResponse(Call<GenericResponse<List<ShoppingListDTO>>> call, Response<GenericResponse<List<ShoppingListDTO>>> response) {
-                        System.out.println("Getting lists successfully!");
+                        System.out.println("Getting archived lists successfully!");
                         archivedListHandler.sendMessage(ServiceUtils.getHandlerMessageFromResponse(response));
                     }
 
                     @Override
                     public void onFailure(Call<GenericResponse<List<ShoppingListDTO>>> call, Throwable t) {
-                        System.out.println("Error getting lists!");
+                        System.out.println("Error getting archived lists!");
                         archivedListHandler.sendMessage(GenericResponse.getGenericServerErrorResponseMessage());
                     }
                 });

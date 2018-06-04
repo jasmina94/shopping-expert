@@ -23,7 +23,7 @@ public interface IShoppingListService {
 
     void addReminder(Long listId, LocalDateTime reminder);
 
-    boolean revive(long listId);
+    boolean restore(long listId);
 
     boolean updateName(long listId, String listName);
 
@@ -32,4 +32,6 @@ public interface IShoppingListService {
     boolean saveListsFromLocalStorage(Long loggedUserId, List<ShoppingListDTO> list);
     
     boolean updateLocation(long listId, Double latitude, Double longitude);
+    
+    boolean deleteList(long listId);
 }

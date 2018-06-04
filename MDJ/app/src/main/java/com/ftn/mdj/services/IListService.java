@@ -42,4 +42,10 @@ public interface IListService {
     @PUT(USER_PREFIX + "/updateLocation/{listId}/{latitude}/{longitude}")
     Call<GenericResponse<Boolean>> updateLocation(@Path("listId") Long listId, @Path("latitude") Double latitude, @Path("longitude") Double longitude);
 
+    @PUT(USER_PREFIX + "/restore/{listId}")
+    Call<GenericResponse<Boolean>> restore(@Path("listId") Long listId);
+
+    @DELETE(USER_PREFIX + "/deleteList/{listId}")
+    Call<GenericResponse<Boolean>> deleteList(@Path("listId") Long listId);
+
 }
