@@ -99,4 +99,13 @@ public class UserController {
         }
         return response;
     }
+
+    @Transactional
+    @PostMapping(value = "/logout/{userId}/{deviceInstance}")
+    public GenericResponse logout(@PathVariable("userId") Long userId, @PathVariable("deviceInstance") String deviceInstance){
+        GenericResponse response = new GenericResponse();
+        userService.removeDeviceInstanceFromUser(userId, deviceInstance);
+        response.success(true);
+        return response;
+    }
 }

@@ -16,6 +16,8 @@ public class RegistrationDTO {
     private String lastName;
     private String email;
     private String password;
+    private String deviceInstance;
+    private String registerType;
 
 
     public RegistrationDTO(String email, String password, String firstName, String lastName ) {

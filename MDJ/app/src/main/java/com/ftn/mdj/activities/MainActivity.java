@@ -30,12 +30,14 @@ import com.ftn.mdj.services.MDJInterceptor;
 import com.ftn.mdj.threads.GetActiveListsThread;
 import com.ftn.mdj.threads.GetArchivedListsThread;
 import com.ftn.mdj.threads.GetLoggedUserThread;
+import com.ftn.mdj.threads.LogoutThread;
 import com.ftn.mdj.threads.UploadListThread;
 import com.ftn.mdj.utils.DummyCollection;
 import com.ftn.mdj.utils.GenericResponse;
 import com.ftn.mdj.utils.SharedPreferencesManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.List;
 
@@ -64,10 +66,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        String tkn = FirebaseInstanceId.getInstance().getToken();
 
         mAuth = FirebaseAuth.getInstance();
 
         sharedPreferenceManager = SharedPreferencesManager.getInstance(this.getApplicationContext()); //Initialize ShPref manager
+        sharedPreferenceManager.put(SharedPreferencesManager.Key.DEVICE_INSTANCE, tkn);
         initViews();
         setupHandler();
     }
@@ -229,6 +233,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }else if(type.equals(SIGN_IN_GOOGLE)){
             mAuth.signOut();
         }
+        LogoutThread logoutThread = new LogoutThread((long)sharedPreferenceManager.getInt(SharedPreferencesManager.Key.USER_ID.name()),
+                        sharedPreferenceManager.getString(SharedPreferencesManager.Key.DEVICE_INSTANCE.name()));
+        logoutThread.start();
+        Message msg = Message.obtain();
+        logoutThread.getHandler().sendMessage(msg);
+
         sharedPreferenceManager.put(SharedPreferencesManager.Key.SIGN_IN_TYPE, null);
         sharedPreferenceManager.put(SharedPreferencesManager.Key.USER_ID, null);
         MDJInterceptor.jwt = "";

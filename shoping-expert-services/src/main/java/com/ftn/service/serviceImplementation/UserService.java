@@ -9,8 +9,6 @@ import com.ftn.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 /**
  * Created by Jasmina on 15/05/2018.
  */
@@ -29,6 +27,9 @@ public class UserService implements IUserService{
             try {
                 User user = new User();
                 user.merge(registrationDTO);
+                if(registrationDTO.getRegisterType().equals("GOOGLE")) {
+                    user.getInstancesOfUserDevices().add(registrationDTO.getDeviceInstance());
+                }
                 user = userRepository.save(user);
                 userDTO = new UserDTO(user);
             } catch (Exception e){
@@ -78,9 +79,23 @@ public class UserService implements IUserService{
         String password = loginDTO.getPassword();
         UserDTO user = getByEmailAndPassword(email, password);
         if(user == null){
-            credentialsOk = false;
+            return false;
         }
+        addDeviceInstanceToUser(user.getId(), loginDTO.getDeviceInstance());
         return credentialsOk;
+    }
+
+    @Override
+    public void removeDeviceInstanceFromUser(Long userId, String deviceInstance) {
+        User realUser = userRepository.getOne(userId);
+        realUser.getInstancesOfUserDevices().remove(deviceInstance);
+        userRepository.save(realUser);
+    }
+
+    private void addDeviceInstanceToUser(Long userId, String deviceInstance) {
+        User realUser = userRepository.getOne(userId);
+        realUser.getInstancesOfUserDevices().add(deviceInstance);
+        userRepository.save(realUser);
     }
 
     private boolean checkEmail(String email){

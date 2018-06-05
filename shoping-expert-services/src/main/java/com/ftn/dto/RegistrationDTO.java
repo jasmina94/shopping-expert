@@ -3,7 +3,6 @@ package com.ftn.dto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -23,5 +22,8 @@ public class RegistrationDTO {
 
     private String password;
 
+    private String deviceInstance;
+
+    private String registerType;
 
 }

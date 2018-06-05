@@ -14,4 +14,6 @@ public interface IUserService {
     UserDTO getByEmail(String email);
     UserDTO getByEmailAndPassword(String email, String password);
     boolean checkCredentials(LoginDTO loginDTO);
+
+    void removeDeviceInstanceFromUser(Long userId, String deviceInstance);
 }

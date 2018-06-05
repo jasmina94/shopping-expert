@@ -56,6 +56,7 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -213,6 +214,8 @@ public class LoginFragment extends Fragment {
                             FirebaseUser user = mAuth.getCurrentUser();
                             putSignInTypeIntoSharedPreferences(SIGN_IN_GOOGLE);
                             RegistrationDTO registrationDTO = new RegistrationDTO(user);
+                            registrationDTO.setDeviceInstance(sharedPreferencesManager.getString(SharedPreferencesManager.Key.DEVICE_INSTANCE.name()));
+                            registrationDTO.setRegisterType("GOOGLE");
                             callRegisterCustomUser(registrationDTO);
                         } else {
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
@@ -372,7 +375,7 @@ public class LoginFragment extends Fragment {
             mEmailWrapper.setError(getString(R.string.err_valid_email));
             mEmailWrapper.requestFocus();
         }else {
-            loginDTO = new LoginDTO(email, password);
+            loginDTO = new LoginDTO(email, password, sharedPreferencesManager.getString(SharedPreferencesManager.Key.DEVICE_INSTANCE.name()));
             LoginThread loginThread = new LoginThread(simpleLoginHandler);
             loginThread.start();
             Message msg = Message.obtain();

@@ -19,7 +19,8 @@ public class SharedPreferencesManager {
     public enum Key {
         JWT_KEY,
         USER_ID,
-        SIGN_IN_TYPE
+        SIGN_IN_TYPE,
+        DEVICE_INSTANCE
     }
 
     private SharedPreferencesManager(Context context) {

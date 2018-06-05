@@ -95,6 +95,7 @@ public class RegisterFragment extends Fragment {
                     mEmailWrapper.requestFocus();
                 }else {
                     registrationDTO = new RegistrationDTO(email, password, firstName, lastName);
+                    registrationDTO.setRegisterType("SIMPLE");
                     RegisterThread registerThread = new RegisterThread(handler);
                     registerThread.start();
                     Message msg = Message.obtain();

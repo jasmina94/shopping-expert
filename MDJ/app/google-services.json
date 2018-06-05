@@ -15,12 +15,24 @@
       },
       "oauth_client": [
         {
-          "client_id": "428591278435-kob82280jlnlv3njdkbvs4h62uf73nij.apps.googleusercontent.com",
+          "client_id": "428591278435-tedmhlq8qe7podsobagei1kc150g4ip2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ftn.mdj",
+            "certificate_hash": "ce7bb91c1fd2189673c1b5010fbf7fae4b3bff74"
+          }
+        },
+        {
+          "client_id": "428591278435-ri2lvad8o9blb3iv2oono62aevou50mc.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.ftn.mdj",
             "certificate_hash": "197c3067631f0bc50819610e85c78e88bf07d10f"
           }
+        },
+        {
+          "client_id": "428591278435-1pble1875jkuk6gd3p27tb3sug5035bq.apps.googleusercontent.com",
+          "client_type": 3
         },
         {
           "client_id": "428591278435-1pble1875jkuk6gd3p27tb3sug5035bq.apps.googleusercontent.com",
