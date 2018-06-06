@@ -21,6 +21,8 @@ public class ShoppingListDTO implements Serializable{
 
     private Long id;
 
+    private String creatorEmail;
+
     private String listName;
 
     private Boolean isSecret;

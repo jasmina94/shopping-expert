@@ -332,6 +332,8 @@ public class LoginFragment extends Fragment {
                 if(response.isSuccessfulOperation()) {
                     UserDTO userDTO = response.getEntity();
                     sharedPreferencesManager.put(SharedPreferencesManager.Key.USER_ID, userDTO.getId().intValue());
+                    sharedPreferencesManager.put(SharedPreferencesManager.Key.USER_EMAIL, userDTO.getEmail());
+
                     goToMainActivity();
                 } else {
                     message = response.getErrorMessage();

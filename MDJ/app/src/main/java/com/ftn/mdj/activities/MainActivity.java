@@ -142,10 +142,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 GenericResponse<UserDTO> response = (GenericResponse<UserDTO>) msg.obj;
                 if (response.isSuccessfulOperation()) {
                     sharedPreferenceManager.put(SharedPreferencesManager.Key.USER_ID, response.getEntity().getId().intValue());
+                    sharedPreferenceManager.put(SharedPreferencesManager.Key.USER_EMAIL, response.getEntity().getEmail());
+
                     updateUI(true, response.getEntity().getEmail());
                     loadLoggedUserLists();
                 } else {
                     sharedPreferenceManager.put(SharedPreferencesManager.Key.USER_ID, null);
+                    sharedPreferenceManager.put(SharedPreferencesManager.Key.USER_EMAIL, null);
                     loadNotLoggedUserLists();
                     updateUI(false, null);
                 }
@@ -241,6 +244,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         sharedPreferenceManager.put(SharedPreferencesManager.Key.SIGN_IN_TYPE, null);
         sharedPreferenceManager.put(SharedPreferencesManager.Key.USER_ID, null);
+        sharedPreferenceManager.put(SharedPreferencesManager.Key.USER_EMAIL, null);
+
         MDJInterceptor.jwt = "";
         Intent intent = new Intent(MainActivity.this, MainActivity.class);
         startActivity(intent);
