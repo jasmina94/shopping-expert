@@ -74,7 +74,11 @@
             android:name=".activities.MapsActivity"
             android:label="@string/title_activity_maps" />
         <activity android:name=".activities.ShoppingListActivity" />
-        <activity android:name=".activities.TrashActivity"></activity>
+        <activity android:name=".activities.TrashActivity" />
+        <activity
+            android:name=".activities.SettingsActivity"
+            android:label="@string/title_activity_settings" />
+        <activity android:name=".activities.SettingsBasicActivity"></activity>
     </application>
 
 </manifest>

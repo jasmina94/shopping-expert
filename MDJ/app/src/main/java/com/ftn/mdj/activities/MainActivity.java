@@ -95,7 +95,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             }
             case R.id.mnu_settings: {
-                Toast.makeText(MainActivity.this, "Show settings fragment!", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(MainActivity.this, SettingsBasicActivity.class);
+                startActivity(intent);
                 break;
             }
             case R.id.mnu_logout: {
