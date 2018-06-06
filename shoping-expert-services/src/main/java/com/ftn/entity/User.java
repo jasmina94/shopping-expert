@@ -7,11 +7,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by milca on 4/24/2018.
  */
@@ -39,6 +39,17 @@ public class User {
     @Column(unique = true, nullable = false)
     @Email
     private String email;
+
+    @Column
+    @ElementCollection(targetClass=String.class)
+    private List<String> instancesOfUserDevices = new ArrayList<>();
+
+    @Column
+    private Boolean showNotifications = true;
+
+    @Column
+    @ElementCollection(targetClass=String.class)
+    private List<String> blockedUsers = new ArrayList<>();
 
     public User(UserDTO userDTO){
         this.id = userDTO.getId();

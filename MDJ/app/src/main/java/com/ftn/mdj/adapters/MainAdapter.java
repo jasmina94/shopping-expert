@@ -74,7 +74,10 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
         holder.txt_name.setText(shoppingListDTO.getListName());
         holder.txt_status.setText(shoppingListDTO.getBoughtItems() + "/" + shoppingListDTO.getNumberOfItems());
         holder.img_locker.setVisibility(shoppingListDTO.getIsSecret() ? View.VISIBLE : View.INVISIBLE);
-
+        if(isUserLogedIn && !sharedPreferenceManager.getString(SharedPreferencesManager.Key.USER_EMAIL.name()).equals(shoppingListDTO.getCreatorEmail())) {
+            holder.txt_creatorEmail.setVisibility(View.VISIBLE);
+            holder.txt_creatorEmail.setText(sharedPreferenceManager.getString(SharedPreferencesManager.Key.USER_EMAIL.name()));
+        }
         holder.txt_option_mnu.setOnClickListener(view -> {
             PopupMenu popupMenu = new PopupMenu(context, holder.txt_option_mnu);
             popupMenu.inflate(R.menu.option_menu);
@@ -253,13 +256,15 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
         private TextView txt_status;
         private TextView txt_option_mnu;
         private ImageView img_locker;
+        private TextView txt_creatorEmail;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            txt_name = (TextView) itemView.findViewById(R.id.txt_list_name);
-            txt_status = (TextView) itemView.findViewById(R.id.txt_status);
-            txt_option_mnu = (TextView) itemView.findViewById(R.id.txt_option_mnu);
-            img_locker = (ImageView)itemView.findViewById(R.id.img_lock);
+            txt_name = itemView.findViewById(R.id.txt_list_name);
+            txt_status = itemView.findViewById(R.id.txt_status);
+            txt_option_mnu = itemView.findViewById(R.id.txt_option_mnu);
+            img_locker = itemView.findViewById(R.id.img_lock);
+            txt_creatorEmail = itemView.findViewById(R.id.listOwner);
         }
     }
 }

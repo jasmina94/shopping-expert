@@ -2,15 +2,11 @@ package com.ftn.dto;
 
 import com.ftn.entity.ShoppingList;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
-
-import javax.persistence.Column;
 
 /**
  * Created by milca on 4/25/2018.
@@ -20,6 +16,8 @@ import javax.persistence.Column;
 public class ShoppingListDTO {
 
     private Long id;
+
+    private String creatorEmail;
 
     private String listName;
 

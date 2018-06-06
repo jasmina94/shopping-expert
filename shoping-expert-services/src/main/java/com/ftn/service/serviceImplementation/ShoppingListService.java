@@ -1,17 +1,17 @@
 package com.ftn.service.serviceImplementation;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.ftn.dto.ShoppingListDTO;
 import com.ftn.entity.ShoppingList;
 import com.ftn.repository.ShoppingListRepository;
 import com.ftn.service.IShoppingListItemService;
 import com.ftn.service.IShoppingListService;
+import com.ftn.service.IUserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by milca on 4/25/2018.
@@ -25,6 +25,9 @@ public class ShoppingListService implements IShoppingListService {
     @Autowired
     private IShoppingListItemService iShoppingListItemService;
 
+    @Autowired
+    private IUserService iUserService;
+
     @Override
     public List<ShoppingListDTO> getListsForUserByStatus(Long loggedUserId, boolean isArchived) {
         List<ShoppingList> list = shoppingListRepository.findByCreatorIdAndIsArchived(loggedUserId, isArchived);
@@ -33,7 +36,7 @@ public class ShoppingListService implements IShoppingListService {
             ShoppingListDTO dto = new ShoppingListDTO(l);
             dto.setBoughtItems(iShoppingListItemService.getNumberOfPurchasedItems(l.getId()));
             dto.setNumberOfItems(iShoppingListItemService.getNumberOfItems(l.getId()));
-
+            dto.setCreatorEmail(iUserService.getById(loggedUserId.intValue()).getEmail());
             return dto;
         }).collect(Collectors.toList());
 

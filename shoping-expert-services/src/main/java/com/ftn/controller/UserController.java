@@ -99,4 +99,26 @@ public class UserController {
         }
         return response;
     }
+
+    @Transactional
+    @PostMapping(value = "/logout/{userId}/{deviceInstance}")
+    public GenericResponse logout(@PathVariable("userId") Long userId, @PathVariable("deviceInstance") String deviceInstance){
+        GenericResponse response = new GenericResponse();
+        userService.removeDeviceInstanceFromUser(userId, deviceInstance);
+        response.success(true);
+        return response;
+    }
+    
+    @Transactional
+    @PostMapping("/saveSettings/{userId}/{showNotifications}")
+    public GenericResponse<Boolean> saveSettings(@PathVariable Long userId, @PathVariable Boolean showNotifications) {
+        GenericResponse<Boolean> response = new GenericResponse<>();
+        boolean result = userService.saveSettings(userId, showNotifications);
+        if(result){
+            response.success(true);
+        }else {
+            response.error("Server side error while saving settings.");
+        }
+        return response;
+    }
 }

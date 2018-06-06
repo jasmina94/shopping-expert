@@ -4,6 +4,11 @@ import com.ftn.entity.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
@@ -25,6 +30,8 @@ public class UserDTO {
     private String firstName;
 
     private String lastName;
+    
+    private Boolean showNotifications = true;
 
     public UserDTO(User user){
         this.id = user.getId();
@@ -32,6 +39,7 @@ public class UserDTO {
         this.password = user.getPassword();
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
+        this.showNotifications = user.getShowNotifications();
     }
 
     public User constructEntity(){
@@ -41,6 +49,7 @@ public class UserDTO {
         user.setPassword(password);
         user.setFirstName(firstName);
         user.setLastName(lastName);
+        user.setShowNotifications(showNotifications);
         return user;
     }
 }

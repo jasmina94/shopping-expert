@@ -73,6 +73,13 @@
                 android:layout_alignParentTop="true"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingRight="@dimen/activity_horizontal_margin" />
+            <TextView
+                android:id="@+id/listOwner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                android:textColor="@color/colorAccent"
+                android:textStyle="italic"/>
 
         </LinearLayout>
 

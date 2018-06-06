@@ -11,13 +11,15 @@ public class UserDTO {
     private String email;
     private String password;
     private Long id;
+    private Boolean showNotifications;
 
-    public UserDTO(String firstName, String lastName, String email, String password, long id) {
+    public UserDTO(String firstName, String lastName, String email, String password, long id, Boolean showNotifications) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
         this.id = id;
+        this.showNotifications = showNotifications;
     }
 
     public String getFirstName() {
@@ -58,5 +60,13 @@ public class UserDTO {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Boolean getShowNotifications() {
+        return showNotifications;
+    }
+
+    public void setShowNotifications(Boolean showNotifications) {
+        this.showNotifications = showNotifications;
     }
 }

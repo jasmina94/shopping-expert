@@ -30,4 +30,10 @@ public interface IUserService {
 
     @GET(USER_PREFIX + "/forgetPass/{email}")
     Call<GenericResponse<Boolean>> forgetPassword(@Path("email") String email);
+
+    @POST(USER_PREFIX + "/logout/{userId}/{deviceInstance}")
+    Call<GenericResponse> logout(@Path("userId") Long userId, @Path("deviceInstance") String deviceInstance);
+
+    @POST(USER_PREFIX + "/saveSettings/{userId}/{showNotifications}")
+    Call<GenericResponse> saveSettings(@Path("userId") Long userId, @Path("showNotifications") Boolean showNotifications);
 }
