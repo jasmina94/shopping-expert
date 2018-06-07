@@ -76,10 +76,7 @@
         <activity android:name=".activities.ShoppingListActivity" />
         <activity android:name=".activities.TrashActivity" />
         <activity android:name=".activities.ShareListActivity"></activity>
-        <activity
-            android:name=".activities.SettingsActivity"
-            android:label="@string/title_activity_settings" />
-        <activity android:name=".activities.SettingsBasicActivity"></activity>
+        <activity android:name=".activities.SettingsActivity"></activity>
     </application>
 
 </manifest>

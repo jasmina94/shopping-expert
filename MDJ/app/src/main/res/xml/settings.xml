@@ -1,17 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <CheckBoxPreference
-        android:key="checkbox"
-        android:summary="Tap to check if on or off"
-        android:title="Checkbox Preference" />
-    <EditTextPreference
-        android:dialogTitle="Enter a text"
-        android:key="text"
-        android:summary="Click to show a text entry dialog"
-        android:title="EditText Preference" />
+
     <SwitchPreference
-        android:key="switch"
+        android:key="notifications_switch"
         android:title="Notifications"
+        android:textColor="?attr/colorPrimary"
+        android:background="?attr/colorPrimary"
         android:summary="Click to switch on or off notifications when someone shares a list with you."
         android:defaultValue="true"/>
+
+    <EditTextPreference
+        android:dialogTitle="Enter a email"
+        android:key="blocked_text"
+        android:summary="Enter a email of user which you want to block."
+        android:title="Block user" />
+
+    <ListPreference
+        android:entries="@array/list_values"
+        android:entryValues="@array/list_values"
+        android:dialogTitle="Choose email to unblock"
+        android:summary="List of blocked users. If you want to unblocked someone, choose email in list."
+        android:key="blocked_list"
+        android:title="Blocked users" />
+
+    <SwitchPreference
+        android:key="theme_switch"
+        android:title="Enable Dark Theme"
+        android:summary="Click to switch on or off dark theme."
+        android:defaultValue="false"/>
+
+
+
 </PreferenceScreen>
