@@ -7,6 +7,10 @@ import com.ftn.entity.ShoppingList;
 import com.ftn.entity.User;
 import com.ftn.repository.UserRepository;
 import com.ftn.service.IUserService;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -51,6 +55,12 @@ public class UserService implements IUserService{
         }catch (NullPointerException e){
             return userDTO;
         }
+    }
+
+    @Override
+    public User getByEmailRealUser(String email) {
+        User user = userRepository.findByEmail(email);
+        return user;
     }
 
     @Override
@@ -109,11 +119,11 @@ public class UserService implements IUserService{
     }
 
 	@Override
-	public boolean saveSettings(Long userId, Boolean showNotifications) {
+	public boolean saveShowNotifications(Long userId, Boolean showNotifications) {
 		 boolean success;
 	        try {
 	            User user = userRepository.findById(userId).orElseThrow(NullPointerException::new);
-	            user.setShowNotifications(showNotifications);
+	            user.setShowNotifications(showNotifications);            
 	            userRepository.save(user);
 	            success = true;
 	        } catch (NullPointerException e) {
@@ -121,5 +131,48 @@ public class UserService implements IUserService{
 	            success = false;
 	        }
 	        return success;
+	}
+	
+	@Override
+	public List<String> saveBlockedUsers(Long userId, String email, Boolean toBlock) {
+		List<String> response = new ArrayList<String>();
+	        try {
+	            User user = userRepository.findById(userId).orElseThrow(NullPointerException::new);            
+	            List<String> blockedUsers = user.getBlockedUsers();
+	            
+	            if(toBlock){
+	            	if(!blockedUsers.contains(email)){
+		            	blockedUsers.add(email);
+		            	///izbrisi serovane liste
+		            }
+	            }else{
+	            	if(blockedUsers.contains(email)){
+		            	blockedUsers.remove(email);
+		            }
+	            }            
+	            
+	            user.setBlockedUsers(blockedUsers);
+	            userRepository.save(user);
+	            
+	            response = blockedUsers;
+	        } catch (NullPointerException e) {
+	            e.printStackTrace();
+	            response = null;
+	        }
+	        return response;
+	}
+
+	@Override
+	public List<String> getBlockedUsers(Long userId) {
+		List<String> response = new ArrayList<String>();
+        try {
+            User user = userRepository.findById(userId).orElseThrow(NullPointerException::new);            
+            response = user.getBlockedUsers();
+
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            response = null;
+        }
+        return response;
 	}
 }

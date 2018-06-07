@@ -18,29 +18,29 @@ import retrofit2.Call;
 import retrofit2.Response;
 
 @Getter
-public class SettingsThread extends Thread {
+public class ShowNotificationsThread extends Thread {
     private Handler handler;
-    private Handler settingsHandler;
+    private Handler showNotificationsHandler;
     private Context context;
 
-    public SettingsThread(Long userId, Boolean showNotifications){
+    public ShowNotificationsThread(Long userId, Boolean showNotifications){
         this.context = MainActivity.instance.getApplicationContext();
         handler = new Handler() {
 
             @Override
             public void handleMessage(Message msg) {
-                ServiceUtils.userService.saveSettings(userId, showNotifications).enqueue(new retrofit2.Callback<GenericResponse>() {
+                ServiceUtils.userService.saveShowNotifications(userId, showNotifications).enqueue(new retrofit2.Callback<GenericResponse>() {
 
                     @Override
                     public void onResponse(Call<GenericResponse> call, Response<GenericResponse> response) {
                         System.out.println("Successfully saved settings!");
-                        settingsHandler.sendMessage(ServiceUtils.getHandlerMessageFromResponse(response));
+                        showNotificationsHandler.sendMessage(ServiceUtils.getHandlerMessageFromResponse(response));
                     }
 
                     @Override
                     public void onFailure(Call<GenericResponse> call, Throwable t) {
                         System.out.println("Error while saving settings!");
-                        settingsHandler.sendMessage(GenericResponse.getGenericServerErrorResponseMessage());
+                        showNotificationsHandler.sendMessage(GenericResponse.getGenericServerErrorResponseMessage());
                     }
                 });
                 super.handleMessage(msg);
@@ -54,7 +54,7 @@ public class SettingsThread extends Thread {
         if(Looper.myLooper() == null) {
             Looper.prepare();
         }
-        settingsHandler = new Handler(Looper.getMainLooper()) {
+        showNotificationsHandler = new Handler(Looper.getMainLooper()) {
             @Override
             public void handleMessage(Message msg) {
                 GenericResponse<Boolean> response = (GenericResponse<Boolean>) msg.obj;

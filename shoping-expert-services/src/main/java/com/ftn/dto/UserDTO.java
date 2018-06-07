@@ -32,6 +32,8 @@ public class UserDTO {
     private String lastName;
     
     private Boolean showNotifications = true;
+    
+    private List<String> blockedUsers = new ArrayList<>();
 
     public UserDTO(User user){
         this.id = user.getId();
@@ -40,6 +42,7 @@ public class UserDTO {
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
         this.showNotifications = user.getShowNotifications();
+        this.blockedUsers = user.getBlockedUsers();
     }
 
     public User constructEntity(){
@@ -50,6 +53,7 @@ public class UserDTO {
         user.setFirstName(firstName);
         user.setLastName(lastName);
         user.setShowNotifications(showNotifications);
+        user.setBlockedUsers(blockedUsers);
         return user;
     }
 }

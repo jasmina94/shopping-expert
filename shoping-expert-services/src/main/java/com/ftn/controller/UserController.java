@@ -10,6 +10,8 @@ import com.ftn.util.JWTUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 
@@ -110,14 +112,42 @@ public class UserController {
     }
     
     @Transactional
-    @PostMapping("/saveSettings/{userId}/{showNotifications}")
-    public GenericResponse<Boolean> saveSettings(@PathVariable Long userId, @PathVariable Boolean showNotifications) {
+    @PostMapping("/saveShowNotifications/{userId}/{showNotifications}")
+    public GenericResponse<Boolean> saveShowNotifications(@PathVariable Long userId, @PathVariable Boolean showNotifications) {
         GenericResponse<Boolean> response = new GenericResponse<>();
-        boolean result = userService.saveSettings(userId, showNotifications);
+        boolean result = userService.saveShowNotifications(userId, showNotifications);
         if(result){
             response.success(true);
         }else {
             response.error("Server side error while saving settings.");
+        }
+        return response;
+    }
+    
+    @Transactional
+    @PostMapping("/saveBlockedUsers/{userId}/{email}/{toBlock}")
+    public GenericResponse<List<String>> saveBlockedUsers(@PathVariable Long userId, @PathVariable String email, @PathVariable Boolean toBlock) {
+        GenericResponse response = new GenericResponse();
+        List<String> blockedUsers = userService.saveBlockedUsers(userId, email, toBlock);
+        if(blockedUsers == null){
+        	response.success(false);
+        }else {
+        	response.success(true);
+            response.setEntity(blockedUsers);
+        }
+        return response;
+    }
+    
+    @Transactional
+    @GetMapping("/getBlockedUsers/{userId}")
+    public GenericResponse<List<String>> getBlockedUsers(@PathVariable Long userId) {
+        GenericResponse response = new GenericResponse();
+        List<String> blockedUsers = userService.getBlockedUsers(userId);
+        if(blockedUsers == null){
+        	response.success(false);
+        }else {
+        	response.success(true);
+            response.setEntity(blockedUsers);
         }
         return response;
     }

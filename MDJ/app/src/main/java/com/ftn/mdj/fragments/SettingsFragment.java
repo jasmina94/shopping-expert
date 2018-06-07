@@ -4,26 +4,28 @@ package com.ftn.mdj.fragments;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Message;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
-import android.preference.PreferenceManager;
 import android.preference.SwitchPreference;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatDelegate;
-import android.widget.Switch;
 import android.widget.Toast;
 
 import com.ftn.mdj.R;
 import com.ftn.mdj.activities.MainActivity;
-import com.ftn.mdj.activities.SettingsActivity;
-import com.ftn.mdj.threads.SettingsThread;
-import com.ftn.mdj.threads.UploadListThread;
+import com.ftn.mdj.dto.ShoppingListDTO;
+import com.ftn.mdj.threads.SaveBlockedUsersThread;
+import com.ftn.mdj.threads.ShowNotificationsThread;
 import com.ftn.mdj.utils.SharedPreferencesManager;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static java.lang.System.in;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -32,6 +34,7 @@ public class SettingsFragment extends PreferenceFragment {
     private Context mContext;
     private Activity mActivity;
     private SharedPreferencesManager sharedPreferenceManager;
+    private List<String> blockedUsers = new ArrayList<String>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -51,13 +54,9 @@ public class SettingsFragment extends PreferenceFragment {
             @Override
             public boolean onPreferenceChange(Preference preference, Object o) {
                 if(onOffNotifications.isChecked()){
-                    Toast.makeText(mActivity,"Unchecked", Toast.LENGTH_SHORT).show();
-
                     // Checked the switch programmatically
                     onOffNotifications.setChecked(false);
                 }else {
-                    Toast.makeText(mActivity,"Checked",Toast.LENGTH_SHORT).show();
-
                     // Unchecked the switch programmatically
                     onOffNotifications.setChecked(true);
                 }
@@ -65,10 +64,10 @@ public class SettingsFragment extends PreferenceFragment {
                 SharedPreferencesManager.getInstance(mContext).put(SharedPreferencesManager.Key.SHOW_NOTIFICATIONS, onOffNotifications.isChecked());
 
                 if(userId!=0){
-                    SettingsThread settingsThread = new SettingsThread(userId, onOffNotifications.isChecked());
-                    settingsThread.start();
+                    ShowNotificationsThread showNotificationsThread = new ShowNotificationsThread(userId, onOffNotifications.isChecked());
+                    showNotificationsThread.start();
                     Message msg = Message.obtain();
-                    settingsThread.getHandler().sendMessage(msg);
+                    showNotificationsThread.getHandler().sendMessage(msg);
                 }
 
                 return false;
@@ -88,16 +87,12 @@ public class SettingsFragment extends PreferenceFragment {
             @Override
             public boolean onPreferenceChange(Preference preference, Object o) {
                 if(onOffDarkTheme.isChecked()){
-                    Toast.makeText(mActivity,"Unchecked", Toast.LENGTH_SHORT).show();
-
                     // Checked the switch programmatically
                     onOffDarkTheme.setChecked(false);
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
                     restartApp();
 
                 }else {
-                    Toast.makeText(mActivity,"Checked",Toast.LENGTH_SHORT).show();
-
                     // Unchecked the switch programmatically
                     onOffDarkTheme.setChecked(true);
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
@@ -114,23 +109,39 @@ public class SettingsFragment extends PreferenceFragment {
             @Override
             public boolean onPreferenceChange(Preference preference, Object o) {
                 String emailToBlock = blockedEditText.getEditText().getEditableText().toString();
-                System.out.print("blockedEditText " + emailToBlock);
                 Toast.makeText(mActivity,"edit "+emailToBlock , Toast.LENGTH_SHORT).show();
+                if(userId!=0){
+                    SaveBlockedUsersThread blockedUsersThread = new SaveBlockedUsersThread(userId, emailToBlock, true);
+                    blockedUsersThread.start();
+                    Message msg = Message.obtain();
+                    blockedUsersThread.getHandler().sendMessage(msg);
+                }
                 return false;
             }
         });
 
         final ListPreference blockedList = (ListPreference) findPreference("blocked_list");
-        CharSequence[] entries = new CharSequence[]{"One", "Two", "Three"};
-        blockedList.setEntries(entries);
-        blockedList.setEntryValues(entries);
+        //CharSequence[] entries = new CharSequence[]{"One", "Two", "Three"};
+        if(!blockedUsers.isEmpty()){
+            CharSequence[] entries = new CharSequence[blockedUsers.size()];
+            for(int i=0;i<blockedUsers.size();i++){
+                entries[i] = blockedUsers.get(i);
+            }
+            blockedList.setEntries(entries);
+            blockedList.setEntryValues(entries);
+        }
 
         blockedList.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object o) {
                 String emailToUnblock = o.toString();
-                System.out.print("desaaa " + emailToUnblock);
                 Toast.makeText(mActivity,"edit "+emailToUnblock , Toast.LENGTH_SHORT).show();
+                if(userId!=0){
+                    SaveBlockedUsersThread blockedUsersThread = new SaveBlockedUsersThread(userId, emailToUnblock, false);
+                    blockedUsersThread.start();
+                    Message msg = Message.obtain();
+                    blockedUsersThread.getHandler().sendMessage(msg);
+                }
                 return false;
             }
         });
@@ -140,5 +151,9 @@ public class SettingsFragment extends PreferenceFragment {
         Intent i = new Intent(mContext,MainActivity.class);
         startActivity(i);
         mActivity.finish();
+    }
+
+    public void setBlockedUsers(List<String> blockedUsers){ //throws IOException {
+        this.blockedUsers = blockedUsers;
     }
 }

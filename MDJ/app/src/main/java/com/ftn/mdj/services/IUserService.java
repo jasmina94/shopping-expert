@@ -5,6 +5,8 @@ import com.ftn.mdj.dto.RegistrationDTO;
 import com.ftn.mdj.dto.UserDTO;
 import com.ftn.mdj.utils.GenericResponse;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -34,6 +36,12 @@ public interface IUserService {
     @POST(USER_PREFIX + "/logout/{userId}/{deviceInstance}")
     Call<GenericResponse> logout(@Path("userId") Long userId, @Path("deviceInstance") String deviceInstance);
 
-    @POST(USER_PREFIX + "/saveSettings/{userId}/{showNotifications}")
-    Call<GenericResponse> saveSettings(@Path("userId") Long userId, @Path("showNotifications") Boolean showNotifications);
+    @POST(USER_PREFIX + "/saveShowNotifications/{userId}/{showNotifications}")
+    Call<GenericResponse> saveShowNotifications(@Path("userId") Long userId, @Path("showNotifications") Boolean showNotifications);
+
+    @POST(USER_PREFIX + "/saveBlockedUsers/{userId}/{email}/{toBlock}")
+    Call<GenericResponse<List<String>>> saveBlockedUsers(@Path("userId") Long userId, @Path("email") String email, @Path("toBlock") Boolean toBlock);
+
+    @GET(USER_PREFIX + "/getBlockedUsers/{userId}")
+    Call<GenericResponse<List<String>>> getBlockedUsers(@Path("userId") Long userId);
 }

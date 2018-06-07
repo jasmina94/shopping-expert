@@ -1,5 +1,7 @@
 package com.ftn.mdj.dto;
 
+import java.util.List;
+
 /**
  * Created by Jasmina on 17/05/2018.
  */
@@ -12,14 +14,16 @@ public class UserDTO {
     private String password;
     private Long id;
     private Boolean showNotifications;
+    private List<String> blockedUsers;
 
-    public UserDTO(String firstName, String lastName, String email, String password, long id, Boolean showNotifications) {
+    public UserDTO(String firstName, String lastName, String email, String password, long id, Boolean showNotifications, List<String> blockedUsers) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
         this.id = id;
         this.showNotifications = showNotifications;
+        this.blockedUsers = blockedUsers;
     }
 
     public String getFirstName() {
@@ -68,5 +72,13 @@ public class UserDTO {
 
     public void setShowNotifications(Boolean showNotifications) {
         this.showNotifications = showNotifications;
+    }
+
+    public List<String> getBlockedUsers() {
+        return blockedUsers;
+    }
+
+    public void setBlockedUsers(List<String> blockedUsers) {
+        this.blockedUsers = blockedUsers;
     }
 }

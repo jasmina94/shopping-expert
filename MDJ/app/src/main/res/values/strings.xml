@@ -90,6 +90,7 @@
     <string name="title_trash">Trash</string>
     <string name="title_map">Shopping place</string>
     <string name="friend_list_is_empty">Friend list is empty</string>
+    <string name="ShareList">Share list</string>
 
     <!-- Strings related to Settings -->
     <string name="title_settings">Settings</string>

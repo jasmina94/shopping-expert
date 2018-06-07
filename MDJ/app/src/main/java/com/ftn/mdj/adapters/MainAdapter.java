@@ -19,7 +19,9 @@ import android.widget.Toast;
 
 import com.ftn.mdj.R;
 import com.ftn.mdj.activities.MapsActivity;
+import com.ftn.mdj.activities.ShareListActivity;
 import com.ftn.mdj.activities.ShoppingListActivity;
+import com.ftn.mdj.activities.TrashActivity;
 import com.ftn.mdj.dto.ShoppingListDTO;
 import com.ftn.mdj.fragments.MainFragment;
 import com.ftn.mdj.threads.ArchiveListThread;
@@ -30,6 +32,7 @@ import com.ftn.mdj.utils.GenericResponse;
 import com.ftn.mdj.utils.SharedPreferencesManager;
 import com.ftn.mdj.utils.UtilHelper;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -92,7 +95,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
                         archiveList(shoppingListDTO);
                         break;
                     case R.id.mnu_share:
-                        Toast.makeText(context, "Shared", Toast.LENGTH_LONG).show();
+                        shareList(shoppingListDTO.getId());
                         break;
                     case R.id.mnu_secret:
                         changeListPrivacy(shoppingListDTO);
@@ -110,6 +113,12 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
             });
             popupMenu.show();
         });
+    }
+
+    private void shareList(Long listId) {
+        Intent intent = new Intent(context, ShareListActivity.class);
+        intent.putExtra("selectedShoppingListId", listId);
+        context.startActivity(intent);
     }
 
     private void archiveList(ShoppingListDTO shoppingListDTO){
