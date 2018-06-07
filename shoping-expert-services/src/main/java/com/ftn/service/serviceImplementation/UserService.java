@@ -53,6 +53,12 @@ public class UserService implements IUserService{
     }
 
     @Override
+    public User getByEmailRealUser(String email) {
+        User user = userRepository.findByEmail(email);
+        return user;
+    }
+
+    @Override
     public UserDTO getByEmail(String email) {
         UserDTO userDTO = null;
         User user = userRepository.findByEmail(email);

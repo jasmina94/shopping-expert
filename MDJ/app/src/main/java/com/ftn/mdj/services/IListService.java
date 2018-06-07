@@ -4,6 +4,7 @@ import com.ftn.mdj.dto.ShoppingListDTO;
 import com.ftn.mdj.utils.GenericResponse;
 
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -26,6 +27,9 @@ public interface IListService {
 
     @GET(USER_PREFIX + "/listsByStatus/{isArchived}/{userId}")
     Call<GenericResponse<List<ShoppingListDTO>>> listsByStatus(@Path("isArchived") Boolean isArchived, @Path("userId") Long userId);
+
+    @GET(USER_PREFIX + "/getFriendList/{listId}/{userId}")
+    Call<GenericResponse<Map<String, Boolean>>> getFriendList(@Path("listId") Long listId, @Path("userId") Long userId);
 
     @DELETE(USER_PREFIX + "/archive/{listId}")
     Call<GenericResponse<ShoppingListDTO>> archive(@Path("listId") Long listId);

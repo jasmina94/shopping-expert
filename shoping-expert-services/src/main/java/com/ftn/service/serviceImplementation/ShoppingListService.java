@@ -1,7 +1,9 @@
 package com.ftn.service.serviceImplementation;
 
 import com.ftn.dto.ShoppingListDTO;
+import com.ftn.dto.UserDTO;
 import com.ftn.entity.ShoppingList;
+import com.ftn.entity.User;
 import com.ftn.repository.ShoppingListRepository;
 import com.ftn.service.IShoppingListItemService;
 import com.ftn.service.IShoppingListService;
@@ -10,7 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -142,14 +148,16 @@ public class ShoppingListService implements IShoppingListService {
     }
 
     @Override
-    public boolean shareList(Long listId, String sharedWith) {
-        //check if user is registratet if not, send email invitation
-        String curentlyLoggedUserName = "Milica";
-        String subject = "MDJ - List shared";
-        // will add url to
-        String message = "Mr/s " + curentlyLoggedUserName + ", \n " + curentlyLoggedUserName + " has just shared shopping list with you. Click on notification. \n ";
-//        emailService.sendEmail(subject, message, sharedWith);
-        return true;
+    public List<String> shareList(Long listId, String sharedWith) {
+        User user = iUserService.getByEmailRealUser(sharedWith);
+        if(user == null || user.getBlockedUsers().contains(sharedWith)) {
+            return null;
+        }
+        ShoppingList shoppingList = shoppingListRepository.getOne(listId);
+        shoppingList.getSharedWith().add(sharedWith);
+        shoppingListRepository.save(shoppingList);
+        List<String> response = user.getShowNotifications() ? user.getInstancesOfUserDevices() : new ArrayList<>();
+        return response;
     }
 
     @Override
@@ -199,4 +207,32 @@ public class ShoppingListService implements IShoppingListService {
         return success;
 	}
 
+
+    @Override
+    public Map<String, Boolean> getFriendList(Long listId, Long userId) {
+        ShoppingList shoppingList = shoppingListRepository.getOne(listId);
+        UserDTO user = iUserService.getById(userId.intValue());
+        Set<String> sharedWith = shoppingList.getSharedWith();
+
+        List<ShoppingList> allShopingLists = shoppingListRepository.findAll();
+
+        Set<String> friendEmails = allShopingLists.stream().filter(sl -> sl.getSharedWith().contains(user.getEmail()))
+                .map(sl -> iUserService.getById(sl.getCreatorId().intValue()).getEmail()).collect(Collectors.toSet());
+
+        Map<String, Boolean> response = sharedWith.stream().collect(Collectors.toMap(Function.identity(), a -> Boolean.TRUE));
+
+        friendEmails.retainAll(sharedWith);
+
+        Map<String, Boolean> withFalse = friendEmails.stream().collect(Collectors.toMap(Function.identity(),a -> Boolean.FALSE));
+
+        response.putAll(withFalse);
+
+        return response;
+    }
+
+    public void unshareList(Long listId, String unshareEmail) {
+        ShoppingList shoppingList = shoppingListRepository.getOne(listId);
+        shoppingList.getSharedWith().remove(unshareEmail);
+        shoppingListRepository.save(shoppingList);
+    }
 }

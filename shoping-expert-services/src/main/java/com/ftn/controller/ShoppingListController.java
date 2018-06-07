@@ -12,6 +12,7 @@ import javax.transaction.Transactional;
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by milca on 4/25/2018.
@@ -165,5 +166,17 @@ public class ShoppingListController {
         return response;
     }
     
-    
+    @Transactional
+    @GetMapping("/getFriendList/{listId}/{userId}")
+    public GenericResponse<Map<String, Boolean>> getFriendList(@PathVariable("listId") Long listId, @PathVariable("userId") Long userId) {
+        GenericResponse response = new GenericResponse();
+        Map<String, Boolean> friendList = shoppingListService.getFriendList(listId, userId);
+        if(friendList == null) {
+            response.success(false);
+        } else {
+            response.success(true);
+            response.setEntity(friendList);
+        }
+        return response;
+    }
 }
