@@ -12,7 +12,7 @@
     <EditTextPreference
         android:dialogTitle="Enter a email"
         android:key="blocked_text"
-        android:summary="Enter a email of user which you want to block."
+        android:summary="Enter a email of user which you want to block. When you block someone, all shared list between two of you will be removed."
         android:title="Block user" />
 
     <ListPreference
@@ -22,6 +22,15 @@
         android:summary="Click to see list of blocked users. If you want to unblocked someone, choose email in list."
         android:key="blocked_list"
         android:title="Unblock user" />
+
+   <!-- <ListPreference
+        android:entries="@array/distance_list_values"
+        android:entryValues="@array/distance_db_values"
+        android:defaultValue="100"
+        android:dialogTitle="Choose distance from shopping place"
+        android:summary="Set distance from shopping place when do you want to receive notification. Default distance is 100 m."
+        android:key="distance_list"
+        android:title="Distance from shopping place" />-->
 
     <SwitchPreference
         android:key="theme_switch"

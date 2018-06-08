@@ -68,6 +68,8 @@ public class SettingsFragment extends PreferenceFragment {
                     showNotificationsThread.start();
                     Message msg = Message.obtain();
                     showNotificationsThread.getHandler().sendMessage(msg);
+                }else{
+                    Toast.makeText(mActivity,"Login to use this setting.", Toast.LENGTH_SHORT).show();
                 }
 
                 return false;
@@ -109,19 +111,19 @@ public class SettingsFragment extends PreferenceFragment {
             @Override
             public boolean onPreferenceChange(Preference preference, Object o) {
                 String emailToBlock = blockedEditText.getEditText().getEditableText().toString();
-                Toast.makeText(mActivity,"edit "+emailToBlock , Toast.LENGTH_SHORT).show();
                 if(userId!=0){
                     SaveBlockedUsersThread blockedUsersThread = new SaveBlockedUsersThread(userId, emailToBlock, true);
                     blockedUsersThread.start();
                     Message msg = Message.obtain();
                     blockedUsersThread.getHandler().sendMessage(msg);
+                }else{
+                    Toast.makeText(mActivity,"Login to use this setting.", Toast.LENGTH_SHORT).show();
                 }
                 return false;
             }
         });
 
         final ListPreference blockedList = (ListPreference) findPreference("blocked_list");
-        //CharSequence[] entries = new CharSequence[]{"One", "Two", "Three"};
         if(!blockedUsers.isEmpty()){
             CharSequence[] entries = new CharSequence[blockedUsers.size()];
             for(int i=0;i<blockedUsers.size();i++){
@@ -135,16 +137,43 @@ public class SettingsFragment extends PreferenceFragment {
             @Override
             public boolean onPreferenceChange(Preference preference, Object o) {
                 String emailToUnblock = o.toString();
-                Toast.makeText(mActivity,"edit "+emailToUnblock , Toast.LENGTH_SHORT).show();
                 if(userId!=0){
                     SaveBlockedUsersThread blockedUsersThread = new SaveBlockedUsersThread(userId, emailToUnblock, false);
                     blockedUsersThread.start();
                     Message msg = Message.obtain();
                     blockedUsersThread.getHandler().sendMessage(msg);
+                }else{
+                    Toast.makeText(mActivity,"Login to use this setting.", Toast.LENGTH_SHORT).show();
                 }
                 return false;
             }
         });
+
+        /*final ListPreference distanceList = (ListPreference) findPreference("distance_list");
+
+        distanceList.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object o) {
+                String textValue = o.toString();
+
+                ListPreference listPreference = (ListPreference) preference;
+                int index = listPreference.findIndexOfValue(textValue);
+
+                CharSequence[] entries = listPreference.getEntries();
+
+                if(index >= 0)
+                    Toast.makeText(preference.getContext(), entries[index], Toast.LENGTH_LONG);
+                if(userId!=0){
+                    *//*SaveBlockedUsersThread blockedUsersThread = new SaveBlockedUsersThread(userId, emailToUnblock, false);
+                    blockedUsersThread.start();
+                    Message msg = Message.obtain();
+                    blockedUsersThread.getHandler().sendMessage(msg);*//*
+                }else{
+                    Toast.makeText(mActivity,"Login to use this setting.", Toast.LENGTH_SHORT).show();
+                }
+                return false;
+            }
+        });*/
     }
 
     public void restartApp(){

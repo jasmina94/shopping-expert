@@ -1,18 +1,21 @@
 package com.ftn.service.serviceImplementation;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.ftn.dto.LoginDTO;
 import com.ftn.dto.RegistrationDTO;
 import com.ftn.dto.UserDTO;
 import com.ftn.entity.ShoppingList;
 import com.ftn.entity.User;
+import com.ftn.repository.ShoppingListRepository;
 import com.ftn.repository.UserRepository;
 import com.ftn.service.IUserService;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 /**
  * Created by Jasmina on 15/05/2018.
@@ -22,6 +25,8 @@ public class UserService implements IUserService{
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private ShoppingListRepository shoppingListRepository;
 
 
     @Override
@@ -137,24 +142,49 @@ public class UserService implements IUserService{
 	public List<String> saveBlockedUsers(Long userId, String email, Boolean toBlock) {
 		List<String> response = new ArrayList<String>();
 	        try {
-	            User user = userRepository.findById(userId).orElseThrow(NullPointerException::new);            
-	            List<String> blockedUsers = user.getBlockedUsers();
+	            User user = userRepository.findById(userId).orElseThrow(NullPointerException::new);  
+	            User blockedUser = userRepository.findByEmail(email);
 	            
-	            if(toBlock){
-	            	if(!blockedUsers.contains(email)){
-		            	blockedUsers.add(email);
-		            	///izbrisi serovane liste
-		            }
+	            if(blockedUser!=null){
+	            	 List<String> blockedUsers = user.getBlockedUsers();
+	 	            
+	 	            if(toBlock){
+	 	            	if(!blockedUsers.contains(email)){
+	 		            	blockedUsers.add(email);
+	 		            	///izbrisi serovane liste
+	 		            	//pronadje sve liste kojima je kreator blokirani, a serovane su sa ulogovanim
+	 		            	//izbrise ulogovanog iz liste serovanih, i blokiranog iz listi koje je ulogovani serovao sa njim
+	 		            	List<ShoppingList> allShopingLists = shoppingListRepository.findAll();
+	 		            	List<ShoppingList> sharedListsWhereBlockedIsCreator = (List<ShoppingList>) allShopingLists.stream()
+	 		            			.filter(sl -> sl.getSharedWith().contains(user.getEmail()) && sl.getCreatorId() == blockedUser.getId()).collect(Collectors.toList());
+	 		            	
+	 		            	for(int i=0;i<sharedListsWhereBlockedIsCreator.size();i++){
+	 		            		sharedListsWhereBlockedIsCreator.get(i).getSharedWith().remove(user.getEmail());
+	 		            		shoppingListRepository.save(sharedListsWhereBlockedIsCreator.get(i));
+	 		            	}	
+	 		            	
+	 		            	List<ShoppingList> sharedListsWhereLoggedIsCreator = (List<ShoppingList>) allShopingLists.stream()
+	 		            			.filter(sl -> sl.getSharedWith().contains(blockedUser.getEmail()) && sl.getCreatorId() == user.getId()).collect(Collectors.toList());
+	 		            	
+	 		            	for(int i=0;i<sharedListsWhereLoggedIsCreator.size();i++){
+	 		            		sharedListsWhereLoggedIsCreator.get(i).getSharedWith().remove(blockedUser.getEmail());
+	 		            		shoppingListRepository.save(sharedListsWhereLoggedIsCreator.get(i));
+	 		            	}	 
+	 		            	
+	 		            }
+	 	            }else{
+	 	            	if(blockedUsers.contains(email)){
+	 		            	blockedUsers.remove(email);
+	 		            }
+	 	            }            
+	 	            
+	 	            user.setBlockedUsers(blockedUsers);
+	 	            userRepository.save(user);
+	 	            
+	 	            response = blockedUsers;
 	            }else{
-	            	if(blockedUsers.contains(email)){
-		            	blockedUsers.remove(email);
-		            }
-	            }            
-	            
-	            user.setBlockedUsers(blockedUsers);
-	            userRepository.save(user);
-	            
-	            response = blockedUsers;
+	            	response = null;
+	            }	           
 	        } catch (NullPointerException e) {
 	            e.printStackTrace();
 	            response = null;
