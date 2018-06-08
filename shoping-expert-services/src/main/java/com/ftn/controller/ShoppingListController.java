@@ -134,10 +134,17 @@ public class ShoppingListController {
     }
 
     @Transactional
-    @PutMapping("shareList/{listId}/{sharedWith}")
-    public ResponseEntity shareList(@PathVariable Long listId, @PathVariable String sharedWith) {
-        shoppingListService.shareList(listId, sharedWith);
-        return new ResponseEntity<>(HttpStatus.OK);
+    @PutMapping("/shareList/{listId}/{sharedWith}")
+    public GenericResponse<List<String>> shareList(@PathVariable Long listId, @PathVariable String sharedWith) {
+        GenericResponse response = new GenericResponse();
+        List<String> shareDevices = shoppingListService.shareList(listId, sharedWith);
+        if(shareDevices == null) {
+            response.success(false);
+        } else {
+            response.success(true);
+            response.setEntity(shareDevices);
+        }
+        return response;
     }
     
     @Transactional

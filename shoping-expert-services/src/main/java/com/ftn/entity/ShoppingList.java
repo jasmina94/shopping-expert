@@ -43,7 +43,7 @@ public class  ShoppingList {
     private Long creatorId;
 
     @Column
-    @ElementCollection(targetClass=Long.class)
+    @ElementCollection(targetClass=String.class)
     private Set<String> sharedWith = new HashSet<>();
 
     //need to see how we will add location of shopping center, so I'll leave it for now

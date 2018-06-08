@@ -79,7 +79,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
         holder.img_locker.setVisibility(shoppingListDTO.getIsSecret() ? View.VISIBLE : View.INVISIBLE);
         if(isUserLogedIn && !sharedPreferenceManager.getString(SharedPreferencesManager.Key.USER_EMAIL.name()).equals(shoppingListDTO.getCreatorEmail())) {
             holder.txt_creatorEmail.setVisibility(View.VISIBLE);
-            holder.txt_creatorEmail.setText(sharedPreferenceManager.getString(SharedPreferencesManager.Key.USER_EMAIL.name()));
+            holder.txt_creatorEmail.setText(shoppingListDTO.getCreatorEmail());
         }
         holder.txt_option_mnu.setOnClickListener(view -> {
             PopupMenu popupMenu = new PopupMenu(context, holder.txt_option_mnu);

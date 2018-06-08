@@ -49,6 +49,9 @@ public interface IListService {
     @PUT(USER_PREFIX + "/restore/{listId}")
     Call<GenericResponse<Boolean>> restore(@Path("listId") Long listId);
 
+    @PUT(USER_PREFIX + "/shareList/{listId}/{sharedWith}")
+    Call<GenericResponse<List<String>>> shareList(@Path("listId") Long listId, @Path("sharedWith") String sharedWith);
+
     @DELETE(USER_PREFIX + "/deleteList/{listId}")
     Call<GenericResponse<Boolean>> deleteList(@Path("listId") Long listId);
 

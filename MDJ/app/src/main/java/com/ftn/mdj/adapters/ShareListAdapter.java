@@ -1,6 +1,7 @@
 package com.ftn.mdj.adapters;
 
 import android.content.Context;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -60,8 +61,8 @@ public class ShareListAdapter extends RecyclerView.Adapter<ShareListAdapter.View
     public class ViewHolder extends RecyclerView.ViewHolder{
 
         private TextView txt_friend;
-        private Button btn_share_list;
-        private Button btn_unshare_list;
+        private FloatingActionButton btn_share_list;
+        private FloatingActionButton btn_unshare_list;
 
         public ViewHolder(View itemView) {
             super(itemView);
