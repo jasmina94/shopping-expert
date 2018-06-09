@@ -13,7 +13,7 @@ import com.ftn.mdj.activities.MainActivity;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
 
-public class FirebaseIdService extends FirebaseInstanceIdService {
+public class FireIDService extends FirebaseInstanceIdService {
 
 
     @Override
@@ -21,6 +21,7 @@ public class FirebaseIdService extends FirebaseInstanceIdService {
 
 
         String tkn = FirebaseInstanceId.getInstance().getToken();
+        System.out.println("Poslao token na server ===============================================================");
 
         sendRegistrationToServer(tkn);
     }
@@ -28,6 +29,7 @@ public class FirebaseIdService extends FirebaseInstanceIdService {
 
     private void sendRegistrationToServer(String token) {
         // TODO: Implement this method to send token to your app server.
+        System.out.println("Registrovao se na server ===============================================================");
 
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

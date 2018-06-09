@@ -168,7 +168,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             FirebaseUser currentUser = mAuth.getCurrentUser();
             if(currentUser != null){
                 updateUI(true, currentUser.getEmail());
-                loadLoggedUserLists();;
+                loadLoggedUserLists();
             }else {
                 updateUI(false, null);
                 loadNotLoggedUserLists();
