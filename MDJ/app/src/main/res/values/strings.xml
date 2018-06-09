@@ -102,9 +102,9 @@
         <item>50 m</item>
         <item>100 m</item>
     </string-array>
-    <integer-array name="distance_db_values">
-        <item >10</item>
-        <item >50</item>
-        <item >100</item>
-    </integer-array>
+    <string-array name="distance_db_values">
+        <item>10</item>
+        <item>50</item>
+        <item>100</item>
+    </string-array>
 </resources>

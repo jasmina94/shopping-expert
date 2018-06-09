@@ -15,8 +15,9 @@ public class UserDTO {
     private Long id;
     private Boolean showNotifications;
     private List<String> blockedUsers;
+    private Integer distanceForLocation;
 
-    public UserDTO(String firstName, String lastName, String email, String password, long id, Boolean showNotifications, List<String> blockedUsers) {
+    public UserDTO(String firstName, String lastName, String email, String password, long id, Boolean showNotifications, List<String> blockedUsers, Integer distanceForLocation) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -24,6 +25,7 @@ public class UserDTO {
         this.id = id;
         this.showNotifications = showNotifications;
         this.blockedUsers = blockedUsers;
+        this.distanceForLocation = distanceForLocation;
     }
 
     public String getFirstName() {
@@ -80,5 +82,13 @@ public class UserDTO {
 
     public void setBlockedUsers(List<String> blockedUsers) {
         this.blockedUsers = blockedUsers;
+    }
+
+    public Integer getDistanceForLocation() {
+        return distanceForLocation;
+    }
+
+    public void setDistanceForLocation(Integer distanceForLocation) {
+        this.distanceForLocation = distanceForLocation;
     }
 }

@@ -19,6 +19,7 @@ import com.ftn.mdj.R;
 import com.ftn.mdj.activities.MainActivity;
 import com.ftn.mdj.dto.ShoppingListDTO;
 import com.ftn.mdj.threads.SaveBlockedUsersThread;
+import com.ftn.mdj.threads.SaveDistanceThread;
 import com.ftn.mdj.threads.ShowNotificationsThread;
 import com.ftn.mdj.utils.SharedPreferencesManager;
 
@@ -149,8 +150,10 @@ public class SettingsFragment extends PreferenceFragment {
             }
         });
 
-        /*final ListPreference distanceList = (ListPreference) findPreference("distance_list");
+        int distance =  SharedPreferencesManager.getInstance(mContext).getInt(SharedPreferencesManager.Key.DISTANCE.name());
+        final ListPreference distanceList = (ListPreference) findPreference("distance_list");
 
+        distanceList.setValue(""+distance);
         distanceList.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object o) {
@@ -161,19 +164,21 @@ public class SettingsFragment extends PreferenceFragment {
 
                 CharSequence[] entries = listPreference.getEntries();
 
+                distanceList.setValue(textValue);
+
                 if(index >= 0)
-                    Toast.makeText(preference.getContext(), entries[index], Toast.LENGTH_LONG);
+                    Toast.makeText(mActivity, entries[index], Toast.LENGTH_LONG).show();
                 if(userId!=0){
-                    *//*SaveBlockedUsersThread blockedUsersThread = new SaveBlockedUsersThread(userId, emailToUnblock, false);
-                    blockedUsersThread.start();
+                    SaveDistanceThread saveDistanceThread = new SaveDistanceThread(userId, Integer.parseInt(textValue));
+                    saveDistanceThread.start();
                     Message msg = Message.obtain();
-                    blockedUsersThread.getHandler().sendMessage(msg);*//*
+                    saveDistanceThread.getHandler().sendMessage(msg);
                 }else{
                     Toast.makeText(mActivity,"Login to use this setting.", Toast.LENGTH_SHORT).show();
                 }
                 return false;
             }
-        });*/
+        });
     }
 
     public void restartApp(){

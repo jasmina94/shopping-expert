@@ -50,6 +50,9 @@ public class User {
     @Column
     @ElementCollection(targetClass=String.class)
     private List<String> blockedUsers = new ArrayList<>();
+    
+    @Column
+    private Integer distanceForLocation = 100;
 
     public User(UserDTO userDTO){
         this.id = userDTO.getId();
@@ -57,6 +60,8 @@ public class User {
         this.password = userDTO.getPassword();
         this.firstName = userDTO.getFirstName();
         this.lastName = userDTO.getLastName();
+        this.showNotifications = userDTO.getShowNotifications();
+        this.distanceForLocation = userDTO.getDistanceForLocation();
     }
 
     public void merge(RegistrationDTO registrationDTO){

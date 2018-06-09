@@ -205,4 +205,19 @@ public class UserService implements IUserService{
         }
         return response;
 	}
+
+	@Override
+	public boolean saveDistanceForLocation(Long userId, Integer distanceForLocation) {
+		boolean success;
+        try {
+            User user = userRepository.findById(userId).orElseThrow(NullPointerException::new);
+            user.setDistanceForLocation(distanceForLocation);          
+            userRepository.save(user);
+            success = true;
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            success = false;
+        }
+        return success;
+	}
 }

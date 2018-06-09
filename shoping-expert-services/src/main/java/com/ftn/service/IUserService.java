@@ -26,4 +26,5 @@ public interface IUserService {
     boolean saveShowNotifications(Long userId, Boolean showNotifications);
     List<String> getBlockedUsers(Long userId);
     List<String> saveBlockedUsers(Long userId, String email, Boolean toBlock);
+    boolean saveDistanceForLocation(Long userId, Integer distanceForLocation);
 }

@@ -22,7 +22,8 @@ public class SharedPreferencesManager {
         USER_EMAIL,
         SIGN_IN_TYPE,
         DEVICE_INSTANCE,
-        SHOW_NOTIFICATIONS
+        SHOW_NOTIFICATIONS,
+        DISTANCE
     }
 
     private SharedPreferencesManager(Context context) {
