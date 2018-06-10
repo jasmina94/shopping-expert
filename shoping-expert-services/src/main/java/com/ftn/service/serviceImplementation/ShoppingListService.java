@@ -157,8 +157,6 @@ public class ShoppingListService implements IShoppingListService {
             return null;
         }
 
-//        Set<String> shared = new HashSet<>(shoppingList.getSharedWith());
-//        shared.add(sharedWith);
         shoppingList.getSharedWith().add(sharedWith);
         shoppingListRepository.save(shoppingList);
         List<String> response = user.getShowNotifications() ? new ArrayList<>(user.getInstancesOfUserDevices()): new ArrayList<>();
@@ -171,9 +169,7 @@ public class ShoppingListService implements IShoppingListService {
         if(shoppingList == null) {
             return false;
         }
-//        Set<String> shared = new HashSet<>(shoppingList.getSharedWith());
-//        shared.remove(unShareEmail);
-//        shoppingList.setSharedWith(shared);
+
         shoppingList.getSharedWith().remove(unShareEmail);
 
         shoppingListRepository.save(shoppingList);

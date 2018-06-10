@@ -94,6 +94,7 @@
 
     <!-- Strings related to Settings -->
     <string name="title_settings">Settings</string>
+    <string name="addReminder">Add reminder</string>
     <string-array name="list_values">
         <item>None</item>
     </string-array>

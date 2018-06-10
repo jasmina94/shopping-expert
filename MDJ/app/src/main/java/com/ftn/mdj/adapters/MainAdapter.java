@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ftn.mdj.R;
+import com.ftn.mdj.activities.AddReminder;
 import com.ftn.mdj.activities.MapsActivity;
 import com.ftn.mdj.activities.ShareListActivity;
 import com.ftn.mdj.activities.ShoppingListActivity;
@@ -73,7 +74,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         final ShoppingListDTO shoppingListDTO = activeShoppingLists.get(position);
-        boolean sharedList = !sharedPreferenceManager.getString(SharedPreferencesManager.Key.USER_EMAIL.name()).equals(shoppingListDTO.getCreatorEmail());
+        boolean sharedList = isUserLogedIn && !sharedPreferenceManager.getString(SharedPreferencesManager.Key.USER_EMAIL.name()).equals(shoppingListDTO.getCreatorEmail());
         holder.txt_name.setText(shoppingListDTO.getListName());
         holder.txt_status.setText(shoppingListDTO.getBoughtItems() + "/" + shoppingListDTO.getNumberOfItems());
         holder.img_locker.setVisibility(shoppingListDTO.getIsSecret() ? View.VISIBLE : View.INVISIBLE);
@@ -115,7 +116,9 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
                         }else{
                             Toast.makeText(context, "Sign in to add shopping place.", Toast.LENGTH_LONG).show();
                         }
-
+                        break;
+                    case R.id.mnu_reminder:
+                        reminder(shoppingListDTO.getId());
                         break;
                 }
                 return false;
@@ -126,6 +129,12 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
 
     private void shareList(Long listId) {
         Intent intent = new Intent(context, ShareListActivity.class);
+        intent.putExtra("selectedShoppingListId", listId);
+        context.startActivity(intent);
+    }
+
+    private void reminder(Long listId) {
+        Intent intent = new Intent(context, AddReminder.class);
         intent.putExtra("selectedShoppingListId", listId);
         context.startActivity(intent);
     }
