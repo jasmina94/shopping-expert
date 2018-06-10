@@ -1,10 +1,14 @@
 package com.ftn.mdj.activities;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
@@ -26,10 +30,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ftn.mdj.R;
+import com.ftn.mdj.services.LocationAlertIntentService;
 import com.ftn.mdj.threads.AddLocationThread;
 import com.ftn.mdj.utils.GenericResponse;
+import com.ftn.mdj.utils.SharedPreferencesManager;
 import com.ftn.mdj.utils.UtilHelper;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.Geofence;
+import com.google.android.gms.location.GeofencingClient;
+import com.google.android.gms.location.GeofencingRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.location.places.PlaceDetectionClient;
@@ -48,6 +57,10 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import android.location.LocationManager;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * An activity that displays a map showing the place at the device's current location.
@@ -73,6 +86,11 @@ public class MapsActivity extends AppCompatActivity
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     private boolean mLocationPermissionGranted;
 
+    private static final int LOC_PERM_REQ_CODE = 1;
+    //in milli seconds
+    //kada ce da istekne vrijeme za notifikaciju o  blizini mjesta za kupovinu - 12sati
+    private static final int GEOFENCE_EXPIRATION = 43200;
+
     // The geographical location where the device is currently located. That is, the last-known
     // location retrieved by the Fused Location Provider.
     private Location mLastKnownLocation;
@@ -89,6 +107,8 @@ public class MapsActivity extends AppCompatActivity
 
     private Long listId;
     private Handler locationHandler;
+
+    private GeofencingClient geofencingClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,17 +148,23 @@ public class MapsActivity extends AppCompatActivity
         mapFragment.getMapAsync(this);
 
         setLocationHandler();
+
+        geofencingClient = LocationServices.getGeofencingClient(this);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         int id = item.getItemId();
 
-        if(id==android.R.id.home){
-            this.finish();
+        switch (item.getItemId()) {
+            case R.id.remove_loc_alert:
+                removeLocationAlert();
+                return true;
+            case android.R.id.home:
+                this.finish();
+            default:
+                return super.onOptionsItemSelected(item);
         }
-
-        return super.onOptionsItemSelected(item);
     }
 
     /**
@@ -201,9 +227,15 @@ public class MapsActivity extends AppCompatActivity
             @Override
             public void onMapClick(LatLng latLng) {
                 mLatLng= latLng;
+                String address = "";
+                try {
+                    address = getLocationAddress(latLng.latitude,mLatLng.longitude);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 new AlertDialog.Builder(MapsActivity.this)
                         .setTitle("Shopping place")
-                        .setMessage("Do you really want to shop here?")
+                        .setMessage("Do you really want to shop on address: "+address+"?")
                         .setIcon(android.R.drawable.alert_dark_frame)
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
@@ -212,6 +244,7 @@ public class MapsActivity extends AppCompatActivity
                                 if(marker!=null){
                                     marker.remove();
                                 }
+                                addLocationAlert(latLng.latitude, latLng.longitude);
 
                                 addMarker();
 
@@ -256,6 +289,7 @@ public class MapsActivity extends AppCompatActivity
                 Toast.makeText(MapsActivity.this, "Drag ended", Toast.LENGTH_SHORT).show();
             }
         });
+
         if(mLatLng!=null){
             addMarker();
         }
@@ -396,4 +430,117 @@ public class MapsActivity extends AppCompatActivity
             }
         };
     }
+
+    private boolean isLocationAccessPermitted(){
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    private void requestLocationAccessPermission(){
+        ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                LOC_PERM_REQ_CODE);
+    }
+
+    @SuppressLint("MissingPermission")
+    private void addLocationAlert(double lat, double lng){
+        if (isLocationAccessPermitted()) {
+            requestLocationAccessPermission();
+        } else  {
+            String key = ""+lat+"-"+lng;
+            Geofence geofence = getGeofence(lat, lng, key);
+            geofencingClient.addGeofences(getGeofencingRequest(geofence),
+                    getGeofencePendingIntent())
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(MapsActivity.this,
+                                        "Location alter has been added",
+                                        Toast.LENGTH_SHORT).show();
+                            }else{
+                                Toast.makeText(MapsActivity.this,
+                                        "Location alter could not be added",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+        }
+    }
+    private void removeLocationAlert(){
+        if (isLocationAccessPermitted()) {
+            requestLocationAccessPermission();
+        } else {
+            geofencingClient.removeGeofences(getGeofencePendingIntent())
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(MapsActivity.this,
+                                        "Location alters have been removed",
+                                        Toast.LENGTH_SHORT).show();
+                            }else{
+                                Toast.makeText(MapsActivity.this,
+                                        "Location alters could not be removed",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+        }
+    }
+
+    private PendingIntent getGeofencePendingIntent() {
+        Intent intent = new Intent(this, LocationAlertIntentService.class);
+        return PendingIntent.getService(this, 0, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+    private GeofencingRequest getGeofencingRequest(Geofence geofence) {
+        GeofencingRequest.Builder builder = new GeofencingRequest.Builder();
+
+        builder.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_DWELL);
+        builder.addGeofence(geofence);
+        return builder.build();
+    }
+
+    private Geofence getGeofence(double lat, double lang, String key) {
+        int GEOFENCE_RADIUS =  SharedPreferencesManager.getInstance(MapsActivity.this).getInt(SharedPreferencesManager.Key.DISTANCE.name());
+        if(GEOFENCE_RADIUS==0){
+            GEOFENCE_RADIUS = 500;
+        }
+        Toast.makeText(MapsActivity.this,
+                "GEOFENCE_RADIUS = "+GEOFENCE_RADIUS,
+                Toast.LENGTH_SHORT).show();
+        return new Geofence.Builder()
+                .setRequestId(key)
+                .setCircularRegion(lat, lang, GEOFENCE_RADIUS)
+                .setExpirationDuration(Geofence.NEVER_EXPIRE)
+                //.setExpirationDuration(GEOFENCE_EXPIRATION)
+                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER |
+                        Geofence.GEOFENCE_TRANSITION_DWELL)
+                .setLoiteringDelay(10000)
+                .build();
+    }
+/*    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.remove_loc_menu, menu);
+        return true;
+    }*/
+
+    private String getLocationAddress(Double latitude,Double longitude) throws IOException {
+        Geocoder myLocation = new Geocoder(MapsActivity.this, Locale.getDefault());
+        List<Address> myList = myLocation.getFromLocation(latitude,longitude, 1);
+        Address address = (Address) myList.get(0);
+        String addressStr = "";
+        addressStr += address.getAddressLine(0) + ", ";//ulica i broj
+        addressStr += address.getAddressLine(1) ;//grad
+
+        return addressStr;
+    }
+
 }

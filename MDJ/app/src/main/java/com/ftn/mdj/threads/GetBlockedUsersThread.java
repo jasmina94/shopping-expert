@@ -68,7 +68,7 @@ public class GetBlockedUsersThread extends Thread {
                     FragmentTransaction fragmentTransaction = SettingsActivity.instance.getFragmentManager().beginTransaction();
                     fragmentTransaction.replace(R.id.settings_layout, fragment);
                     fragmentTransaction.commit();
-                    UtilHelper.showToastMessage(context, "Successfully got blocked users!", UtilHelper.ToastLength.SHORT);
+                    //UtilHelper.showToastMessage(context, "Successfully got blocked users!", UtilHelper.ToastLength.SHORT);
                 } else {
                     UtilHelper.showToastMessage(context, "Error while getting blocked users!", UtilHelper.ToastLength.SHORT);
                 }
