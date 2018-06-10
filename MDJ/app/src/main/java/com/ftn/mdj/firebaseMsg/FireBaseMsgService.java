@@ -27,6 +27,7 @@ public class FireBaseMsgService  extends FirebaseMessagingService
 
         System.out.println("From: " + remoteMessage.getFrom());
         System.out.println("Notification Message Body: " + remoteMessage.getNotification());
+        System.out.println("Notification Message Body: " + remoteMessage.getData().get("targetActivity"));
 
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
@@ -34,12 +35,12 @@ public class FireBaseMsgService  extends FirebaseMessagingService
 
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, "M_CH_ID")
-                .setSmallIcon(R.drawable.ic_launcher_background)
+                .setSmallIcon(R.drawable.logo)
                 .setContentTitle(remoteMessage.getNotification().getTitle())
-                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher_background))
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.logo))
                 .setContentText(remoteMessage.getNotification().getBody())
                 .setAutoCancel(true)
-                .setColor(0xffff7700)
+//                .setColor(0xffff7700)
                 .setVibrate(new long[]{100, 100, 100, 100})
                 .setPriority(Notification.PRIORITY_MAX)
                 .setSound(defaultSoundUri);

@@ -146,6 +146,19 @@ public class ShoppingListController {
         }
         return response;
     }
+
+    @Transactional
+    @PutMapping("/unShareList/{listId}/{sharedWith}")
+    public GenericResponse<Boolean> unShareList(@PathVariable Long listId, @PathVariable String sharedWith) {
+        GenericResponse response = new GenericResponse();
+        boolean isSuccess = shoppingListService.unShareList(listId, sharedWith);
+        if(!isSuccess) {
+            response.success(false);
+        } else {
+            response.success(true);
+        }
+        return response;
+    }
     
     @Transactional
     @PutMapping("/updateLocation/{listId}/{latitude}/{longitude}")

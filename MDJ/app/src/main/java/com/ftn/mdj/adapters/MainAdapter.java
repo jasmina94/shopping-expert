@@ -73,11 +73,11 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         final ShoppingListDTO shoppingListDTO = activeShoppingLists.get(position);
-
+        boolean sharedList = !sharedPreferenceManager.getString(SharedPreferencesManager.Key.USER_EMAIL.name()).equals(shoppingListDTO.getCreatorEmail());
         holder.txt_name.setText(shoppingListDTO.getListName());
         holder.txt_status.setText(shoppingListDTO.getBoughtItems() + "/" + shoppingListDTO.getNumberOfItems());
         holder.img_locker.setVisibility(shoppingListDTO.getIsSecret() ? View.VISIBLE : View.INVISIBLE);
-        if(isUserLogedIn && !sharedPreferenceManager.getString(SharedPreferencesManager.Key.USER_EMAIL.name()).equals(shoppingListDTO.getCreatorEmail())) {
+        if(isUserLogedIn && sharedList) {
             holder.txt_creatorEmail.setVisibility(View.VISIBLE);
             holder.txt_creatorEmail.setText(shoppingListDTO.getCreatorEmail());
         }
@@ -85,6 +85,15 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
             PopupMenu popupMenu = new PopupMenu(context, holder.txt_option_mnu);
             popupMenu.inflate(R.menu.option_menu);
             String secret = shoppingListDTO.getIsSecret() ? "Make public" : "Make secret";
+            if(sharedList) {
+                popupMenu.getMenu().getItem(0).setVisible(false);
+                popupMenu.getMenu().getItem(1).setVisible(false);
+                popupMenu.getMenu().getItem(2).setVisible(false);
+                popupMenu.getMenu().getItem(3).setVisible(false);
+            }
+            if(!isUserLogedIn) {
+                popupMenu.getMenu().getItem(2).setVisible(false);
+            }
             popupMenu.getMenu().getItem(3).setTitle(secret);
             popupMenu.setOnMenuItemClickListener(menuItem -> {
                 switch (menuItem.getItemId()){

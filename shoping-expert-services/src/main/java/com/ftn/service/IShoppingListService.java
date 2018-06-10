@@ -36,4 +36,6 @@ public interface IShoppingListService {
     boolean deleteList(long listId);
 
     Map<String, Boolean> getFriendList(Long listId, Long userId);
+
+    boolean unShareList(Long listId, String unShareEmail);
 }

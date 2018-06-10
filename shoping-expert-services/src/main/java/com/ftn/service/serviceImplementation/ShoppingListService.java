@@ -157,12 +157,27 @@ public class ShoppingListService implements IShoppingListService {
             return null;
         }
 
-        Set<String> shared = new HashSet<>(shoppingList.getSharedWith());
-        shared.add(sharedWith);
-        shoppingList.setSharedWith(shared);
+//        Set<String> shared = new HashSet<>(shoppingList.getSharedWith());
+//        shared.add(sharedWith);
+        shoppingList.getSharedWith().add(sharedWith);
         shoppingListRepository.save(shoppingList);
         List<String> response = user.getShowNotifications() ? new ArrayList<>(user.getInstancesOfUserDevices()): new ArrayList<>();
         return response;
+    }
+
+    @Override
+    public boolean unShareList(Long listId, String unShareEmail) {
+        ShoppingList shoppingList = shoppingListRepository.findById(listId).get();
+        if(shoppingList == null) {
+            return false;
+        }
+//        Set<String> shared = new HashSet<>(shoppingList.getSharedWith());
+//        shared.remove(unShareEmail);
+//        shoppingList.setSharedWith(shared);
+        shoppingList.getSharedWith().remove(unShareEmail);
+
+        shoppingListRepository.save(shoppingList);
+        return true;
     }
 
     @Override
@@ -237,9 +252,5 @@ public class ShoppingListService implements IShoppingListService {
         return response;
     }
 
-    public void unshareList(Long listId, String unshareEmail) {
-        ShoppingList shoppingList = shoppingListRepository.getOne(listId);
-        shoppingList.getSharedWith().remove(unshareEmail);
-        shoppingListRepository.save(shoppingList);
-    }
+
 }
