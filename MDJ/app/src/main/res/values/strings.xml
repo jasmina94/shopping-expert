@@ -101,4 +101,6 @@
 
     <!-- Shopping list-->
     <string name="empty_list">Start adding products it is super easy</string>
+    <string name="tab_items">ALL ITEMS</string>
+    <string name="tab_categories">CATEGORIES</string>
 </resources>

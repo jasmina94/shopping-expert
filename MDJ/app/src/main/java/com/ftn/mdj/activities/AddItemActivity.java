@@ -3,10 +3,15 @@ package com.ftn.mdj.activities;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 
 import com.ftn.mdj.R;
+import com.ftn.mdj.adapters.ListItemPagerAdapter;
+import com.ftn.mdj.adapters.SectionPagerAdapter;
 import com.ftn.mdj.dto.CategoryDTO;
 import com.ftn.mdj.dto.CategoryItemDTO;
 import com.ftn.mdj.threads.GetCategoriesThread;
@@ -17,93 +22,46 @@ import java.util.List;
 
 public class AddItemActivity extends AppCompatActivity {
 
-    private Handler categoriesHandler;
-    private Handler categoryItemsHandler;
-    private Handler specificCategoryItemHandler;
-
     private long listId;
+
+    private ListItemPagerAdapter mListItemPagerAdapter;
+    private ViewPager mViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_item);
 
-        setCategoriesHandler();
-        setCategoryItemsHandler();
-        setSpecificCategoryItemHandler();
-
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             listId = extras.getLong("LIST_ID");
         }
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        mListItemPagerAdapter = new ListItemPagerAdapter(getSupportFragmentManager());
+        mViewPager = (ViewPager) findViewById(R.id.add_item_container);
+        mViewPager.setAdapter(mListItemPagerAdapter);
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
     }
 
-    private void getAllCategories(){
-        GetCategoriesThread getCategoriesThread = new GetCategoriesThread(categoriesHandler);
-        getCategoriesThread.start();
-        Message msg = Message.obtain();
-        getCategoriesThread.getHandler().sendMessage(msg);
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
-    private void getAllCategoryItems(){
-        GetCategoryItemsThread getCategoryItemsThread = new GetCategoryItemsThread(categoryItemsHandler);
-        getCategoryItemsThread.start();
-        Message msg = Message.obtain();
-        getCategoryItemsThread.getHandler().sendMessage(msg);
+    public void switchFragment(int target){
+        mViewPager.setCurrentItem(target);
     }
 
-    private void getSpecificCategoryItems(long categoryId){
-        GetCategoryItemsThread getCategoryItemsThread = new GetCategoryItemsThread(categoryItemsHandler);
-        getCategoryItemsThread.start();
-        Message msg = Message.obtain();
-        Bundle b = new Bundle();
-        b.putLong("categoryId", categoryId);
-        msg.setData(b);
-        getCategoryItemsThread.getHandler().sendMessage(msg);
-    }
-
-    private void setCategoriesHandler() {
-        categoriesHandler = new Handler(Looper.getMainLooper()) {
-            @Override
-            public void handleMessage(Message msg) {
-                GenericResponse<List<CategoryDTO>> response = (GenericResponse<List<CategoryDTO>>) msg.obj;
-                if (response.isSuccessfulOperation()) {
-                    List<CategoryDTO> categoryDTOS = response.getEntity();
-                    for (CategoryDTO categoryDTO : categoryDTOS) {
-                        System.out.println(categoryDTO.getCategoryName());
-                    }
-                }
-            }
-        };
-    }
-
-    private void setCategoryItemsHandler(){
-        categoryItemsHandler = new Handler(Looper.getMainLooper()) {
-            @Override
-            public void handleMessage(Message msg) {
-                GenericResponse<List<CategoryItemDTO>> response = (GenericResponse<List<CategoryItemDTO>>) msg.obj;
-                if (response.isSuccessfulOperation()) {
-                    List<CategoryItemDTO> categoryItemDTOS = response.getEntity();
-                    for (CategoryItemDTO categoryItemDTO : categoryItemDTOS) {
-                        System.out.println(categoryItemDTO.getItemName() + categoryItemDTO.getCategoryId());
-                    }
-                }
-            }
-        };
-    }
-
-    private void setSpecificCategoryItemHandler() {
-        specificCategoryItemHandler = new Handler(Looper.getMainLooper()) {
-            @Override
-            public void handleMessage(Message msg) {
-                GenericResponse<List<CategoryItemDTO>> response = (GenericResponse<List<CategoryItemDTO>>) msg.obj;
-                if (response.isSuccessfulOperation()) {
-                    List<CategoryItemDTO> categoryItemDTOS = response.getEntity();
-                    for (CategoryItemDTO categoryItemDTO : categoryItemDTOS) {
-                        System.out.println(categoryItemDTO.getItemName() + categoryItemDTO.getCategoryId());
-                    }
-                }
-            }
-        };
+    public long getListId(){
+        return this.listId;
     }
 }

@@ -25,6 +25,7 @@ import com.ftn.mdj.threads.GetCategoryItemsThread;
 import com.ftn.mdj.threads.GetShoppingListItemsThread;
 import com.ftn.mdj.utils.GenericResponse;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static java.security.AccessController.getContext;
@@ -37,7 +38,7 @@ public class ShoppingListActivity extends AppCompatActivity  {
 
     private long listId;
     private String listName;
-    private List<ShoppingListItemDTO> listItemDTOS;
+    private List<ShoppingListItemDTO> listItemDTOS = new ArrayList<>();
 
     private FloatingActionButton mBtnAddItem;
     private RecyclerView mRecyclerView;
@@ -52,7 +53,6 @@ public class ShoppingListActivity extends AppCompatActivity  {
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
@@ -79,7 +79,8 @@ public class ShoppingListActivity extends AppCompatActivity  {
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this.getApplicationContext()));
 
-
+        mAdapter = new ShoppingListAdapter(listItemDTOS, this);
+        mRecyclerView.setAdapter(mAdapter);
 
         listNameTxt = (TextView)findViewById(R.id.sh_txt_list_name);
         listNameTxt.setText(listName);

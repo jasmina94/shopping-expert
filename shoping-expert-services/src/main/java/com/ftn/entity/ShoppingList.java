@@ -60,8 +60,5 @@ public class  ShoppingList {
         this.creatorId = creatorId;
         this.listName = listName;
         this.accessPassword = "";
-        this.reminder = null;
-        this.longitude = 0.0;
-        this.latitude = 0.0;
     }
 }

@@ -308,6 +308,7 @@ public class LoginFragment extends Fragment {
             public void handleMessage(Message msg) {
                 GenericResponse<String> response = (GenericResponse<String>)msg.obj;
                 String message;
+                hideProgressDialog();
                 if(response.isSuccessfulOperation()) {
                     message = getString(R.string.success_login);
                     showToastMessage(message);

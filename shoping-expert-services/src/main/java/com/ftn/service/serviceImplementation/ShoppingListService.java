@@ -226,7 +226,7 @@ public class ShoppingListService implements IShoppingListService {
 
         List<ShoppingList> allShoppingLists = shoppingListRepository.findAll();
 
-        Set<String> friendEmails = allShopingLists.stream().filter(sl -> sl.getSharedWith().contains(user.getEmail()))
+        Set<String> friendEmails = allShoppingLists.stream().filter(sl -> sl.getSharedWith().contains(user.getEmail()))
                 .map(sl -> userService.getById(sl.getCreatorId().intValue()).getEmail()).collect(Collectors.toSet());
 
         sharedWith.forEach(sw -> {if(friendEmails.contains(sw)) {
@@ -278,14 +278,14 @@ public class ShoppingListService implements IShoppingListService {
 
         Set<String> users = shoppingList.getSharedWith();
 
-        UserDTO creator = iUserService.getById(shoppingList.getCreatorId().intValue());
+        UserDTO creator = userService.getById(shoppingList.getCreatorId().intValue());
 
         users.add(creator.getEmail());
 
-        Set<String> devicesList = users.stream().filter(u -> iUserService.getByEmailRealUser(u).getShowNotifications())
+        Set<String> devicesList = users.stream().filter(u -> userService.getByEmailRealUser(u).getShowNotifications())
                 .collect(Collectors.toSet());
         List<String> notifications = new ArrayList<>();
-        devicesList.forEach(d -> notifications.addAll(iUserService.getByEmailRealUser(d).getInstancesOfUserDevices()));
+        devicesList.forEach(d -> notifications.addAll(userService.getByEmailRealUser(d).getInstancesOfUserDevices()));
         return notifications;
     }
 
