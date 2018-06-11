@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.RecyclerView;
-import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -173,9 +172,9 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
         myCalendar.set(Calendar.MILLISECOND, 0);
 
         String todayString = sdf.format(myCalendar.getTime());
-
+        //vidi da cancelujes alarm
         if(todayString.equals(date)) {
-            am.set(AlarmManager.RTC, time, pi);
+            am.setExact(AlarmManager.RTC, time, pi);
         }
         Toast.makeText(MainActivity.instance, "Alarm is set", Toast.LENGTH_SHORT).show();
     }
