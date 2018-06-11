@@ -12,5 +12,7 @@ import java.util.List;
 @Repository
 public interface ShoppingListItemRepository extends JpaRepository<ShoppingListItem, Long>{
 
-    List<ShoppingListItem> findByIsPurchased(boolean isPurchased);
+    List<ShoppingListItem> findByIsPurchasedAndShoppingListId(boolean isPurchased, long shoppingListId);
+
+    List<ShoppingListItem> findByShoppingListId(long shoppingListId);
 }

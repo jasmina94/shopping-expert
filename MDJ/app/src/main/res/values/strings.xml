@@ -98,4 +98,7 @@
     <string-array name="list_values">
         <item>None</item>
     </string-array>
+
+    <!-- Shopping list-->
+    <string name="empty_list">Start adding products it is super easy</string>
 </resources>

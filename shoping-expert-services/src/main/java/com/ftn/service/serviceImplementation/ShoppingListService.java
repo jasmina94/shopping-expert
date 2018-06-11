@@ -26,37 +26,35 @@ public class ShoppingListService implements IShoppingListService {
     private ShoppingListRepository shoppingListRepository;
 
     @Autowired
-    private IShoppingListItemService iShoppingListItemService;
+    private IShoppingListItemService shoppingListItemService;
 
     @Autowired
-    private IUserService iUserService;
+    private IUserService userService;
 
     @Override
     public List<ShoppingListDTO> getListsForUserByStatus(Long loggedUserId, boolean isArchived) {
-        UserDTO user = iUserService.getById(loggedUserId.intValue());
-        List<ShoppingList> list = shoppingListRepository.findByCreatorIdAndIsArchived(loggedUserId, isArchived);
+        UserDTO user = userService.getById(loggedUserId.intValue());
+        List<ShoppingList> allShoppingLists = shoppingListRepository.findByCreatorIdAndIsArchived(loggedUserId, isArchived);
 
         List<ShoppingList> sharedLists = shoppingListRepository.findAll().stream().filter(l -> l.getSharedWith().contains(user.getEmail())).collect(Collectors.toList());
 
-        list.addAll(sharedLists);
+        allShoppingLists.addAll(sharedLists);
 
-        List<ShoppingListDTO> listDto = list.stream().map(l -> {
+        List<ShoppingListDTO> allShoppingListsDTO = allShoppingLists.stream().map(l -> {
             ShoppingListDTO dto = new ShoppingListDTO(l);
-            dto.setBoughtItems(iShoppingListItemService.getNumberOfPurchasedItems(l.getId()));
-            dto.setNumberOfItems(iShoppingListItemService.getNumberOfItems(l.getId()));
-            dto.setCreatorEmail(iUserService.getById(l.getCreatorId().intValue()).getEmail());
+            dto.setBoughtItems(shoppingListItemService.getNumberOfPurchasedItems(l.getId()));
+            dto.setNumberOfItems(shoppingListItemService.getNumberOfItems(l.getId()));
+            dto.setCreatorEmail(userService.getById(l.getCreatorId().intValue()).getEmail());
             return dto;
         }).collect(Collectors.toList());
 
-        return listDto;
+        return allShoppingListsDTO;
     }
 
     @Override
     public ShoppingListDTO create(String listName, Long loggedUserId) {
         ShoppingListDTO shoppingListDTO = null;
-        ShoppingList shoppingList = new ShoppingList();
-        shoppingList.setListName(listName);
-        shoppingList.setCreatorId(loggedUserId);
+        ShoppingList shoppingList = new ShoppingList(listName, loggedUserId);
         try {
             ShoppingList shoppingListNew = shoppingListRepository.save(shoppingList);
             shoppingListDTO = new ShoppingListDTO(shoppingListNew);
@@ -150,7 +148,7 @@ public class ShoppingListService implements IShoppingListService {
 
     @Override
     public List<String> shareList(Long listId, String sharedWith) {
-        User user = iUserService.getByEmailRealUser(sharedWith);
+        User user = userService.getByEmailRealUser(sharedWith);
         ShoppingList shoppingList = shoppingListRepository.findById(listId).get();
 
         if(user == null || user.getBlockedUsers().contains(sharedWith) || shoppingList.getCreatorId() == user.getId()) {
@@ -227,13 +225,13 @@ public class ShoppingListService implements IShoppingListService {
     @Override
     public Map<String, Boolean> getFriendList(Long listId, Long userId) {
         ShoppingList shoppingList = shoppingListRepository.getOne(listId);
-        UserDTO user = iUserService.getById(userId.intValue());
+        UserDTO user = userService.getById(userId.intValue());
         Set<String> sharedWith = shoppingList.getSharedWith();
 
         List<ShoppingList> allShopingLists = shoppingListRepository.findAll();
 
         Set<String> friendEmails = allShopingLists.stream().filter(sl -> sl.getSharedWith().contains(user.getEmail()))
-                .map(sl -> iUserService.getById(sl.getCreatorId().intValue()).getEmail()).collect(Collectors.toSet());
+                .map(sl -> userService.getById(sl.getCreatorId().intValue()).getEmail()).collect(Collectors.toSet());
 
         sharedWith.forEach(sw -> {if(friendEmails.contains(sw)) {
             friendEmails.remove(sw);

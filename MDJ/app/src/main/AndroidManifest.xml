@@ -101,7 +101,8 @@
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".activities.AddReminder"></activity>
+        <activity android:name=".activities.AddReminder" />
+        <activity android:name=".activities.AddItemActivity"></activity>
     </application>
 
 </manifest>

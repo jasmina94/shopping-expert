@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,6 +55,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
     private SharedPreferencesManager sharedPreferenceManager;
     private Boolean isUserLogedIn;
 
+
     public MainAdapter(List<ShoppingListDTO> activeShoppingLists, Context context, MainFragment mainFragment) {
         this.activeShoppingLists = activeShoppingLists;
         this.context = context;
@@ -67,7 +69,20 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_item, parent, false);
-        view.setOnClickListener(view1 -> context.startActivity(new Intent(context, ShoppingListActivity.class)));
+
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(context, ShoppingListActivity.class);
+                TextView txt_list_id  = view.findViewById(R.id.txt_list_id);
+                TextView txt_list_name = view.findViewById(R.id.txt_list_name);
+                long listId = Long.parseLong(txt_list_id.getText().toString());
+                String listName = txt_list_name.getText().toString();
+                i.putExtra("LIST_ID",listId);
+                i.putExtra("LIST_NAME", listName);
+                context.startActivity(i);
+            }
+        });
         return new ViewHolder(view);
     }
 
@@ -75,13 +90,20 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         final ShoppingListDTO shoppingListDTO = activeShoppingLists.get(position);
         boolean sharedList = isUserLogedIn && !sharedPreferenceManager.getString(SharedPreferencesManager.Key.USER_EMAIL.name()).equals(shoppingListDTO.getCreatorEmail());
-        holder.txt_name.setText(shoppingListDTO.getListName());
+
+        holder.txt_list_id.setText(String.valueOf(shoppingListDTO.getId()));
+        holder.txt_name.setText(String.valueOf(shoppingListDTO.getListName()));
         holder.txt_status.setText(shoppingListDTO.getBoughtItems() + "/" + shoppingListDTO.getNumberOfItems());
         holder.img_locker.setVisibility(shoppingListDTO.getIsSecret() ? View.VISIBLE : View.INVISIBLE);
+
         if(isUserLogedIn && sharedList) {
             holder.txt_creatorEmail.setVisibility(View.VISIBLE);
             holder.txt_creatorEmail.setText(shoppingListDTO.getCreatorEmail());
         }
+
+        holder.progressBar.setMax(shoppingListDTO.getNumberOfItems());
+        holder.progressBar.setProgress(shoppingListDTO.getBoughtItems());
+
         holder.txt_option_mnu.setOnClickListener(view -> {
             PopupMenu popupMenu = new PopupMenu(context, holder.txt_option_mnu);
             popupMenu.inflate(R.menu.option_menu);
@@ -279,19 +301,24 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
+        private TextView txt_list_id;
         private TextView txt_name;
         private TextView txt_status;
         private TextView txt_option_mnu;
         private ImageView img_locker;
         private TextView txt_creatorEmail;
+        private ProgressBar progressBar;
+
 
         public ViewHolder(View itemView) {
             super(itemView);
+            txt_list_id = itemView.findViewById(R.id.txt_list_id);
             txt_name = itemView.findViewById(R.id.txt_list_name);
             txt_status = itemView.findViewById(R.id.txt_status);
             txt_option_mnu = itemView.findViewById(R.id.txt_option_mnu);
             img_locker = itemView.findViewById(R.id.img_lock);
             txt_creatorEmail = itemView.findViewById(R.id.listOwner);
+            progressBar = itemView.findViewById(R.id.progressBar);
         }
     }
 }

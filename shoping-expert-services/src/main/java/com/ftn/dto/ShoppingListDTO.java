@@ -23,6 +23,8 @@ public class ShoppingListDTO {
 
     private Boolean isSecret;
 
+    private String accessPassword;
+
     private Integer boughtItems;
 
     private Integer numberOfItems;
@@ -31,8 +33,7 @@ public class ShoppingListDTO {
     private Set<String> sharedWith = new HashSet<>();
 
     private LocalDateTime reminder;
-    
-    private String accessPassword;
+
     //same for time and date of completion, need to investigate how reminders work
 
     private Double latitude;

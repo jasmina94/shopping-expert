@@ -53,7 +53,6 @@ public class ShoppingListController {
         GenericResponse<ShoppingListDTO> response = new GenericResponse<>();
         ShoppingListDTO shoppingListDTO = shoppingListService.create(listName, userId);
         if(shoppingListDTO != null){
-//            response.setSuccessfulOperation(true);
             response.success(shoppingListDTO);
         }else {
             response.error("Server side error while creating new list.");

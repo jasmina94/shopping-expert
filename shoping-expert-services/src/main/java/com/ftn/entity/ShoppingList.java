@@ -31,11 +31,9 @@ public class  ShoppingList {
     @Column(columnDefinition = "Boolean default false")
     private Boolean isSecret = false;
 
-    //I have removed status is completed, because that will be show if all items are purchased
 
-    //deletion of the list is only logical, so maybe if we have time we can have restore
     @Column(columnDefinition = "Boolean default false")
-    private Boolean isArchived = false;  //ovo je status - da li je obrisana ili ne
+    private Boolean isArchived = false;
 
     private String accessPassword;
 
@@ -56,4 +54,13 @@ public class  ShoppingList {
     
     @Column
     private Double longitude;
+
+    public ShoppingList(String listName, long creatorId){
+        this.creatorId = creatorId;
+        this.listName = listName;
+        this.accessPassword = "";
+        this.reminder = null;
+        this.longitude = 0.0;
+        this.latitude = 0.0;
+    }
 }
