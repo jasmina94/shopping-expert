@@ -1,11 +1,11 @@
 package com.ftn.service;
 
-import java.util.List;
-
 import com.ftn.dto.LoginDTO;
 import com.ftn.dto.RegistrationDTO;
 import com.ftn.dto.UserDTO;
 import com.ftn.entity.User;
+
+import java.util.List;
 
 /**
  * Created by Jasmina on 15/05/2018.
@@ -26,5 +26,7 @@ public interface IUserService {
     boolean saveShowNotifications(Long userId, Boolean showNotifications);
     List<String> getBlockedUsers(Long userId);
     List<String> saveBlockedUsers(Long userId, String email, Boolean toBlock);
+
+    void removeDeviceInstance(String deviceInstance);
     boolean saveDistanceForLocation(Long userId, Integer distanceForLocation);
 }

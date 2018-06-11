@@ -1,5 +1,6 @@
 package com.ftn.service.serviceImplementation;
 
+import com.ftn.dto.ShoppingListItemDTO;
 import com.ftn.entity.ShoppingListItem;
 import com.ftn.repository.ShoppingListItemRepository;
 import com.ftn.service.IShoppingListItemService;
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by milca on 4/25/2018.
@@ -19,15 +21,33 @@ public class ShoppingListItemService implements IShoppingListItemService {
 
     @Override
     public int getNumberOfPurchasedItems(Long listId) {
-
-        List<ShoppingListItem> list = shoppingListItemRepository.findByIsPurchased(true);
-
-
-        return (int) list.stream().filter(l -> l.getPartOfShoppingLists().contains(listId)).count();
+        List<ShoppingListItem> list = shoppingListItemRepository.findByIsPurchasedAndShoppingListId(true, listId);
+        return list.size();
     }
 
     @Override
     public int getNumberOfItems(Long listId) {
-        return (int) shoppingListItemRepository.findAll().stream().filter(l -> l.getPartOfShoppingLists().contains(listId)).count();
+        List<ShoppingListItem> itemsForList = shoppingListItemRepository.findByShoppingListId(listId);
+        return itemsForList.size();
+    }
+
+    @Override
+    public boolean addItemToList(ShoppingListItemDTO shoppingListItemDTO, long listId) {
+        boolean success = true;
+        shoppingListItemDTO.setShoppingListId(listId);
+        ShoppingListItem shoppingListItem = new ShoppingListItem(shoppingListItemDTO);
+        try {
+            shoppingListItem = shoppingListItemRepository.save(shoppingListItem);
+        }catch (Exception e){
+            success = false;
+        }
+        return success;
+    }
+
+    @Override
+    public List<ShoppingListItemDTO> readFromList(long listId) {
+        return shoppingListItemRepository.findByShoppingListId(listId).stream()
+                .map(shoppingListItem -> new ShoppingListItemDTO(shoppingListItem)).collect(Collectors.toList());
+
     }
 }

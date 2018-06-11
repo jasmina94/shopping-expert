@@ -10,9 +10,8 @@ import com.ftn.util.JWTUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 import javax.transaction.Transactional;
+import java.util.List;
 
 
 /**
@@ -151,7 +150,17 @@ public class UserController {
         }
         return response;
     }
-    
+
+    @Transactional
+    @DeleteMapping("/removeUnusedDeviceInstances/{deviceInstance}")
+    public GenericResponse removeUnusedDeviceInstances(@PathVariable("deviceInstance") String deviceInstance) {
+        GenericResponse response = new GenericResponse();
+
+        userService.removeDeviceInstance(deviceInstance);
+
+        return response;
+    }
+
     @Transactional
     @PostMapping("/saveDistanceForLocation/{userId}/{distanceForLocation}")
     public GenericResponse<Boolean> saveDistanceForLocation(@PathVariable Long userId, @PathVariable Integer distanceForLocation) {

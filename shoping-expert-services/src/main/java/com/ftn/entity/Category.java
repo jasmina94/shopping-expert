@@ -21,10 +21,12 @@ import javax.persistence.Id;
 public class Category {
     @Id
     @GeneratedValue
+    @Column(name = "category_id")
     private Long id;
 
     @Column(nullable = false)
     private String categoryName;
 
-    //see how to add photo
+    @Column
+    private String imagePath;
 }

@@ -1,12 +1,12 @@
 package com.ftn.dto;
 
 import com.ftn.entity.ShoppingList;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
+
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * Created by milca on 4/25/2018.
@@ -23,17 +23,17 @@ public class ShoppingListDTO {
 
     private Boolean isSecret;
 
+    private String accessPassword;
+
     private Integer boughtItems;
 
     private Integer numberOfItems;
 
-    //emails of users that list is shared with
     private Set<String> sharedWith = new HashSet<>();
 
-    private LocalDateTime reminder;
-    
-    private String accessPassword;
-    //same for time and date of completion, need to investigate how reminders work
+    private String date;
+
+    private String time;
 
     private Double latitude;
     
@@ -44,7 +44,8 @@ public class ShoppingListDTO {
         this.listName = shoppingList.getListName();
         this.isSecret = shoppingList.getIsSecret();
         this.sharedWith = shoppingList.getSharedWith();
-        this.reminder = shoppingList.getReminder();
+        this.date = shoppingList.getDate();
+        this.time = shoppingList.getTime();
         this.accessPassword = shoppingList.getAccessPassword();
         this.latitude = shoppingList.getLatitude();
         this.longitude = shoppingList.getLongitude();

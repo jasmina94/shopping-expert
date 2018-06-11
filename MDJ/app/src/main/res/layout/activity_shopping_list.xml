@@ -17,13 +17,48 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/actionBarSize"
             android:background="@color/colorPrimary"
-            app:titleTextColor="@color/white"/>
+            app:titleTextColor="@color/white" />
 
     </android.support.design.widget.AppBarLayout>
 
+
     <TextView
+        android:id="@+id/sh_txt_list_name"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="All for shopping list"
+        android:gravity="center"
+        android:textSize="20dp"
+        android:textColor="@color/white"
+        android:background="@color/colorPrimary"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/sh_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </android.support.v7.widget.RecyclerView>
+
+
+    <ImageView
+        android:id="@+id/sh_empty_view_img"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="All for shopping list"
-        android:gravity="center"/>
+        android:src="@drawable/cart"
+        android:layout_gravity="center"
+        android:paddingTop="5dp"/>
+
+    <TextView
+        android:id="@+id/sh_empty_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/empty_list"
+        android:textSize="24dp"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/btn_add_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:src="@drawable/add" />
 </LinearLayout>

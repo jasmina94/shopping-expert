@@ -1,5 +1,6 @@
 package com.ftn.entity;
 
+import com.ftn.dto.ShoppingListItemDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,10 +23,8 @@ public class ShoppingListItem {
 
     @Id
     @GeneratedValue
+    @Column(name = "shopping_list_item_id")
     private Long id;
-
-    @Column(nullable = false)
-    private String itemName;
 
     @Column(nullable = false)
     @Min(1)
@@ -34,18 +33,28 @@ public class ShoppingListItem {
     @Column(nullable = false)
     private Double price;
 
-    private String note;
-
-    private Long categoryId;
-
     @Column
-    @ElementCollection(targetClass=Long.class)
-    private Set<Long> partOfShoppingLists = new HashSet<>();
+    private String note;
 
     @Column(columnDefinition = "Boolean default false")
     private Boolean isPurchased;
 
-    //items created by user are connected only to the list not the user, so item is existing only on list level
+    @Column
+    private String imagePath;
 
-    //see how to add photo
+    @Column
+    private long categoryItemId;
+
+    @Column
+    private long shoppingListId;
+
+    public ShoppingListItem(ShoppingListItemDTO shoppingListItemDTO){
+        this.quantity = shoppingListItemDTO.getQuantity();
+        this.price = shoppingListItemDTO.getPrice();
+        this.note = shoppingListItemDTO.getNote();
+        this.isPurchased = shoppingListItemDTO.getIsPurchased();
+        this.imagePath = shoppingListItemDTO.getImagePath();
+        this.categoryItemId = shoppingListItemDTO.getCategoryItemId();
+        this.shoppingListId = shoppingListItemDTO.getShoppingListId();
+    }
 }

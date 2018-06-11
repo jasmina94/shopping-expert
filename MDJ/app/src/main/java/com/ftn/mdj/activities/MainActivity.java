@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if(AppCompatDelegate.getDefaultNightMode()==AppCompatDelegate.MODE_NIGHT_YES){
+        if(AppCompatDelegate.getDefaultNightMode()== AppCompatDelegate.MODE_NIGHT_YES){
             setTheme(R.style.DarkTheme);
             Toast.makeText(MainActivity.this,"DarkTheme", Toast.LENGTH_SHORT).show();
         }else{
@@ -177,7 +177,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             FirebaseUser currentUser = mAuth.getCurrentUser();
             if(currentUser != null){
                 updateUI(true, currentUser.getEmail());
-                loadLoggedUserLists();;
+                loadLoggedUserLists();
             }else {
                 updateUI(false, null);
                 loadNotLoggedUserLists();

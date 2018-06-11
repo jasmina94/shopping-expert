@@ -1,10 +1,11 @@
 package com.ftn.mdj.adapters;
 
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,26 +15,31 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ftn.mdj.R;
+import com.ftn.mdj.activities.AddReminder;
+import com.ftn.mdj.activities.MainActivity;
 import com.ftn.mdj.activities.MapsActivity;
 import com.ftn.mdj.activities.ShareListActivity;
 import com.ftn.mdj.activities.ShoppingListActivity;
-import com.ftn.mdj.activities.TrashActivity;
 import com.ftn.mdj.dto.ShoppingListDTO;
 import com.ftn.mdj.fragments.MainFragment;
+import com.ftn.mdj.reminder.Reminder;
 import com.ftn.mdj.threads.ArchiveListThread;
 import com.ftn.mdj.threads.RenameListThread;
 import com.ftn.mdj.threads.SecretListThread;
 import com.ftn.mdj.utils.DummyCollection;
-import com.ftn.mdj.utils.GenericResponse;
 import com.ftn.mdj.utils.SharedPreferencesManager;
-import com.ftn.mdj.utils.UtilHelper;
 
-import java.util.ArrayList;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 /**
@@ -53,6 +59,12 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
     private SharedPreferencesManager sharedPreferenceManager;
     private Boolean isUserLogedIn;
 
+    private Calendar myCalendar = Calendar.getInstance();
+    private String myFormat = "MM/dd/yy";
+    private SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+
+
+
     public MainAdapter(List<ShoppingListDTO> activeShoppingLists, Context context, MainFragment mainFragment) {
         this.activeShoppingLists = activeShoppingLists;
         this.context = context;
@@ -66,25 +78,60 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_item, parent, false);
-        view.setOnClickListener(view1 -> context.startActivity(new Intent(context, ShoppingListActivity.class)));
+
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(context, ShoppingListActivity.class);
+                TextView txt_list_id  = view.findViewById(R.id.txt_list_id);
+                TextView txt_list_name = view.findViewById(R.id.txt_list_name);
+                long listId = Long.parseLong(txt_list_id.getText().toString());
+                String listName = txt_list_name.getText().toString();
+                i.putExtra("LIST_ID",listId);
+                i.putExtra("LIST_NAME", listName);
+                context.startActivity(i);
+            }
+        });
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         final ShoppingListDTO shoppingListDTO = activeShoppingLists.get(position);
+        boolean sharedList = isUserLogedIn && !sharedPreferenceManager.getString(SharedPreferencesManager.Key.USER_EMAIL.name()).equals(shoppingListDTO.getCreatorEmail());
 
-        holder.txt_name.setText(shoppingListDTO.getListName());
+        holder.txt_list_id.setText(String.valueOf(shoppingListDTO.getId()));
+        holder.txt_name.setText(String.valueOf(shoppingListDTO.getListName()));
         holder.txt_status.setText(shoppingListDTO.getBoughtItems() + "/" + shoppingListDTO.getNumberOfItems());
         holder.img_locker.setVisibility(shoppingListDTO.getIsSecret() ? View.VISIBLE : View.INVISIBLE);
-        if(isUserLogedIn && !sharedPreferenceManager.getString(SharedPreferencesManager.Key.USER_EMAIL.name()).equals(shoppingListDTO.getCreatorEmail())) {
+
+        if(isUserLogedIn && sharedList) {
             holder.txt_creatorEmail.setVisibility(View.VISIBLE);
-            holder.txt_creatorEmail.setText(sharedPreferenceManager.getString(SharedPreferencesManager.Key.USER_EMAIL.name()));
+            holder.txt_creatorEmail.setText(shoppingListDTO.getCreatorEmail());
         }
+        if(shoppingListDTO.getDate() != null) {
+            setReminder(shoppingListDTO.getDate(), shoppingListDTO.getTime());
+        }
+
+        holder.progressBar.setMax(shoppingListDTO.getNumberOfItems());
+        holder.progressBar.setProgress(shoppingListDTO.getBoughtItems());
+
         holder.txt_option_mnu.setOnClickListener(view -> {
             PopupMenu popupMenu = new PopupMenu(context, holder.txt_option_mnu);
             popupMenu.inflate(R.menu.option_menu);
             String secret = shoppingListDTO.getIsSecret() ? "Make public" : "Make secret";
+            if(sharedList) {
+                popupMenu.getMenu().getItem(0).setVisible(false);
+                popupMenu.getMenu().getItem(1).setVisible(false);
+                popupMenu.getMenu().getItem(2).setVisible(false);
+                popupMenu.getMenu().getItem(3).setVisible(false);
+            }
+            if(!isUserLogedIn) {
+                popupMenu.getMenu().getItem(2).setVisible(false);
+                popupMenu.getMenu().getItem(4).setVisible(false);
+                popupMenu.getMenu().getItem(5).setVisible(false);
+            }
+
             popupMenu.getMenu().getItem(3).setTitle(secret);
             popupMenu.setOnMenuItemClickListener(menuItem -> {
                 switch (menuItem.getItemId()){
@@ -101,12 +148,10 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
                         changeListPrivacy(shoppingListDTO);
                         break;
                     case R.id.mnu_location:
-                        if(isUserLogedIn){
-                            addLocation(shoppingListDTO);
-                        }else{
-                            Toast.makeText(context, "Sign in to add shopping place.", Toast.LENGTH_LONG).show();
-                        }
-
+                        addLocation(shoppingListDTO);
+                        break;
+                    case R.id.mnu_reminder:
+                        reminder(shoppingListDTO);
                         break;
                 }
                 return false;
@@ -115,9 +160,56 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
         });
     }
 
+    private void setReminder(String date, String time) {
+
+
+        Date dateFromString = null;
+        try {
+            dateFromString = sdf.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        myCalendar.setTime(dateFromString);
+
+        int hour = Integer.parseInt(time.split(":")[0]);
+        int minute = Integer.parseInt(time.split(":")[1]);
+        myCalendar.set(Calendar.HOUR_OF_DAY, hour);
+        myCalendar.set(Calendar.MINUTE, minute);
+
+        setAlarm(myCalendar.getTimeInMillis(), date);
+    }
+
+    public void setAlarm(long time, String date) {
+        AlarmManager am = (AlarmManager) MainActivity.instance.getSystemService(Context.ALARM_SERVICE);
+
+        //creating a new intent specifying the broadcast receiver
+        Intent i = new Intent(MainActivity.instance, Reminder.class);
+
+        //creating a pending intent using the intent
+        PendingIntent pi = PendingIntent.getBroadcast(MainActivity.instance, 0, i, 0);
+
+        myCalendar.set(Calendar.HOUR_OF_DAY, 0);
+        myCalendar.set(Calendar.MINUTE, 0);
+        myCalendar.set(Calendar.SECOND, 0);
+        myCalendar.set(Calendar.MILLISECOND, 0);
+
+        String todayString = sdf.format(myCalendar.getTime());
+        //vidi da cancelujes alarm
+        if(todayString.equals(date)) {
+            am.setExact(AlarmManager.RTC, time, pi);
+        }
+        Toast.makeText(MainActivity.instance, "Alarm is set", Toast.LENGTH_SHORT).show();
+    }
+
     private void shareList(Long listId) {
         Intent intent = new Intent(context, ShareListActivity.class);
         intent.putExtra("selectedShoppingListId", listId);
+        context.startActivity(intent);
+    }
+
+    private void reminder(ShoppingListDTO list) {
+        Intent intent = new Intent(context, AddReminder.class);
+        intent.putExtra("selectedShoppingList", list);
         context.startActivity(intent);
     }
 
@@ -261,19 +353,24 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
+        private TextView txt_list_id;
         private TextView txt_name;
         private TextView txt_status;
         private TextView txt_option_mnu;
         private ImageView img_locker;
         private TextView txt_creatorEmail;
+        private ProgressBar progressBar;
+
 
         public ViewHolder(View itemView) {
             super(itemView);
+            txt_list_id = itemView.findViewById(R.id.txt_list_id);
             txt_name = itemView.findViewById(R.id.txt_list_name);
             txt_status = itemView.findViewById(R.id.txt_status);
             txt_option_mnu = itemView.findViewById(R.id.txt_option_mnu);
             img_locker = itemView.findViewById(R.id.img_lock);
             txt_creatorEmail = itemView.findViewById(R.id.listOwner);
+            progressBar = itemView.findViewById(R.id.progressBar);
         }
     }
 }

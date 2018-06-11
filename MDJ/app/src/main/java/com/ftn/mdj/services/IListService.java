@@ -3,6 +3,8 @@ package com.ftn.mdj.services;
 import com.ftn.mdj.dto.ShoppingListDTO;
 import com.ftn.mdj.utils.GenericResponse;
 
+import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,7 +15,6 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
-import retrofit2.http.Url;
 
 public interface IListService {
 
@@ -49,7 +50,19 @@ public interface IListService {
     @PUT(USER_PREFIX + "/restore/{listId}")
     Call<GenericResponse<Boolean>> restore(@Path("listId") Long listId);
 
+    @PUT(USER_PREFIX + "/shareList/{listId}/{sharedWith}")
+    Call<GenericResponse<List<String>>> shareList(@Path("listId") Long listId, @Path("sharedWith") String sharedWith);
+
+    @PUT(USER_PREFIX + "/unShareList/{listId}/{sharedWith}")
+    Call<GenericResponse<Boolean>> unShareList(@Path("listId") Long listId, @Path("sharedWith") String sharedWith);
+
     @DELETE(USER_PREFIX + "/deleteList/{listId}")
     Call<GenericResponse<Boolean>> deleteList(@Path("listId") Long listId);
+
+    @PUT(USER_PREFIX + "/addReminder/{listId}")
+    Call<GenericResponse<Boolean>> addReminder(@Path("listId") Long listId, @Body Map<String, String> timeAndDate);
+
+    @PUT(USER_PREFIX + "/removeReminder/{listId}")
+    Call<GenericResponse<Boolean>> removeReminder(@Path("listId") Long listId);
 
 }

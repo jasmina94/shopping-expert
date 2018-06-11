@@ -2,7 +2,6 @@ package com.ftn.service;
 
 import com.ftn.dto.ShoppingListDTO;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -21,8 +20,6 @@ public interface IShoppingListService {
 
     boolean makePublic(Long listId);
 
-    void addReminder(Long listId, LocalDateTime reminder);
-
     boolean restore(long listId);
 
     boolean updateName(long listId, String listName);
@@ -36,4 +33,12 @@ public interface IShoppingListService {
     boolean deleteList(long listId);
 
     Map<String, Boolean> getFriendList(Long listId, Long userId);
+
+    boolean unShareList(Long listId, String unShareEmail);
+
+    boolean removeReminder(Long listId);
+
+    List<String> getListForReminder(Long listId);
+
+    boolean addReminder(Long listId, String date, String time);
 }

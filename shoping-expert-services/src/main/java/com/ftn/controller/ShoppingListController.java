@@ -4,13 +4,10 @@ import com.ftn.dto.ShoppingListDTO;
 import com.ftn.service.IShoppingListService;
 import com.ftn.util.GenericResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import javax.validation.constraints.NotEmpty;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -53,7 +50,6 @@ public class ShoppingListController {
         GenericResponse<ShoppingListDTO> response = new GenericResponse<>();
         ShoppingListDTO shoppingListDTO = shoppingListService.create(listName, userId);
         if(shoppingListDTO != null){
-//            response.setSuccessfulOperation(true);
             response.success(shoppingListDTO);
         }else {
             response.error("Server side error while creating new list.");
@@ -127,17 +123,56 @@ public class ShoppingListController {
     }
 
     @Transactional
-    @PutMapping("/addReminder/{listId}/{reminder}")
-    public ResponseEntity addReminder(@PathVariable Long listId, @PathVariable LocalDateTime reminder) {
-        shoppingListService.addReminder(listId, reminder);
-        return new ResponseEntity<>(HttpStatus.OK);
+    @PutMapping("/addReminder/{listId}")
+    public GenericResponse<Boolean> addReminder(@PathVariable("listId") Long listId, @RequestBody Map<String, String> timeAndDate) {
+        GenericResponse response = new GenericResponse();
+        boolean success = shoppingListService.addReminder(listId, timeAndDate.get("date"), timeAndDate.get("time"));
+        if(success) {
+            response.success(true);
+        } else {
+            response.success(false);
+        }
+        return response;
     }
 
     @Transactional
-    @PutMapping("shareList/{listId}/{sharedWith}")
-    public ResponseEntity shareList(@PathVariable Long listId, @PathVariable String sharedWith) {
-        shoppingListService.shareList(listId, sharedWith);
-        return new ResponseEntity<>(HttpStatus.OK);
+    @PutMapping("/removeReminder/{listId}")
+    public GenericResponse<Boolean> removeReminder(@PathVariable("listId") Long listId) {
+        GenericResponse response = new GenericResponse();
+        boolean success = shoppingListService.removeReminder(listId);
+        if(success) {
+            response.success(true);
+        } else {
+            response.success(false);
+        }
+        return response;
+    }
+
+    @Transactional
+    @PutMapping("/shareList/{listId}/{sharedWith}")
+    public GenericResponse<List<String>> shareList(@PathVariable Long listId, @PathVariable String sharedWith) {
+        GenericResponse response = new GenericResponse();
+        List<String> shareDevices = shoppingListService.shareList(listId, sharedWith);
+        if(shareDevices == null) {
+            response.success(false);
+        } else {
+            response.success(true);
+            response.setEntity(shareDevices);
+        }
+        return response;
+    }
+
+    @Transactional
+    @PutMapping("/unShareList/{listId}/{sharedWith}")
+    public GenericResponse<Boolean> unShareList(@PathVariable Long listId, @PathVariable String sharedWith) {
+        GenericResponse response = new GenericResponse();
+        boolean isSuccess = shoppingListService.unShareList(listId, sharedWith);
+        if(!isSuccess) {
+            response.success(false);
+        } else {
+            response.success(true);
+        }
+        return response;
     }
     
     @Transactional
@@ -176,6 +211,21 @@ public class ShoppingListController {
         } else {
             response.success(true);
             response.setEntity(friendList);
+        }
+        return response;
+    }
+
+    @Transactional
+    @GetMapping("/getDevicesThatNeedReminder/{listId}")
+    public GenericResponse<List<String>> getDevicesThatNeedReminder(@PathVariable("listId") Long listId) {
+        GenericResponse response = new GenericResponse();
+        List<String> list = shoppingListService.getListForReminder(listId);
+
+        if(list == null) {
+            response.success(false);
+        } else {
+            response.setEntity(list);
+            response.success(true);
         }
         return response;
     }

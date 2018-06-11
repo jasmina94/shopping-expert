@@ -69,7 +69,7 @@ public class GetFriendListThread extends Thread {
                     ShareListActivity.instance.setFriendList(response.getEntity());
                     UtilHelper.showToastMessage(context,"Success!", UtilHelper.ToastLength.LONG);
                 }else{
-                    UtilHelper.showToastMessage(context,"Error while getting archived list from server!", UtilHelper.ToastLength.LONG);
+                    UtilHelper.showToastMessage(context,"Error while getting friend list from server!", UtilHelper.ToastLength.LONG);
                 }
             }
         };

@@ -20,11 +20,17 @@ import android.widget.Toast;
 
 import com.ftn.mdj.R;
 import com.ftn.mdj.adapters.ShareListAdapter;
+import com.ftn.mdj.firebaseMsg.Notify;
 import com.ftn.mdj.threads.GetFriendListThread;
+import com.ftn.mdj.threads.ShareListThread;
 import com.ftn.mdj.utils.SharedPreferencesManager;
 
+import java.util.List;
 import java.util.Map;
 
+import lombok.Getter;
+
+@Getter
 public class ShareListActivity extends AppCompatActivity {
 
     public static ShareListActivity instance;
@@ -129,6 +135,10 @@ public class ShareListActivity extends AppCompatActivity {
             if(email.getText().toString().isEmpty()) {
                 Toast.makeText(context, "Email can not be empty!", Toast.LENGTH_SHORT).show();
             } else {
+                ShareListThread shareListThread = new ShareListThread(shoppingListId, email.getText().toString());
+                shareListThread.start();
+                Message msg = Message.obtain();
+                shareListThread.getHandler().sendMessage(msg);
                 Toast.makeText(context, "Email sharing!", Toast.LENGTH_SHORT).show();
                 shareAlertDialog.cancel();
             }
@@ -139,4 +149,22 @@ public class ShareListActivity extends AppCompatActivity {
 
         shareAlertDialog.show();
     }
+
+    public void sendNotifications(List<String> deviceIds) {
+        System.out.println("Usao da salje notifikaciju =================================================================================");
+//        new Notify(FirebaseInstanceId.getInstance().getToken()).execute();
+
+        deviceIds.forEach(deviceID -> {
+            System.out.println(deviceID + " =================================================================================");
+            String notificationBody = sharedPreferenceManager.getString(SharedPreferencesManager.Key.USER_EMAIL.name()) + " has just shared list with you";
+            new Notify(deviceID, notificationBody , "MainActivity").execute();
+        });
+        restart();
+    }
+
+    public void restart() {
+        finish();
+        startActivity(getIntent());
+    }
+
 }

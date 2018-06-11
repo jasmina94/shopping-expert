@@ -1,14 +1,18 @@
 package com.ftn.mdj.adapters;
 
 import android.content.Context;
+import android.os.Message;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.ftn.mdj.R;
+import com.ftn.mdj.activities.ShareListActivity;
+import com.ftn.mdj.threads.ShareListThread;
+import com.ftn.mdj.threads.UnShareListThread;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,11 +47,17 @@ public class ShareListAdapter extends RecyclerView.Adapter<ShareListAdapter.View
         holder.btn_unshare_list.setVisibility(!value ? View.INVISIBLE : View.VISIBLE);
 
         holder.btn_share_list.setOnClickListener(view -> {
-
+            ShareListThread shareListThread = new ShareListThread(ShareListActivity.instance.getShoppingListId(), key);
+            shareListThread.start();
+            Message msg = Message.obtain();
+            shareListThread.getHandler().sendMessage(msg);
         });
 
         holder.btn_unshare_list.setOnClickListener(view -> {
-
+            UnShareListThread unShareListThread = new UnShareListThread(ShareListActivity.instance.getShoppingListId(), key);
+            unShareListThread.start();
+            Message msg = Message.obtain();
+            unShareListThread.getHandler().sendMessage(msg);
         });
 
     }
@@ -60,8 +70,8 @@ public class ShareListAdapter extends RecyclerView.Adapter<ShareListAdapter.View
     public class ViewHolder extends RecyclerView.ViewHolder{
 
         private TextView txt_friend;
-        private Button btn_share_list;
-        private Button btn_unshare_list;
+        private FloatingActionButton btn_share_list;
+        private FloatingActionButton btn_unshare_list;
 
         public ViewHolder(View itemView) {
             super(itemView);
