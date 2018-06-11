@@ -144,22 +144,6 @@ public class LocationAlertIntentService extends IntentService {
     }
 
     private void notifyLocationAlert(String locTransitionType, String locationDetails) {
-
-        /*String CHANNEL_ID = "Zoftino";
-        NotificationCompat.Builder builder =
-                new NotificationCompat.Builder(this, CHANNEL_ID)
-                        .setSmallIcon(android.R.drawable.alert_dark_frame)
-                        .setContentTitle(locTransitionType)
-                        .setContentText(locationDetails);
-
-        builder.setAutoCancel(true);
-
-        NotificationManager mNotificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-        mNotificationManager.notify(0, builder.build());*/
-
-
         String NOTIFICATION_CHANNEL_ID = "desa_location";
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
@@ -178,7 +162,7 @@ public class LocationAlertIntentService extends IntentService {
         NotificationCompat.Builder builder2 = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
                 .setVibrate(new long[]{0, 100, 100, 100, 100, 100})
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.drawable.logo)
                 .setContentTitle("You are near your shopping place.")
                 .setContentText(locationDetails);
 

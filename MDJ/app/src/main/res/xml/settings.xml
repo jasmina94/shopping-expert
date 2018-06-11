@@ -4,8 +4,6 @@
     <SwitchPreference
         android:key="notifications_switch"
         android:title="Notifications"
-        android:textColor="?attr/colorPrimary"
-        android:background="?attr/colorPrimary"
         android:summary="Click to switch on or off notifications when someone shares a list with you."
         android:defaultValue="true"/>
 
@@ -13,7 +11,7 @@
         android:dialogTitle="Enter a email"
         android:key="blocked_text"
         android:summary="Enter a email of user which you want to block. When you block someone, all shared list between two of you will be removed."
-        android:title="Block user" />
+        android:title="Block user"/>
 
     <ListPreference
         android:entries="@array/list_values"
@@ -36,7 +34,5 @@
         android:title="Enable Dark Theme"
         android:summary="Click to switch on or off dark theme."
         android:defaultValue="false"/>
-
-
 
 </PreferenceScreen>

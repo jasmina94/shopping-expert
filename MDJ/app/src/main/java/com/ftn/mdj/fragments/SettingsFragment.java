@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.ftn.mdj.R;
 import com.ftn.mdj.activities.MainActivity;
+import com.ftn.mdj.activities.SettingsActivity;
 import com.ftn.mdj.dto.ShoppingListDTO;
 import com.ftn.mdj.threads.SaveBlockedUsersThread;
 import com.ftn.mdj.threads.SaveDistanceThread;
@@ -26,6 +27,7 @@ import com.ftn.mdj.utils.SharedPreferencesManager;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.facebook.FacebookSdk.getApplicationContext;
 import static java.lang.System.in;
 
 /**
@@ -39,6 +41,7 @@ public class SettingsFragment extends PreferenceFragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.settings);
 
@@ -76,16 +79,21 @@ public class SettingsFragment extends PreferenceFragment {
                 return false;
             }
         });
+        final SwitchPreference onOffDarkTheme = (SwitchPreference) findPreference("theme_switch");
+
 
         /*if(AppCompatDelegate.getDefaultNightMode()==AppCompatDelegate.MODE_NIGHT_YES){
-            setTheme(R.style.DesaTheme);
-            Toast.makeText(getApplicationContext(),"DesaTheme", Toast.LENGTH_SHORT).show();
+            mActivity.setTheme(R.style.DarkTheme);
+            Toast.makeText(getApplicationContext(),"DarkTheme", Toast.LENGTH_SHORT).show();
         }else{
-            setTheme(R.style.AppTheme);
-            Toast.makeText(getApplicationContext(),"AppTheme", Toast.LENGTH_SHORT).show();
+            mActivity.setTheme(R.style.LightTheme);
+            Toast.makeText(getApplicationContext(),"LightTheme", Toast.LENGTH_SHORT).show();
         }*/
 
-        final SwitchPreference onOffDarkTheme = (SwitchPreference) findPreference("theme_switch");
+        if(AppCompatDelegate.getDefaultNightMode()==AppCompatDelegate.MODE_NIGHT_YES){
+            onOffDarkTheme.setChecked(true);
+        }
+
         onOffDarkTheme.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object o) {
@@ -182,7 +190,7 @@ public class SettingsFragment extends PreferenceFragment {
     }
 
     public void restartApp(){
-        Intent i = new Intent(mContext,MainActivity.class);
+        Intent i = new Intent(mContext,SettingsActivity.class);
         startActivity(i);
         mActivity.finish();
     }
