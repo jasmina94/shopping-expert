@@ -8,11 +8,14 @@ import com.ftn.repository.ShoppingListRepository;
 import com.ftn.service.IShoppingListItemService;
 import com.ftn.service.IShoppingListService;
 import com.ftn.service.IUserService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -108,13 +111,6 @@ public class ShoppingListService implements IShoppingListService {
             success = false;
         }
         return success;
-    }
-
-    @Override
-    public void addReminder(Long listId, LocalDateTime reminder) {
-        ShoppingList shoppingList = shoppingListRepository.getOne(listId);
-        shoppingList.setReminder(reminder);
-        shoppingListRepository.save(shoppingList);
     }
 
     @Override
@@ -228,7 +224,7 @@ public class ShoppingListService implements IShoppingListService {
         UserDTO user = userService.getById(userId.intValue());
         Set<String> sharedWith = shoppingList.getSharedWith();
 
-        List<ShoppingList> allShopingLists = shoppingListRepository.findAll();
+        List<ShoppingList> allShoppingLists = shoppingListRepository.findAll();
 
         Set<String> friendEmails = allShopingLists.stream().filter(sl -> sl.getSharedWith().contains(user.getEmail()))
                 .map(sl -> userService.getById(sl.getCreatorId().intValue()).getEmail()).collect(Collectors.toSet());
@@ -246,5 +242,51 @@ public class ShoppingListService implements IShoppingListService {
         return response;
     }
 
+
+    @Override
+    public boolean addReminder(Long listId, String date, String time) {
+        ShoppingList shoppingList = shoppingListRepository.findById(listId).get();
+        if(shoppingList == null) {
+            return false;
+        }
+        shoppingList.setDate(date);
+        shoppingList.setTime(time);
+        shoppingListRepository.save(shoppingList);
+        return true;
+    }
+
+
+    @Override
+    public boolean removeReminder(Long listId) {
+        ShoppingList shoppingList = shoppingListRepository.findById(listId).get();
+        if(shoppingList == null) {
+            return false;
+        }
+        shoppingList.setDate(null);
+        shoppingList.setTime(null);
+        shoppingListRepository.save(shoppingList);
+        return true;
+    }
+
+    @Override
+    public List<String> getListForReminder(Long listId) {
+        ShoppingList shoppingList = shoppingListRepository.findById(listId).get();
+
+        if(shoppingList == null) {
+            return null;
+        }
+
+        Set<String> users = shoppingList.getSharedWith();
+
+        UserDTO creator = iUserService.getById(shoppingList.getCreatorId().intValue());
+
+        users.add(creator.getEmail());
+
+        Set<String> devicesList = users.stream().filter(u -> iUserService.getByEmailRealUser(u).getShowNotifications())
+                .collect(Collectors.toSet());
+        List<String> notifications = new ArrayList<>();
+        devicesList.forEach(d -> notifications.addAll(iUserService.getByEmailRealUser(d).getInstancesOfUserDevices()));
+        return notifications;
+    }
 
 }

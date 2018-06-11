@@ -10,7 +10,6 @@
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.RECEIVE" />
     <uses-permission android:name="android.permission.SEND" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
@@ -96,10 +95,7 @@
             </intent-filter>
         </service>
 
-        <receiver
-            android:name="reminder.Reminder"
-            android:enabled="true"
-            android:exported="true" />
+        <receiver android:name=".reminder.Reminder"/>
 
         <activity android:name=".activities.AddReminder" />
         <activity android:name=".activities.AddItemActivity"></activity>
