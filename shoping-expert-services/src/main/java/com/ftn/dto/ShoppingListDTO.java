@@ -4,7 +4,6 @@ import com.ftn.entity.ShoppingList;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -30,7 +29,9 @@ public class ShoppingListDTO {
     //emails of users that list is shared with
     private Set<String> sharedWith = new HashSet<>();
 
-    private LocalDateTime reminder;
+    private String date;
+
+    private String time;
     
     private String accessPassword;
     //same for time and date of completion, need to investigate how reminders work
@@ -44,7 +45,8 @@ public class ShoppingListDTO {
         this.listName = shoppingList.getListName();
         this.isSecret = shoppingList.getIsSecret();
         this.sharedWith = shoppingList.getSharedWith();
-        this.reminder = shoppingList.getReminder();
+        this.date = shoppingList.getDate();
+        this.time = shoppingList.getTime();
         this.accessPassword = shoppingList.getAccessPassword();
         this.latitude = shoppingList.getLatitude();
         this.longitude = shoppingList.getLongitude();

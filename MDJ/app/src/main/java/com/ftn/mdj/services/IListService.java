@@ -3,6 +3,8 @@ package com.ftn.mdj.services;
 import com.ftn.mdj.dto.ShoppingListDTO;
 import com.ftn.mdj.utils.GenericResponse;
 
+import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,7 +15,6 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
-import retrofit2.http.Url;
 
 public interface IListService {
 
@@ -57,5 +58,11 @@ public interface IListService {
 
     @DELETE(USER_PREFIX + "/deleteList/{listId}")
     Call<GenericResponse<Boolean>> deleteList(@Path("listId") Long listId);
+
+    @PUT(USER_PREFIX + "/addReminder/{listId}")
+    Call<GenericResponse<Boolean>> addReminder(@Path("listId") Long listId, @Body Map<String, String> timeAndDate);
+
+    @PUT(USER_PREFIX + "/removeReminder/{listId}")
+    Call<GenericResponse<Boolean>> removeReminder(@Path("listId") Long listId);
 
 }

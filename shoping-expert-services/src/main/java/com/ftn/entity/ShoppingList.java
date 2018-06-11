@@ -6,7 +6,6 @@ import lombok.Setter;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -48,9 +47,11 @@ public class  ShoppingList {
 
     //need to see how we will add location of shopping center, so I'll leave it for now
     @Column
-    private LocalDateTime reminder;
-    //same for time and date of completion, need to investigate how reminders work
-    
+    private String date;
+
+    @Column
+    private String time;
+
     @Column
     private Double latitude;
     

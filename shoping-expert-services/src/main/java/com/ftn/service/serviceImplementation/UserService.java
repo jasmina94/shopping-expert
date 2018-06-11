@@ -3,16 +3,14 @@ package com.ftn.service.serviceImplementation;
 import com.ftn.dto.LoginDTO;
 import com.ftn.dto.RegistrationDTO;
 import com.ftn.dto.UserDTO;
-import com.ftn.entity.ShoppingList;
 import com.ftn.entity.User;
 import com.ftn.repository.UserRepository;
 import com.ftn.service.IUserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 /**
  * Created by Jasmina on 15/05/2018.
@@ -98,7 +96,7 @@ public class UserService implements IUserService{
 
     @Override
     public void removeDeviceInstanceFromUser(Long userId, String deviceInstance) {
-        User realUser = userRepository.getOne(userId);
+        User realUser = userRepository.findById(userId).get();
         realUser.getInstancesOfUserDevices().remove(deviceInstance);
         userRepository.save(realUser);
     }
@@ -162,7 +160,19 @@ public class UserService implements IUserService{
 	        return response;
 	}
 
-	@Override
+    @Override
+    public void removeDeviceInstance(String deviceInstance) {
+        List<User> users = userRepository.findAll();
+
+        users.forEach(u -> {
+            if(u.getInstancesOfUserDevices().contains(deviceInstance))
+                u.getInstancesOfUserDevices().remove(deviceInstance);
+        });
+
+        userRepository.saveAll(users);
+    }
+
+    @Override
 	public List<String> getBlockedUsers(Long userId) {
 		List<String> response = new ArrayList<String>();
         try {
