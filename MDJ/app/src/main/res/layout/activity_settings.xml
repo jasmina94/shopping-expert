@@ -27,7 +27,6 @@
         android:layout_height="match_parent"
         android:id="@+id/settings_layout"
         android:paddingTop="50dp"
-        android:background="?attr/backgroundcolor"
         tools:context=".activities.SettingsActivity">
     </RelativeLayout>
 

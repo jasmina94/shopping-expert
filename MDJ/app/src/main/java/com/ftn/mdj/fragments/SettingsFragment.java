@@ -79,40 +79,6 @@ public class SettingsFragment extends PreferenceFragment {
                 return false;
             }
         });
-        final SwitchPreference onOffDarkTheme = (SwitchPreference) findPreference("theme_switch");
-
-
-        /*if(AppCompatDelegate.getDefaultNightMode()==AppCompatDelegate.MODE_NIGHT_YES){
-            mActivity.setTheme(R.style.DarkTheme);
-            Toast.makeText(getApplicationContext(),"DarkTheme", Toast.LENGTH_SHORT).show();
-        }else{
-            mActivity.setTheme(R.style.LightTheme);
-            Toast.makeText(getApplicationContext(),"LightTheme", Toast.LENGTH_SHORT).show();
-        }*/
-
-        if(AppCompatDelegate.getDefaultNightMode()==AppCompatDelegate.MODE_NIGHT_YES){
-            onOffDarkTheme.setChecked(true);
-        }
-
-        onOffDarkTheme.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object o) {
-                if(onOffDarkTheme.isChecked()){
-                    // Checked the switch programmatically
-                    onOffDarkTheme.setChecked(false);
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                    restartApp();
-
-                }else {
-                    // Unchecked the switch programmatically
-                    onOffDarkTheme.setChecked(true);
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                    restartApp();
-                }
-
-                return false;
-            }
-        });
 
         final EditTextPreference blockedEditText = (EditTextPreference) findPreference("blocked_text");
 

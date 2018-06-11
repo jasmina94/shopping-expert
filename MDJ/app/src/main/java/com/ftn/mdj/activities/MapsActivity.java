@@ -512,9 +512,7 @@ public class MapsActivity extends AppCompatActivity
         if(GEOFENCE_RADIUS==0){
             GEOFENCE_RADIUS = 500;
         }
-        Toast.makeText(MapsActivity.this,
-                "GEOFENCE_RADIUS = "+GEOFENCE_RADIUS,
-                Toast.LENGTH_SHORT).show();
+
         return new Geofence.Builder()
                 .setRequestId(key)
                 .setCircularRegion(lat, lang, GEOFENCE_RADIUS)

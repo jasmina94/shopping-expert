@@ -13,7 +13,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -65,13 +64,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if(AppCompatDelegate.getDefaultNightMode()== AppCompatDelegate.MODE_NIGHT_YES){
-            setTheme(R.style.DarkTheme);
-            Toast.makeText(MainActivity.this,"DarkTheme", Toast.LENGTH_SHORT).show();
-        }else{
-            setTheme(R.style.LightTheme);
-            Toast.makeText(MainActivity.this,"LightTheme", Toast.LENGTH_SHORT).show();
-        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 

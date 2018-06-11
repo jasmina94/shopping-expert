@@ -12,43 +12,6 @@
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
     </style>
 
-    <!-- Light/Day Mode theme. -->
-    <style name="LightTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="backgroundcolor">#fcfcfc</item>
-        <item name="cardbackground">#ffffff</item>
-        <item name="textcolor">#808080</item>
-        <item name="tintcolor">#000000</item>
-        <item name="buttoncolor">#2196F3</item>
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-        <item name="drawerArrowStyle">@style/DrawerIcon</item>
-        <!--<item name="preferenceTheme">@style/Platform.AppCompat.Light</item>-->
-    </style>
-
-    <!-- Dark/Night Mode theme. -->
-    <style name="DarkTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">#1e2756</item>
-        <item name="colorPrimaryDark">#141831</item>
-        <item name="colorAccent">#2aac4b</item>
-        <item name="backgroundcolor">#303030</item>
-        <item name="cardbackground">#424242</item>
-        <item name="textcolor">#ffffff</item>
-        <item name="tintcolor">#ffffff</item>
-        <item name="buttoncolor">#2196F3</item>
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-        <item name="drawerArrowStyle">@style/DrawerIcon</item>
-        <item name="android:textColor">#ffffff</item>
-        <item name="android:background">#424242</item>
-        <item name="android:summary">#424242</item>
-        <!--<item name="preferenceTheme">@style/Platform.ThemeOverlay.AppCompat.Dark</item>-->
-    </style>
-
     <!--<style name="PreferencesTheme" parent="Theme.AppCompat.DayNight">
         <item name="android:textColor">#2aac4b</item>
         <item name="android:background">#1e2756</item>

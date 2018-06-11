@@ -2,21 +2,16 @@ package com.ftn.mdj.activities;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.os.Bundle;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.ftn.mdj.R;
 import com.ftn.mdj.fragments.SettingsFragment;
 import com.ftn.mdj.threads.GetBlockedUsersThread;
-import com.ftn.mdj.threads.SaveBlockedUsersThread;
 import com.ftn.mdj.utils.SharedPreferencesManager;
-
-import java.util.Set;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -26,12 +21,6 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(AppCompatDelegate.getDefaultNightMode()==AppCompatDelegate.MODE_NIGHT_YES){
-            setTheme(R.style.DarkTheme);
-        }else{
-            setTheme(R.style.LightTheme);
-        }
-
         setContentView(R.layout.activity_settings);
         instance=this;
 

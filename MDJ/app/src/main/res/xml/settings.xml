@@ -29,10 +29,4 @@
         android:key="distance_list"
         android:title="Distance from shopping place" />
 
-    <SwitchPreference
-        android:key="theme_switch"
-        android:title="Enable Dark Theme"
-        android:summary="Click to switch on or off dark theme."
-        android:defaultValue="false"/>
-
 </PreferenceScreen>
