@@ -2,16 +2,15 @@ package com.ftn.mdj.activities;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.os.Bundle;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.ftn.mdj.R;
 import com.ftn.mdj.fragments.SettingsFragment;
 import com.ftn.mdj.threads.GetBlockedUsersThread;
-import com.ftn.mdj.threads.SaveBlockedUsersThread;
 import com.ftn.mdj.utils.SharedPreferencesManager;
 
 public class SettingsActivity extends AppCompatActivity {

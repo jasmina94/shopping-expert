@@ -1,5 +1,15 @@
 package com.ftn.service.serviceImplementation;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.ftn.dto.ShoppingListDTO;
 import com.ftn.dto.UserDTO;
 import com.ftn.entity.ShoppingList;
@@ -8,16 +18,6 @@ import com.ftn.repository.ShoppingListRepository;
 import com.ftn.service.IShoppingListItemService;
 import com.ftn.service.IShoppingListService;
 import com.ftn.service.IUserService;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 /**
  * Created by milca on 4/25/2018.

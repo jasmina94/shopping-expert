@@ -17,48 +17,48 @@ import java.util.Set;
 @Entity
 @NoArgsConstructor
 @Component
-public class  ShoppingList {
+public class ShoppingList {
 
-    @Id
-    @GeneratedValue
-    private Long id;
+	@Id
+	@GeneratedValue
+	private Long id;
 
-    //User can have multiple same named lists
-    @Column(nullable = false)
-    private String listName;
+	// User can have multiple same named lists
+	@Column(nullable = false)
+	private String listName;
 
-    @Column(columnDefinition = "Boolean default false")
-    private Boolean isSecret = false;
+	@Column(columnDefinition = "Boolean default false")
+	private Boolean isSecret = false;
 
+	@Column(columnDefinition = "Boolean default false")
+	private Boolean isArchived = false;
 
-    @Column(columnDefinition = "Boolean default false")
-    private Boolean isArchived = false;
+	private String accessPassword;
 
-    private String accessPassword;
+	@Column(nullable = false)
+	private Long creatorId;
 
-    @Column(nullable = false)
-    private Long creatorId;
+	@Column
+	@ElementCollection(targetClass = String.class)
+	private Set<String> sharedWith = new HashSet<>();
 
-    @Column
-    @ElementCollection(targetClass=String.class)
-    private Set<String> sharedWith = new HashSet<>();
+	// need to see how we will add location of shopping center, so I'll leave it
+	// for now
+	@Column
+	private String date;
 
-    //need to see how we will add location of shopping center, so I'll leave it for now
-    @Column
-    private String date;
+	@Column
+	private String time;
 
-    @Column
-    private String time;
+	@Column
+	private Double latitude;
 
-    @Column
-    private Double latitude;
-    
-    @Column
-    private Double longitude;
+	@Column
+	private Double longitude;
 
-    public ShoppingList(String listName, long creatorId){
-        this.creatorId = creatorId;
-        this.listName = listName;
-        this.accessPassword = "";
-    }
+	public ShoppingList(String listName, long creatorId) {
+		this.creatorId = creatorId;
+		this.listName = listName;
+		this.accessPassword = "";
+	}
 }

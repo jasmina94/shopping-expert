@@ -44,4 +44,7 @@ public interface IUserService {
 
     @GET(USER_PREFIX + "/getBlockedUsers/{userId}")
     Call<GenericResponse<List<String>>> getBlockedUsers(@Path("userId") Long userId);
+
+    @POST(USER_PREFIX + "/saveDistanceForLocation/{userId}/{distanceForLocation}")
+    Call<GenericResponse> saveDistanceForLocation(@Path("userId") Long userId, @Path("distanceForLocation") Integer distanceForLocation);
 }

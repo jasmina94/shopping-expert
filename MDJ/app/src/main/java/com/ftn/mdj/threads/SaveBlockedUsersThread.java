@@ -70,7 +70,7 @@ public class SaveBlockedUsersThread extends Thread {
                     fragmentTransaction.commit();
                     UtilHelper.showToastMessage(context, "Successfully saved blocked users!", UtilHelper.ToastLength.SHORT);
                 } else {
-                    UtilHelper.showToastMessage(context, "Error while saving blocked users!", UtilHelper.ToastLength.SHORT);
+                    UtilHelper.showToastMessage(context, "User by that email does not exist!", UtilHelper.ToastLength.SHORT);
                 }
             }
         };

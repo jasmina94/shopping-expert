@@ -4,16 +4,14 @@
     <SwitchPreference
         android:key="notifications_switch"
         android:title="Notifications"
-        android:textColor="?attr/colorPrimary"
-        android:background="?attr/colorPrimary"
         android:summary="Click to switch on or off notifications when someone shares a list with you."
         android:defaultValue="true"/>
 
     <EditTextPreference
         android:dialogTitle="Enter a email"
         android:key="blocked_text"
-        android:summary="Enter a email of user which you want to block."
-        android:title="Block user" />
+        android:summary="Enter a email of user which you want to block. When you block someone, all shared list between two of you will be removed."
+        android:title="Block user"/>
 
     <ListPreference
         android:entries="@array/list_values"
@@ -23,12 +21,12 @@
         android:key="blocked_list"
         android:title="Unblock user" />
 
-    <SwitchPreference
-        android:key="theme_switch"
-        android:title="Enable Dark Theme"
-        android:summary="Click to switch on or off dark theme."
-        android:defaultValue="false"/>
-
-
+    <ListPreference
+        android:entries="@array/distance_list_values"
+        android:entryValues="@array/distance_db_values"
+        android:dialogTitle="Choose distance from shopping place"
+        android:summary="Set distance from shopping place when do you want to receive notification. Default distance is 100 m. Notifications for shopping place last 12h."
+        android:key="distance_list"
+        android:title="Distance from shopping place" />
 
 </PreferenceScreen>

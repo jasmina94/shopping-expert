@@ -37,13 +37,13 @@ public class GetBlockedUsersThread extends Thread {
 
                     @Override
                     public void onResponse(Call<GenericResponse<List<String>>> call, Response<GenericResponse<List<String>>> response) {
-                        System.out.println("Successfully saved blocked users!");
+                        System.out.println("Successfully got blocked users!");
                         blockedUsersHandler.sendMessage(ServiceUtils.getHandlerMessageFromResponse(response));
                     }
 
                     @Override
                     public void onFailure(Call<GenericResponse<List<String>>> call, Throwable t) {
-                        System.out.println("Error while saving blocked users!");
+                        System.out.println("Error while getting blocked users!");
                         blockedUsersHandler.sendMessage(GenericResponse.getGenericServerErrorResponseMessage());
                     }
                 });
@@ -68,9 +68,9 @@ public class GetBlockedUsersThread extends Thread {
                     FragmentTransaction fragmentTransaction = SettingsActivity.instance.getFragmentManager().beginTransaction();
                     fragmentTransaction.replace(R.id.settings_layout, fragment);
                     fragmentTransaction.commit();
-                    UtilHelper.showToastMessage(context, "Successfully saved blocked users!", UtilHelper.ToastLength.SHORT);
+                    //UtilHelper.showToastMessage(context, "Successfully got blocked users!", UtilHelper.ToastLength.SHORT);
                 } else {
-                    UtilHelper.showToastMessage(context, "Error while saving blocked users!", UtilHelper.ToastLength.SHORT);
+                    UtilHelper.showToastMessage(context, "Error while getting blocked users!", UtilHelper.ToastLength.SHORT);
                 }
             }
         };

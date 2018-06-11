@@ -34,6 +34,8 @@ public class UserDTO {
     private Boolean showNotifications = true;
     
     private List<String> blockedUsers = new ArrayList<>();
+    
+    private Integer distanceForLocation = 100;
 
     public UserDTO(User user){
         this.id = user.getId();
@@ -43,6 +45,7 @@ public class UserDTO {
         this.lastName = user.getLastName();
         this.showNotifications = user.getShowNotifications();
         this.blockedUsers = user.getBlockedUsers();
+        this.distanceForLocation = user.getDistanceForLocation();
     }
 
     public User constructEntity(){
@@ -54,6 +57,7 @@ public class UserDTO {
         user.setLastName(lastName);
         user.setShowNotifications(showNotifications);
         user.setBlockedUsers(blockedUsers);
+        user.setDistanceForLocation(distanceForLocation);
         return user;
     }
 }

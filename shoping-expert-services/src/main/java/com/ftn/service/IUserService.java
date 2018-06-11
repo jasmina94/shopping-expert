@@ -28,4 +28,5 @@ public interface IUserService {
     List<String> saveBlockedUsers(Long userId, String email, Boolean toBlock);
 
     void removeDeviceInstance(String deviceInstance);
+    boolean saveDistanceForLocation(Long userId, Integer distanceForLocation);
 }

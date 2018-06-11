@@ -98,6 +98,16 @@
     <string-array name="list_values">
         <item>None</item>
     </string-array>
+    <string-array name="distance_list_values">
+        <item>100 m</item>
+        <item>200 m</item>
+        <item>500 m</item>
+    </string-array>
+    <string-array name="distance_db_values">
+        <item>100</item>
+        <item>200</item>
+        <item>500</item>
+    </string-array>
 
     <!-- Shopping list-->
     <string name="empty_list">Start adding products it is super easy</string>

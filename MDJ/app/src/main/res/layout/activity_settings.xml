@@ -16,7 +16,6 @@
             android:id="@+id/toolbar_settings"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:background="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|enterAlways"
             app:title="@string/title_settings">
 

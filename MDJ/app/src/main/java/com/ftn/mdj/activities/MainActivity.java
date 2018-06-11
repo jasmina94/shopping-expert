@@ -146,6 +146,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     sharedPreferenceManager.put(SharedPreferencesManager.Key.USER_ID, response.getEntity().getId().intValue());
                     sharedPreferenceManager.put(SharedPreferencesManager.Key.USER_EMAIL, response.getEntity().getEmail());
                     sharedPreferenceManager.put(SharedPreferencesManager.Key.SHOW_NOTIFICATIONS, response.getEntity().getShowNotifications());
+                    sharedPreferenceManager.put(SharedPreferencesManager.Key.DISTANCE, response.getEntity().getDistanceForLocation());
 
                     updateUI(true, response.getEntity().getEmail());
                     loadLoggedUserLists();
@@ -153,6 +154,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     sharedPreferenceManager.put(SharedPreferencesManager.Key.USER_ID, null);
                     sharedPreferenceManager.put(SharedPreferencesManager.Key.USER_EMAIL, null);
                     sharedPreferenceManager.put(SharedPreferencesManager.Key.SHOW_NOTIFICATIONS, null);
+                    sharedPreferenceManager.put(SharedPreferencesManager.Key.DISTANCE, null);
                     loadNotLoggedUserLists();
                     updateUI(false, null);
                 }

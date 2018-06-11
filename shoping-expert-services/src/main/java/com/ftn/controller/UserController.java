@@ -160,4 +160,17 @@ public class UserController {
 
         return response;
     }
+
+    @Transactional
+    @PostMapping("/saveDistanceForLocation/{userId}/{distanceForLocation}")
+    public GenericResponse<Boolean> saveDistanceForLocation(@PathVariable Long userId, @PathVariable Integer distanceForLocation) {
+        GenericResponse<Boolean> response = new GenericResponse<>();
+        boolean result = userService.saveDistanceForLocation(userId, distanceForLocation);
+        if(result){
+            response.success(true);
+        }else {
+            response.error("Server side error while saving settings.");
+        }
+        return response;
+    }
 }

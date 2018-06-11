@@ -95,6 +95,10 @@
             </intent-filter>
         </service>
 
+        <service
+            android:name=".services.LocationAlertIntentService"
+            android:allowBackup="true"></service>
+
         <receiver android:name=".reminder.Reminder"/>
 
         <activity android:name=".activities.AddReminder" />

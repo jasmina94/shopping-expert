@@ -17,14 +17,17 @@ import android.widget.Toast;
 
 import com.ftn.mdj.R;
 import com.ftn.mdj.activities.MainActivity;
+import com.ftn.mdj.activities.SettingsActivity;
 import com.ftn.mdj.dto.ShoppingListDTO;
 import com.ftn.mdj.threads.SaveBlockedUsersThread;
+import com.ftn.mdj.threads.SaveDistanceThread;
 import com.ftn.mdj.threads.ShowNotificationsThread;
 import com.ftn.mdj.utils.SharedPreferencesManager;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.facebook.FacebookSdk.getApplicationContext;
 import static java.lang.System.in;
 
 /**
@@ -38,6 +41,7 @@ public class SettingsFragment extends PreferenceFragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.settings);
 
@@ -68,35 +72,8 @@ public class SettingsFragment extends PreferenceFragment {
                     showNotificationsThread.start();
                     Message msg = Message.obtain();
                     showNotificationsThread.getHandler().sendMessage(msg);
-                }
-
-                return false;
-            }
-        });
-
-        /*if(AppCompatDelegate.getDefaultNightMode()==AppCompatDelegate.MODE_NIGHT_YES){
-            setTheme(R.style.DesaTheme);
-            Toast.makeText(getApplicationContext(),"DesaTheme", Toast.LENGTH_SHORT).show();
-        }else{
-            setTheme(R.style.AppTheme);
-            Toast.makeText(getApplicationContext(),"AppTheme", Toast.LENGTH_SHORT).show();
-        }*/
-
-        final SwitchPreference onOffDarkTheme = (SwitchPreference) findPreference("theme_switch");
-        onOffDarkTheme.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object o) {
-                if(onOffDarkTheme.isChecked()){
-                    // Checked the switch programmatically
-                    onOffDarkTheme.setChecked(false);
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                    restartApp();
-
-                }else {
-                    // Unchecked the switch programmatically
-                    onOffDarkTheme.setChecked(true);
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                    restartApp();
+                }else{
+                    Toast.makeText(mActivity,"Login to use this setting.", Toast.LENGTH_SHORT).show();
                 }
 
                 return false;
@@ -109,19 +86,19 @@ public class SettingsFragment extends PreferenceFragment {
             @Override
             public boolean onPreferenceChange(Preference preference, Object o) {
                 String emailToBlock = blockedEditText.getEditText().getEditableText().toString();
-                Toast.makeText(mActivity,"edit "+emailToBlock , Toast.LENGTH_SHORT).show();
                 if(userId!=0){
                     SaveBlockedUsersThread blockedUsersThread = new SaveBlockedUsersThread(userId, emailToBlock, true);
                     blockedUsersThread.start();
                     Message msg = Message.obtain();
                     blockedUsersThread.getHandler().sendMessage(msg);
+                }else{
+                    Toast.makeText(mActivity,"Login to use this setting.", Toast.LENGTH_SHORT).show();
                 }
                 return false;
             }
         });
 
         final ListPreference blockedList = (ListPreference) findPreference("blocked_list");
-        //CharSequence[] entries = new CharSequence[]{"One", "Two", "Three"};
         if(!blockedUsers.isEmpty()){
             CharSequence[] entries = new CharSequence[blockedUsers.size()];
             for(int i=0;i<blockedUsers.size();i++){
@@ -135,12 +112,43 @@ public class SettingsFragment extends PreferenceFragment {
             @Override
             public boolean onPreferenceChange(Preference preference, Object o) {
                 String emailToUnblock = o.toString();
-                Toast.makeText(mActivity,"edit "+emailToUnblock , Toast.LENGTH_SHORT).show();
                 if(userId!=0){
                     SaveBlockedUsersThread blockedUsersThread = new SaveBlockedUsersThread(userId, emailToUnblock, false);
                     blockedUsersThread.start();
                     Message msg = Message.obtain();
                     blockedUsersThread.getHandler().sendMessage(msg);
+                }else{
+                    Toast.makeText(mActivity,"Login to use this setting.", Toast.LENGTH_SHORT).show();
+                }
+                return false;
+            }
+        });
+
+        int distance =  SharedPreferencesManager.getInstance(mContext).getInt(SharedPreferencesManager.Key.DISTANCE.name());
+        final ListPreference distanceList = (ListPreference) findPreference("distance_list");
+
+        distanceList.setValue(""+distance);
+        distanceList.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object o) {
+                String textValue = o.toString();
+
+                ListPreference listPreference = (ListPreference) preference;
+                int index = listPreference.findIndexOfValue(textValue);
+
+                CharSequence[] entries = listPreference.getEntries();
+
+                distanceList.setValue(textValue);
+
+                if(index >= 0)
+                    Toast.makeText(mActivity, entries[index], Toast.LENGTH_LONG).show();
+                if(userId!=0){
+                    SaveDistanceThread saveDistanceThread = new SaveDistanceThread(userId, Integer.parseInt(textValue));
+                    saveDistanceThread.start();
+                    Message msg = Message.obtain();
+                    saveDistanceThread.getHandler().sendMessage(msg);
+                }else{
+                    Toast.makeText(mActivity,"Login to use this setting.", Toast.LENGTH_SHORT).show();
                 }
                 return false;
             }
