@@ -190,7 +190,7 @@ public class SettingsFragment extends PreferenceFragment {
     }
 
     public void restartApp(){
-        Intent i = new Intent(mContext,SettingsActivity.class);
+        Intent i = new Intent(mContext,MainActivity.class);
         startActivity(i);
         mActivity.finish();
     }

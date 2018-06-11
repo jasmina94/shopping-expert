@@ -23,7 +23,8 @@ public class SharedPreferencesManager {
         SIGN_IN_TYPE,
         DEVICE_INSTANCE,
         SHOW_NOTIFICATIONS,
-        DISTANCE
+        DISTANCE,
+        DARK_MODE
     }
 
     private SharedPreferencesManager(Context context) {

@@ -26,13 +26,10 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setTheme(R.style.DarkTheme);
         if(AppCompatDelegate.getDefaultNightMode()==AppCompatDelegate.MODE_NIGHT_YES){
             setTheme(R.style.DarkTheme);
-            Toast.makeText(SettingsActivity.this,"DarkTheme", Toast.LENGTH_SHORT).show();
         }else{
             setTheme(R.style.LightTheme);
-            Toast.makeText(SettingsActivity.this,"LightTheme", Toast.LENGTH_SHORT).show();
         }
 
         setContentView(R.layout.activity_settings);

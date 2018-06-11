@@ -537,8 +537,7 @@ public class MapsActivity extends AppCompatActivity
         List<Address> myList = myLocation.getFromLocation(latitude,longitude, 1);
         Address address = (Address) myList.get(0);
         String addressStr = "";
-        addressStr += address.getAddressLine(0) + ", ";//ulica i broj
-        addressStr += address.getAddressLine(1) ;//grad
+        addressStr += address.getAddressLine(0);
 
         return addressStr;
     }
