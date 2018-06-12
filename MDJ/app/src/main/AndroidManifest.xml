@@ -101,7 +101,7 @@
 
         <receiver android:name=".reminder.Reminder"/>
 
-        <activity android:name=".activities.AddReminder" />
+        <activity android:name=".activities.AddReminderActivity" />
         <activity android:name=".activities.AddItemActivity"></activity>
     </application>
 

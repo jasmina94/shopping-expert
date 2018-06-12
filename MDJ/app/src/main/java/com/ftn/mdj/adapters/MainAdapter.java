@@ -20,7 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ftn.mdj.R;
-import com.ftn.mdj.activities.AddReminder;
+import com.ftn.mdj.activities.AddReminderActivity;
 import com.ftn.mdj.activities.MainActivity;
 import com.ftn.mdj.activities.MapsActivity;
 import com.ftn.mdj.activities.ShareListActivity;
@@ -51,8 +51,6 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
     List<ShoppingListDTO> activeShoppingLists;
     private Context context;
     private MainFragment mainFragment;
-
-    private Handler secretHandler;
 
     private AlertDialog renameAlertDialog;
     private AlertDialog secretAlertDialog;
@@ -110,7 +108,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
             holder.txt_creatorEmail.setText(shoppingListDTO.getCreatorEmail());
         }
         if(shoppingListDTO.getDate() != null) {
-            setReminder(shoppingListDTO.getDate(), shoppingListDTO.getTime());
+            setReminder(shoppingListDTO);
         }
 
         holder.progressBar.setMax(shoppingListDTO.getNumberOfItems());
@@ -160,34 +158,34 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
         });
     }
 
-    private void setReminder(String date, String time) {
+    private void setReminder(ShoppingListDTO shoppingListDTO) {
 
 
         Date dateFromString = null;
         try {
-            dateFromString = sdf.parse(date);
+            dateFromString = sdf.parse(shoppingListDTO.getDate());
         } catch (ParseException e) {
             e.printStackTrace();
         }
         myCalendar.setTime(dateFromString);
 
-        int hour = Integer.parseInt(time.split(":")[0]);
-        int minute = Integer.parseInt(time.split(":")[1]);
+        int hour = Integer.parseInt(shoppingListDTO.getTime().split(":")[0]);
+        int minute = Integer.parseInt(shoppingListDTO.getTime().split(":")[1]);
         myCalendar.set(Calendar.HOUR_OF_DAY, hour);
         myCalendar.set(Calendar.MINUTE, minute);
 
-        setAlarm(myCalendar.getTimeInMillis(), date);
+        setAlarm(myCalendar.getTimeInMillis(), shoppingListDTO.getDate(), shoppingListDTO.getId(), shoppingListDTO.getListName());
     }
 
-    public void setAlarm(long time, String date) {
+    public void setAlarm(long time, String date, Long id, String name) {
         AlarmManager am = (AlarmManager) MainActivity.instance.getSystemService(Context.ALARM_SERVICE);
 
         //creating a new intent specifying the broadcast receiver
         Intent i = new Intent(MainActivity.instance, Reminder.class);
-
+        i.putExtra("idList", id);
+        i.putExtra("nameList", name);
         //creating a pending intent using the intent
         PendingIntent pi = PendingIntent.getBroadcast(MainActivity.instance, 0, i, 0);
-
         myCalendar.set(Calendar.HOUR_OF_DAY, 0);
         myCalendar.set(Calendar.MINUTE, 0);
         myCalendar.set(Calendar.SECOND, 0);
@@ -208,7 +206,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
     }
 
     private void reminder(ShoppingListDTO list) {
-        Intent intent = new Intent(context, AddReminder.class);
+        Intent intent = new Intent(context, AddReminderActivity.class);
         intent.putExtra("selectedShoppingList", list);
         context.startActivity(intent);
     }

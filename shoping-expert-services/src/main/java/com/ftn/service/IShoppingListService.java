@@ -38,7 +38,5 @@ public interface IShoppingListService {
 
     boolean removeReminder(Long listId);
 
-    List<String> getListForReminder(Long listId);
-
     boolean addReminder(Long listId, String date, String time);
 }

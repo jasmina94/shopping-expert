@@ -9,6 +9,7 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -47,4 +48,7 @@ public interface IUserService {
 
     @POST(USER_PREFIX + "/saveDistanceForLocation/{userId}/{distanceForLocation}")
     Call<GenericResponse> saveDistanceForLocation(@Path("userId") Long userId, @Path("distanceForLocation") Integer distanceForLocation);
+
+    @DELETE(USER_PREFIX + "/removeUnusedDeviceInstances/{deviceInstance}")
+    Call<GenericResponse> removeUnusedDeviceInstances(@Path("deviceInstance") String deviceInstance);
 }
