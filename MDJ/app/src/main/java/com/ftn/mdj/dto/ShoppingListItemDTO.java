@@ -24,4 +24,6 @@ public class ShoppingListItemDTO {
     private long shoppingListId;
 
     private String categoryItemName;
+
+    private String categoryName;
 }

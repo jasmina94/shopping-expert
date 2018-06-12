@@ -41,4 +41,17 @@ public class ShoppingListItemController {
         }
         return response;
     }
+    
+    @Transactional
+    @PostMapping
+    public GenericResponse<Boolean> updateItem(@RequestBody ShoppingListItemDTO shoppingListItemDTO) {
+        GenericResponse<Boolean> response = new GenericResponse<>();
+        boolean success = shoppingListItemService.updateItem(shoppingListItemDTO);
+        if(success){
+            response.success(true);
+        }else {
+            response.error("Server side error while updating item!");
+        }
+        return response;
+    }
 }
