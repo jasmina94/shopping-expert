@@ -61,13 +61,11 @@ public class CategoryItemService implements ICategoryItemService {
         CategoryItem categoryItem = new CategoryItem(categoryItemDTO);
         try {
             categoryItem = categoryItemRepository.save(categoryItem);
-            ShoppingListItem shoppingListItem = new ShoppingListItem(categoryItem.getId(), listId);
+            ShoppingListItem shoppingListItem = new ShoppingListItem(categoryItem.getId(), listId, categoryItem.getItemName());
             shoppingListItem = shoppingListItemRepository.save(shoppingListItem);
-            System.out.println("OVDE");
         }catch (Exception e){
             success = false;
         }
-        System.out.println("IZLAZI ok");
         return success;
     }
 }

@@ -50,4 +50,16 @@ public class ShoppingListItemService implements IShoppingListItemService {
                 .map(shoppingListItem -> new ShoppingListItemDTO(shoppingListItem)).collect(Collectors.toList());
 
     }
+
+    @Override
+    public boolean createListItem(ShoppingListItemDTO shoppingListItemDTO) {
+        boolean success = true;
+        try {
+            ShoppingListItem shoppingListItem = new ShoppingListItem(shoppingListItemDTO);
+            shoppingListItemRepository.save(shoppingListItem);
+        }catch (Exception e){
+            success = false;
+        }
+        return false;
+    }
 }

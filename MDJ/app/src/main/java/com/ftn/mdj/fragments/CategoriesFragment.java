@@ -18,7 +18,6 @@ import com.ftn.mdj.dto.CategoryDTO;
 import com.ftn.mdj.dto.CategoryItemDTO;
 import com.ftn.mdj.threads.GetCategoriesThread;
 import com.ftn.mdj.threads.GetCategoryItemsMapThread;
-import com.ftn.mdj.threads.GetCategoryItemsThread;
 import com.ftn.mdj.utils.GenericResponse;
 import com.ftn.mdj.adapters.ExpandableCategoryListAdapter;
 import com.ftn.mdj.utils.UtilHelper;
@@ -48,7 +47,7 @@ public class CategoriesFragment extends Fragment {
         parentActivity = super.getActivity();
 
         expandableCategoryListAdapter = new ExpandableCategoryListAdapter(this.getContext());
-        expListView = (ExpandableListView)rootView.findViewById(R.id.exlv_cat);
+        expListView = (ExpandableListView)rootView.findViewById(R.id.exp_category_list);
         expListView.setAdapter(expandableCategoryListAdapter);
 
         setAllCategoriesHandler();
@@ -78,10 +77,7 @@ public class CategoriesFragment extends Fragment {
         Message msg = Message.obtain();
         getCategoryItemsMapThread.getHandler().sendMessage(msg);
     }
-    //***************************************************************
 
-
-    // ********************* Handlers *********************
     private void setAllCategoriesHandler() {
         allCategoriesHandler = new Handler(Looper.getMainLooper()) {
             @Override
@@ -99,7 +95,6 @@ public class CategoriesFragment extends Fragment {
         };
     }
 
-
     private void setMapHandler() {
         mapHandler = new Handler(Looper.getMainLooper()) {
             @Override
@@ -116,5 +111,4 @@ public class CategoriesFragment extends Fragment {
             }
         };
     }
-    // ******************************************
 }

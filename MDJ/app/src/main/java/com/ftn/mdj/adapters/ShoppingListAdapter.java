@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.TextView;
 
 import com.ftn.mdj.R;
 import com.ftn.mdj.dto.ShoppingListItemDTO;
@@ -35,6 +36,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
     public void onBindViewHolder(ViewHolder holder, int position) {
         final ShoppingListItemDTO shoppingListItemDTO = shoppingListItemDTOS.get(position);
         holder.checkBox_item.setText(shoppingListItemDTO.getCategoryItemName());
+       // holder.txt_item_id.setText(shoppingListItemDTO.getId().intValue());
     }
 
     @Override
@@ -45,10 +47,12 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
     public class ViewHolder extends RecyclerView.ViewHolder{
 
         private CheckBox checkBox_item;
+        private TextView txt_item_id;
 
         public ViewHolder(View itemView) {
             super(itemView);
             checkBox_item = (CheckBox)itemView.findViewById(R.id.shopping_list_item);
+            //txt_item_id = (TextView)itemView.findViewById(R.id.shopping_list_item_id);
         }
     }
 }

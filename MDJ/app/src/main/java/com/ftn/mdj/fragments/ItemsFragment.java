@@ -12,6 +12,8 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +23,7 @@ import android.widget.EditText;
 import com.ftn.mdj.R;
 import com.ftn.mdj.activities.AddItemActivity;
 import com.ftn.mdj.activities.ShoppingListActivity;
+import com.ftn.mdj.adapters.CategoryItemsAdapter;
 import com.ftn.mdj.dto.CategoryItemDTO;
 import com.ftn.mdj.threads.AddCategoryAndShoppingItemThread;
 import com.ftn.mdj.threads.GetCategoryItemsThread;
@@ -46,6 +49,9 @@ public class ItemsFragment extends Fragment {
     private FloatingActionButton btnCreateNewItem;
     private AlertDialog dialog; //dialog za kreiranje
 
+    private CategoryItemsAdapter categoryItemsAdapter;
+    private RecyclerView mRecyclerView;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -53,8 +59,15 @@ public class ItemsFragment extends Fragment {
         parentActivity = super.getActivity();
         listId = ((AddItemActivity)parentActivity).getListId();
 
-        setAllItemsHandler();
+        categoryItemsAdapter = new CategoryItemsAdapter(parentActivity);
+        mRecyclerView = (RecyclerView)rootView.findViewById(R.id.category_item_recview);
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(rootView.getContext()));
 
+        mRecyclerView.setAdapter(categoryItemsAdapter);
+
+        setAllItemsHandler();
+        setNewItemAndCategoryItemHandler();
 
         btnCreateNewItem = (FloatingActionButton)rootView.findViewById(R.id.btn_new_shopping_item);
         btnCreateNewItem.setOnClickListener(new View.OnClickListener() {
@@ -106,6 +119,8 @@ public class ItemsFragment extends Fragment {
                 if (response.isSuccessfulOperation()) {
                     List<CategoryItemDTO> categoryItemDTOS = response.getEntity();
                     allCategoryItems = categoryItemDTOS;
+                    categoryItemsAdapter.setListData(allCategoryItems);
+                    mRecyclerView.setVisibility(View.VISIBLE);
                 }else {
                     UtilHelper.showToastMessage(getContext(), response.getErrorMessage(), UtilHelper.ToastLength.LONG);
                 }

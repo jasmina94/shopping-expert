@@ -75,7 +75,7 @@ public class ExpandableCategoryListAdapter extends BaseExpandableListAdapter {
             convertView = layoutInflater.inflate(R.layout.category_view, null);
         }
 
-        TextView lblListHeader = (TextView) convertView.findViewById(R.id.txt_list_category_name);
+        TextView lblListHeader = (TextView) convertView.findViewById(R.id.txt_category_name);
         lblListHeader.setTypeface(null, android.graphics.Typeface.BOLD);
         lblListHeader.setText(headerTitle);
 
@@ -92,7 +92,7 @@ public class ExpandableCategoryListAdapter extends BaseExpandableListAdapter {
             convertView = layoutInflater.inflate(R.layout.category_item_view, null);
         }
 
-        TextView txtListChild = (TextView) convertView .findViewById(R.id.txt_list_category_item_name);
+        TextView txtListChild = (TextView) convertView .findViewById(R.id.txt_category_item_name);
         txtListChild.setText(childText);
         return convertView;
     }

@@ -11,8 +11,8 @@ import javax.validation.constraints.Min;
 /**
  * Created by milca on 4/24/2018.
  */
-@Data
 @Entity
+@Data
 @NoArgsConstructor
 public class ShoppingListItem {
 
@@ -40,6 +40,9 @@ public class ShoppingListItem {
     private long categoryItemId;
 
     @Column
+    private String categoryItemName;
+
+    @Column
     private long shoppingListId;
 
     public ShoppingListItem(ShoppingListItemDTO shoppingListItemDTO){
@@ -49,16 +52,18 @@ public class ShoppingListItem {
         this.isPurchased = shoppingListItemDTO.getIsPurchased();
         this.imagePath = shoppingListItemDTO.getImagePath();
         this.categoryItemId = shoppingListItemDTO.getCategoryItemId();
+        this.categoryItemName = shoppingListItemDTO.getCategoryItemName();
         this.shoppingListId = shoppingListItemDTO.getShoppingListId();
     }
 
-    public ShoppingListItem(long categoryItemId, long shoppingListId){
+    public ShoppingListItem(long categoryItemId, long shoppingListId, String categoryItemName){
         this.quantity = 1;
         this.price = 0.0;
         this.note = "";
         this.isPurchased = false;
         this.imagePath = "";
         this.categoryItemId = categoryItemId;
+        this.categoryItemName = categoryItemName;
         this.shoppingListId = shoppingListId;
     }
 }

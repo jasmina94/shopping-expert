@@ -16,4 +16,6 @@ public interface IShoppingListItemService {
     boolean addItemToList(ShoppingListItemDTO shoppingListItemDTO, long listId);
 
     List<ShoppingListItemDTO> readFromList(long listId);
+
+    boolean createListItem(ShoppingListItemDTO shoppingListItemDTO);
 }

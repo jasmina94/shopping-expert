@@ -4,16 +4,16 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="8dp"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:id="@+id/exp_category_view">
 
 
     <TextView
-        android:id="@+id/txt_list_category_name"
+        android:id="@+id/txt_category_name"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="?android:attr/expandableListPreferredItemPaddingLeft"
         android:textSize="17dp"
-        android:textColor="@color/colorPrimary"
-        android:text="Proba"/>
+        android:textColor="@color/colorPrimary" />
 
 </LinearLayout>
