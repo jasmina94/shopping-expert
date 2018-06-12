@@ -68,4 +68,15 @@ public class CategoryItemService implements ICategoryItemService {
         }
         return success;
     }
+
+    @Override
+    public CategoryItemDTO findById(long id) {
+        try {
+            CategoryItem categoryItem = categoryItemRepository.findById(id).orElseThrow(NullPointerException::new);
+            CategoryItemDTO categoryItemDTO = new CategoryItemDTO(categoryItem);
+            return categoryItemDTO;
+        }catch (NullPointerException e){
+            return  null;
+        }
+    }
 }

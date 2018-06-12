@@ -12,6 +12,8 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +23,7 @@ import android.widget.EditText;
 import com.ftn.mdj.R;
 import com.ftn.mdj.activities.AddItemActivity;
 import com.ftn.mdj.activities.ShoppingListActivity;
+import com.ftn.mdj.adapters.CategoryItemsAdapter;
 import com.ftn.mdj.dto.CategoryItemDTO;
 import com.ftn.mdj.threads.AddCategoryAndShoppingItemThread;
 import com.ftn.mdj.threads.GetCategoryItemsThread;
@@ -33,6 +36,7 @@ import java.util.List;
 
 public class ItemsFragment extends Fragment {
 
+    public  static ItemsFragment instance;
     private Handler allCategoryItemsHandler;
     private Handler newItemAndCategoryItemHandler;
     private int otherCategoryId = 23;
@@ -44,7 +48,10 @@ public class ItemsFragment extends Fragment {
     private List<CategoryItemDTO> allCategoryItems = new ArrayList<>();
 
     private FloatingActionButton btnCreateNewItem;
-    private AlertDialog dialog; //dialog za kreiranje
+    private AlertDialog dialog;
+
+    private RecyclerView mRecyclerView;
+    private CategoryItemsAdapter categoryItemsAdapter;
 
     @Nullable
     @Override
@@ -52,6 +59,15 @@ public class ItemsFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_items, container, false);
         parentActivity = super.getActivity();
         listId = ((AddItemActivity)parentActivity).getListId();
+
+        instance = this;
+
+        categoryItemsAdapter = new CategoryItemsAdapter(parentActivity, listId);
+        mRecyclerView = (RecyclerView)rootView.findViewById(R.id.category_item_recview);
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(rootView.getContext()));
+
+        mRecyclerView.setAdapter(categoryItemsAdapter);
 
         setAllItemsHandler();
         setNewItemAndCategoryItemHandler();
@@ -106,6 +122,8 @@ public class ItemsFragment extends Fragment {
                 if (response.isSuccessfulOperation()) {
                     List<CategoryItemDTO> categoryItemDTOS = response.getEntity();
                     allCategoryItems = categoryItemDTOS;
+                    categoryItemsAdapter.setCategoryItemDTOS(allCategoryItems);
+                    categoryItemsAdapter.notifyDataSetChanged();
                 }else {
                     UtilHelper.showToastMessage(getContext(), response.getErrorMessage(), UtilHelper.ToastLength.LONG);
                 }

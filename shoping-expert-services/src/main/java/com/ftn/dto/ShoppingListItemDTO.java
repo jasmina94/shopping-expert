@@ -41,4 +41,15 @@ public class ShoppingListItemDTO {
         this.categoryItemName = shoppingListItem.getCategoryItemName();
         this.shoppingListId = shoppingListItem.getShoppingListId();
     }
+
+    public ShoppingListItemDTO(CategoryItemDTO categoryItemDTO, long shoppingListId){
+        this.quantity = 1;
+        this.price = 0.0;
+        this.note = "";
+        this.isPurchased = false;
+        this.imagePath = "";
+        this.categoryItemId = categoryItemDTO.getId();
+        this.categoryItemName = categoryItemDTO.getItemName();
+        this.shoppingListId = shoppingListId;
+    }
 }

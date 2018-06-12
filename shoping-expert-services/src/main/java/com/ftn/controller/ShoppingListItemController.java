@@ -41,4 +41,17 @@ public class ShoppingListItemController {
         }
         return response;
     }
+
+    @Transactional
+    @PostMapping(value = "/buy/{listItemId}")
+    public GenericResponse<Boolean> buy(@PathVariable("listItemId") long listItemId) {
+        GenericResponse<Boolean> response = new GenericResponse<>();
+        boolean success = shoppingListItemService.buyItem(listItemId);
+        if(success){
+            response.success(true);
+        }else {
+            response.error("Server side error while adding item to list!");
+        }
+        return response;
+    }
 }

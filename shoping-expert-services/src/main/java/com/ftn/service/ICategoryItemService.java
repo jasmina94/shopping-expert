@@ -18,4 +18,6 @@ public interface ICategoryItemService {
     HashMap<String, List<CategoryItemDTO>> readAllAsMap();
 
     boolean createCategoryAndShoppingItem(CategoryItemDTO categoryItemDTO, long listId);
+
+    CategoryItemDTO findById(long id);
 }

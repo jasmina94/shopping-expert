@@ -28,4 +28,7 @@ public interface ICategoryItemService {
 
     @POST(USER_PREFIX + "/{listId}")
     Call<GenericResponse<Boolean>> addNewCategoryAndShoppingListItem(@Body CategoryItemDTO categoryItemDTO, @Path("listId") long listId);
+
+    @POST(USER_PREFIX + "/{categoryItemId}/{listToAdd}")
+    Call<GenericResponse<Boolean>> addShoppingListItem(@Path("categoryItemId") long categoryItemId, @Path("listToAdd") long listId);
 }

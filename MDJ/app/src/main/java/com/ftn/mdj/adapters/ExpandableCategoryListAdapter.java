@@ -1,6 +1,9 @@
 package com.ftn.mdj.adapters;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +13,9 @@ import android.widget.TextView;
 import com.ftn.mdj.R;
 import com.ftn.mdj.dto.CategoryDTO;
 import com.ftn.mdj.dto.CategoryItemDTO;
+import com.ftn.mdj.threads.AddCategoryItemAsShoppingListItemThread;
+import com.ftn.mdj.utils.GenericResponse;
+import com.ftn.mdj.utils.UtilHelper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,6 +26,7 @@ public class ExpandableCategoryListAdapter extends BaseExpandableListAdapter {
     private Context context;
     private List<CategoryDTO> listDataHeader = new ArrayList<>(); // header titles
     private HashMap<String, List<CategoryItemDTO>> listDataChild = new HashMap<>(); // child data in format of header title, child title
+
 
     public ExpandableCategoryListAdapter(Context context) {
         this.context = context;
@@ -86,6 +93,7 @@ public class ExpandableCategoryListAdapter extends BaseExpandableListAdapter {
     public View getChildView(int groupPosition, final int childPosition,boolean isLastChild, View convertView, ViewGroup parent) {
         CategoryItemDTO child = (CategoryItemDTO) getChild(groupPosition, childPosition);
         final String childText = child.getItemName();
+        final long childId = child.getId();
 
         if (convertView == null) {
             LayoutInflater layoutInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -93,13 +101,15 @@ public class ExpandableCategoryListAdapter extends BaseExpandableListAdapter {
         }
 
         TextView txtListChild = (TextView) convertView .findViewById(R.id.txt_list_category_item_name);
+        TextView txtListChildId = (TextView) convertView .findViewById(R.id.txt_list_category_item_id);
         txtListChild.setText(childText);
+        txtListChildId.setText(String.valueOf(childId));
         return convertView;
     }
 
     @Override
     public boolean isChildSelectable(int i, int i1) {
-        return false;
+        return true;
     }
 
     public List<CategoryDTO> getListDataHeader() {

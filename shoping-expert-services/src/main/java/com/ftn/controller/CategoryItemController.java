@@ -1,7 +1,10 @@
 package com.ftn.controller;
 
 import com.ftn.dto.CategoryItemDTO;
+import com.ftn.dto.ShoppingListItemDTO;
 import com.ftn.service.ICategoryItemService;
+import com.ftn.service.IShoppingListItemService;
+import com.ftn.service.IShoppingListService;
 import com.ftn.util.GenericResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +22,9 @@ public class CategoryItemController {
 
     @Autowired
     private ICategoryItemService categoryItemService;
+
+    @Autowired
+    private IShoppingListItemService shoppingListItemService;
 
     @Transactional
     @GetMapping
@@ -58,6 +64,21 @@ public class CategoryItemController {
             response.success(true);
         }else {
             response.error("Server side error while creating new category item/shopping list item");
+        }
+        return response;
+    }
+
+    @Transactional
+    @PostMapping(value = "/{categoryItemId}/{listToAdd}")
+    public GenericResponse<Boolean> createNewOtherItem(@PathVariable("categoryItemId") long categoryItemId,
+                                                       @PathVariable("listToAdd") long listId){
+        GenericResponse<Boolean> response = new GenericResponse<>();
+        CategoryItemDTO categoryItemDTO = categoryItemService.findById(categoryItemId);
+        boolean success = shoppingListItemService.addItemToList(categoryItemDTO, listId);
+        if(success){
+            response.success(true);
+        }else {
+            response.error("Server side error");
         }
         return response;
     }

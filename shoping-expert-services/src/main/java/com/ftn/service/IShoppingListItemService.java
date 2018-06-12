@@ -1,5 +1,6 @@
 package com.ftn.service;
 
+import com.ftn.dto.CategoryItemDTO;
 import com.ftn.dto.ShoppingListItemDTO;
 
 import java.util.List;
@@ -16,4 +17,8 @@ public interface IShoppingListItemService {
     boolean addItemToList(ShoppingListItemDTO shoppingListItemDTO, long listId);
 
     List<ShoppingListItemDTO> readFromList(long listId);
+
+    boolean addItemToList(CategoryItemDTO categoryItemDTO, long listId);
+
+    boolean buyItem(long itemId);
 }

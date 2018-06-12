@@ -13,11 +13,14 @@ import retrofit2.http.Path;
 
 public interface IShoppingListItemService {
 
-    String USER_PREFIX = "/api/listItems";
+    String LIST_ITEMS_PREFIX = "/api/listItems";
 
-    @GET(USER_PREFIX + "/{listId}")
+    @GET(LIST_ITEMS_PREFIX + "/{listId}")
     Call<GenericResponse<List<ShoppingListItemDTO>>> getItemsForList(@Path("listId") long listId);
 
-    @POST(USER_PREFIX + "/{listId}")
+    @POST(LIST_ITEMS_PREFIX + "/{listId}")
     Call<GenericResponse<Boolean>> addItemToList(@Path("listId") long listId, @Body ShoppingListItemDTO registrationDTO);
+
+    @POST(LIST_ITEMS_PREFIX + "/buy/{shoppingListItemId}")
+    Call<GenericResponse<Boolean>> buy(@Path("shoppingListItemId") long shoppingListItemId);
 }

@@ -1,5 +1,6 @@
 package com.ftn.service.serviceImplementation;
 
+import com.ftn.dto.CategoryItemDTO;
 import com.ftn.dto.ShoppingListItemDTO;
 import com.ftn.entity.ShoppingListItem;
 import com.ftn.repository.ShoppingListItemRepository;
@@ -49,5 +50,31 @@ public class ShoppingListItemService implements IShoppingListItemService {
         return shoppingListItemRepository.findByShoppingListId(listId).stream()
                 .map(shoppingListItem -> new ShoppingListItemDTO(shoppingListItem)).collect(Collectors.toList());
 
+    }
+
+    @Override
+    public boolean addItemToList(CategoryItemDTO categoryItemDTO, long listId) {
+        boolean success = true;
+        ShoppingListItemDTO shoppingListItemDTO = new ShoppingListItemDTO(categoryItemDTO, listId);
+        ShoppingListItem shoppingListItem = new ShoppingListItem(shoppingListItemDTO);
+        try {
+            shoppingListItem = shoppingListItemRepository.save(shoppingListItem);
+        }catch (Exception e){
+            success = false;
+        }
+        return success;
+    }
+
+    @Override
+    public boolean buyItem(long itemId) {
+        boolean success = true;
+        try {
+            ShoppingListItem shoppingListItem = shoppingListItemRepository.findById(itemId).orElseThrow(NullPointerException::new);
+            shoppingListItem.setIsPurchased(true);
+            shoppingListItemRepository.save(shoppingListItem);
+        }catch (NullPointerException e){
+            success = false;
+        }
+        return success;
     }
 }
