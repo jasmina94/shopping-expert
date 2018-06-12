@@ -86,15 +86,20 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
                 TextView txt_list_name = view.findViewById(R.id.txt_list_name);
                 TextView isSecret = view.findViewById(R.id.txt_list_isSecret);
 
-                //if(Boolean.parseBoolean(isSecret.getText().toString()) || isAccessGranted) {
-                    long listId = Long.parseLong(txt_list_id.getText().toString());
-                    String listName = txt_list_name.getText().toString();
-                    i.putExtra("LIST_ID", listId);
-                    i.putExtra("LIST_NAME", listName);
-                    context.startActivity(i);
-               /* } else {
+                if(!Boolean.parseBoolean(isSecret.getText().toString()) || isAccessGranted) {
+                    if(isUserLoggedIn) {
+                        long listId = Long.parseLong(txt_list_id.getText().toString());
+                        String listName = txt_list_name.getText().toString();
+                        i.putExtra("LIST_ID", listId);
+                        i.putExtra("LIST_NAME", listName);
+                        context.startActivity(i);
+                    } else {
+                        Toast.makeText(MainActivity.instance, "This feature is locked until you login.", Toast.LENGTH_SHORT).show();
+
+                    }
+                } else {
                     Toast.makeText(MainActivity.instance, "This list is locked, unlock it temporary.", Toast.LENGTH_SHORT).show();
-                }*/
+                }
             }
         });
         return new ViewHolder(view);
