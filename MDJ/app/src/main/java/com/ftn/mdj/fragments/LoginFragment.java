@@ -401,5 +401,4 @@ public class LoginFragment extends Fragment {
         msg.obj = registrationDTO;
         registerThread.getHandler().sendMessage(msg);
     }
-
 }
