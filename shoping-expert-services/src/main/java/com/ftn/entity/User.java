@@ -2,6 +2,7 @@ package com.ftn.entity;
 
 import com.ftn.dto.RegistrationDTO;
 import com.ftn.dto.UserDTO;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,15 +16,13 @@ import java.util.List;
 /**
  * Created by milca on 4/24/2018.
  */
-@Getter
-@Setter
+@Data
 @Entity
 @NoArgsConstructor
-@Component
 public class User {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column

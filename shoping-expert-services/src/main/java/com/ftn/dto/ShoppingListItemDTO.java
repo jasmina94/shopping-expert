@@ -28,9 +28,11 @@ public class ShoppingListItemDTO {
     private String categoryItemName;
 
     private long shoppingListId;
+    
+    private String categoryName;
 
 
-    public ShoppingListItemDTO(ShoppingListItem shoppingListItem){
+    public ShoppingListItemDTO(ShoppingListItem shoppingListItem, String categoryName){
         this.id = shoppingListItem.getId();
         this.quantity = shoppingListItem.getQuantity();
         this.price = shoppingListItem.getPrice();
@@ -38,6 +40,8 @@ public class ShoppingListItemDTO {
         this.isPurchased = shoppingListItem.getIsPurchased();
         this.imagePath = shoppingListItem.getImagePath();
         this.categoryItemId = shoppingListItem.getCategoryItemId();
+        this.categoryItemName = shoppingListItem.getCategoryItemName();
         this.shoppingListId = shoppingListItem.getShoppingListId();
+        this.categoryName = categoryName;
     }
 }

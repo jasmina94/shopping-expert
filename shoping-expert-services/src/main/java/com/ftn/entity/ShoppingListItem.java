@@ -1,29 +1,23 @@
 package com.ftn.entity;
 
 import com.ftn.dto.ShoppingListItemDTO;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
-import java.util.HashSet;
-import java.util.Set;
+
 
 /**
  * Created by milca on 4/24/2018.
  */
-@Getter
-@Setter
+@Data
 @Entity
 @NoArgsConstructor
-@Component
 public class ShoppingListItem {
 
     @Id
-    @GeneratedValue
-    @Column(name = "shopping_list_item_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
@@ -46,6 +40,9 @@ public class ShoppingListItem {
     private long categoryItemId;
 
     @Column
+    private String categoryItemName;
+
+    @Column
     private long shoppingListId;
 
     public ShoppingListItem(ShoppingListItemDTO shoppingListItemDTO){
@@ -55,6 +52,18 @@ public class ShoppingListItem {
         this.isPurchased = shoppingListItemDTO.getIsPurchased();
         this.imagePath = shoppingListItemDTO.getImagePath();
         this.categoryItemId = shoppingListItemDTO.getCategoryItemId();
+        this.categoryItemName = shoppingListItemDTO.getCategoryItemName();
         this.shoppingListId = shoppingListItemDTO.getShoppingListId();
+    }
+
+    public ShoppingListItem(long categoryItemId, long shoppingListId, String categoryItemName){
+        this.quantity = 1;
+        this.price = 0.0;
+        this.note = "";
+        this.isPurchased = false;
+        this.imagePath = "";
+        this.categoryItemId = categoryItemId;
+        this.categoryItemName = categoryItemName;
+        this.shoppingListId = shoppingListId;
     }
 }

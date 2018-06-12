@@ -6,10 +6,20 @@
     tools:context=".fragments.ItemsFragment"
     android:id="@+id/items_fragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/category_item_recview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/tab_items" />
+        android:scrollbars="vertical"/>
+
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/btn_new_shopping_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="6dp"
+        android:src="@drawable/add"
+        android:layout_gravity="end|bottom"
+        android:layout_marginBottom="40dp"/>
 
 </FrameLayout>

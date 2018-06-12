@@ -113,4 +113,7 @@
     <string name="empty_list">Start adding products it is super easy</string>
     <string name="tab_items">ALL ITEMS</string>
     <string name="tab_categories">CATEGORIES</string>
+    <string name="create_new_item">Create new item</string>
+    <string name="create_new_item_hint">Item name</string>
+    <string name="create_new_item_btn">CREATE</string>
 </resources>

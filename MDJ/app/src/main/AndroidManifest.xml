@@ -103,6 +103,7 @@
 
         <activity android:name=".activities.AddReminderActivity" />
         <activity android:name=".activities.AddItemActivity"></activity>
+        <activity android:name=".activities.EditItemActivity"></activity>
     </application>
 
 </manifest>

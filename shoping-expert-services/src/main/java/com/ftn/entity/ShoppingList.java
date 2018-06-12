@@ -1,5 +1,6 @@
 package com.ftn.entity;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,15 +13,13 @@ import java.util.Set;
 /**
  * Created by milca on 4/24/2018.
  */
-@Getter
-@Setter
+@Data
 @Entity
 @NoArgsConstructor
-@Component
 public class ShoppingList {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	// User can have multiple same named lists

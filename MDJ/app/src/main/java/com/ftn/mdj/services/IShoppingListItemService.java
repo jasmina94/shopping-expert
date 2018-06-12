@@ -20,4 +20,7 @@ public interface IShoppingListItemService {
 
     @POST(USER_PREFIX + "/{listId}")
     Call<GenericResponse<Boolean>> addItemToList(@Path("listId") long listId, @Body ShoppingListItemDTO registrationDTO);
+
+    @POST(USER_PREFIX)
+    Call<GenericResponse<Boolean>> updateItem(@Body ShoppingListItemDTO shoppingListItemDTO);
 }
