@@ -9,7 +9,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TimePicker;
 
 import com.ftn.mdj.R;
 import com.ftn.mdj.dto.ShoppingListDTO;
@@ -21,9 +20,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
-public class AddReminder extends AppCompatActivity {
+public class AddReminderActivity extends AppCompatActivity {
 
-    public static AddReminder instance;
+    public static AddReminderActivity instance;
 
     private EditText textTime;
     private EditText textDate;
@@ -116,7 +115,7 @@ public class AddReminder extends AppCompatActivity {
             updateLabelTime();
         };
 
-        textTime.setOnClickListener(v -> new TimePickerDialog(AddReminder.this ,time, myCalendar.get(Calendar.HOUR_OF_DAY), myCalendar.get(Calendar.MINUTE), true).show());
+        textTime.setOnClickListener(v -> new TimePickerDialog(AddReminderActivity.this ,time, myCalendar.get(Calendar.HOUR_OF_DAY), myCalendar.get(Calendar.MINUTE), true).show());
 
 
         DatePickerDialog.OnDateSetListener date = (view, year, monthOfYear, dayOfMonth) -> {
@@ -128,7 +127,7 @@ public class AddReminder extends AppCompatActivity {
         };
         textDate.setOnClickListener(v -> {
             // TODO Auto-generated method stub
-            new DatePickerDialog(AddReminder.this, date, myCalendar
+            new DatePickerDialog(AddReminderActivity.this, date, myCalendar
                     .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
                     myCalendar.get(Calendar.DAY_OF_MONTH)).show();
         });
@@ -144,5 +143,11 @@ public class AddReminder extends AppCompatActivity {
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
         date = sdf.format(myCalendar.getTime());
         textDate.setText(date);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 }

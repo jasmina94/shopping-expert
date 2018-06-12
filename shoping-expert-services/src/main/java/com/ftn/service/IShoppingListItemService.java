@@ -21,4 +21,6 @@ public interface IShoppingListItemService {
     boolean addItemToList(CategoryItemDTO categoryItemDTO, long listId);
 
     boolean buyItem(long itemId);
+
+    boolean updateItem(ShoppingListItemDTO shoppingListItemDTO);
 }

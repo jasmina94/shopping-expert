@@ -31,6 +31,7 @@ import com.ftn.mdj.threads.GetActiveListsThread;
 import com.ftn.mdj.threads.GetArchivedListsThread;
 import com.ftn.mdj.threads.GetLoggedUserThread;
 import com.ftn.mdj.threads.LogoutThread;
+import com.ftn.mdj.threads.RemoveDeviceInstanceThread;
 import com.ftn.mdj.threads.UploadListThread;
 import com.ftn.mdj.utils.DummyCollection;
 import com.ftn.mdj.utils.GenericResponse;
@@ -55,19 +56,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ActionBarDrawerToggle mToggle;
 
     private Handler handler;
-    private Handler activeListHandler;
-    private Handler uploadListHandler;
 
     private FirebaseAuth mAuth;
-    private boolean userIsLoggedIn = false;
     private SharedPreferencesManager sharedPreferenceManager;
+    private String tkn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        String tkn = FirebaseInstanceId.getInstance().getToken();
+        tkn = FirebaseInstanceId.getInstance().getToken();
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -155,6 +154,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     sharedPreferenceManager.put(SharedPreferencesManager.Key.USER_EMAIL, null);
                     sharedPreferenceManager.put(SharedPreferencesManager.Key.SHOW_NOTIFICATIONS, null);
                     sharedPreferenceManager.put(SharedPreferencesManager.Key.DISTANCE, null);
+                    removeUnusedDeviceInstances();
                     loadNotLoggedUserLists();
                     updateUI(false, null);
                 }
@@ -172,6 +172,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 loadLoggedUserLists();
             }else {
                 updateUI(false, null);
+                removeUnusedDeviceInstances();
                 loadNotLoggedUserLists();
             }
         }else {
@@ -182,9 +183,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 getLoggedUserThread.getHandler().sendMessage(msg);
             } else {
                 updateUI(false, null);
+                removeUnusedDeviceInstances();
                 loadNotLoggedUserLists();
             }
         }
+    }
+
+    private void removeUnusedDeviceInstances() {
+        RemoveDeviceInstanceThread removeDeviceInstanceThread = new RemoveDeviceInstanceThread(tkn);
+        removeDeviceInstanceThread.start();
+        Message msg = Message.obtain();
+        removeDeviceInstanceThread.getHandler().sendMessage(msg);
     }
 
     private void loadLoggedUserLists(){

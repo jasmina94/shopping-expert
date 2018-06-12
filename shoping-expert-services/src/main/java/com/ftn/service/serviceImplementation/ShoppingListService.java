@@ -1,15 +1,5 @@
 package com.ftn.service.serviceImplementation;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.ftn.dto.ShoppingListDTO;
 import com.ftn.dto.UserDTO;
 import com.ftn.entity.ShoppingList;
@@ -18,6 +8,15 @@ import com.ftn.repository.ShoppingListRepository;
 import com.ftn.service.IShoppingListItemService;
 import com.ftn.service.IShoppingListService;
 import com.ftn.service.IUserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * Created by milca on 4/25/2018.
@@ -47,6 +46,7 @@ public class ShoppingListService implements IShoppingListService {
             ShoppingListDTO dto = new ShoppingListDTO(l);
             dto.setBoughtItems(shoppingListItemService.getNumberOfPurchasedItems(l.getId()));
             dto.setNumberOfItems(shoppingListItemService.getNumberOfItems(l.getId()));
+            dto.setAccessPassword(l.getAccessPassword());
             dto.setCreatorEmail(userService.getById(l.getCreatorId().intValue()).getEmail());
             return dto;
         }).collect(Collectors.toList());
@@ -266,27 +266,6 @@ public class ShoppingListService implements IShoppingListService {
         shoppingList.setTime(null);
         shoppingListRepository.save(shoppingList);
         return true;
-    }
-
-    @Override
-    public List<String> getListForReminder(Long listId) {
-        ShoppingList shoppingList = shoppingListRepository.findById(listId).get();
-
-        if(shoppingList == null) {
-            return null;
-        }
-
-        Set<String> users = shoppingList.getSharedWith();
-
-        UserDTO creator = userService.getById(shoppingList.getCreatorId().intValue());
-
-        users.add(creator.getEmail());
-
-        Set<String> devicesList = users.stream().filter(u -> userService.getByEmailRealUser(u).getShowNotifications())
-                .collect(Collectors.toSet());
-        List<String> notifications = new ArrayList<>();
-        devicesList.forEach(d -> notifications.addAll(userService.getByEmailRealUser(d).getInstancesOfUserDevices()));
-        return notifications;
     }
 
 }

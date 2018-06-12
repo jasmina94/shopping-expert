@@ -23,4 +23,7 @@ public interface IShoppingListItemService {
 
     @POST(LIST_ITEMS_PREFIX + "/buy/{shoppingListItemId}")
     Call<GenericResponse<Boolean>> buy(@Path("shoppingListItemId") long shoppingListItemId);
+
+    @POST(LIST_ITEMS_PREFIX)
+    Call<GenericResponse<Boolean>> updateItem(@Body ShoppingListItemDTO shoppingListItemDTO);
 }

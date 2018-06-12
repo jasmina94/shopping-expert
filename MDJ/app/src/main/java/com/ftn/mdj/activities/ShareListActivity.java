@@ -167,4 +167,10 @@ public class ShareListActivity extends AppCompatActivity {
         startActivity(getIntent());
     }
 
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
 }

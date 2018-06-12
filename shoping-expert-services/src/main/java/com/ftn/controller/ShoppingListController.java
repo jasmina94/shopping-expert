@@ -214,19 +214,4 @@ public class ShoppingListController {
         }
         return response;
     }
-
-    @Transactional
-    @GetMapping("/getDevicesThatNeedReminder/{listId}")
-    public GenericResponse<List<String>> getDevicesThatNeedReminder(@PathVariable("listId") Long listId) {
-        GenericResponse response = new GenericResponse();
-        List<String> list = shoppingListService.getListForReminder(listId);
-
-        if(list == null) {
-            response.success(false);
-        } else {
-            response.setEntity(list);
-            response.success(true);
-        }
-        return response;
-    }
 }
