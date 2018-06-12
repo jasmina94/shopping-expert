@@ -38,6 +38,7 @@ public class ShoppingListItemDTO {
         this.isPurchased = shoppingListItem.getIsPurchased();
         this.imagePath = shoppingListItem.getImagePath();
         this.categoryItemId = shoppingListItem.getCategoryItemId();
+        this.categoryItemName = shoppingListItem.getCategoryItemName();
         this.shoppingListId = shoppingListItem.getShoppingListId();
     }
 }

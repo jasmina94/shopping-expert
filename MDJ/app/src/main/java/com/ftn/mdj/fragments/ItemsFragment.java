@@ -54,7 +54,7 @@ public class ItemsFragment extends Fragment {
         listId = ((AddItemActivity)parentActivity).getListId();
 
         setAllItemsHandler();
-
+        setNewItemAndCategoryItemHandler();
 
         btnCreateNewItem = (FloatingActionButton)rootView.findViewById(R.id.btn_new_shopping_item);
         btnCreateNewItem.setOnClickListener(new View.OnClickListener() {
@@ -119,29 +119,27 @@ public class ItemsFragment extends Fragment {
             public void handleMessage(Message msg) {
                 GenericResponse<Boolean> response = (GenericResponse<Boolean>) msg.obj;
                 if (response.isSuccessfulOperation()) {
-                    dialog.hide();
                     UtilHelper.showToastMessage(parentActivity, "Successfully created new item!", UtilHelper.ToastLength.SHORT);
-                    Intent i = new Intent(parentActivity, ShoppingListActivity.class);
-                    startActivity(i);
+                    parentActivity.onBackPressed();
                 }else {
-                    dialog.hide();
                     UtilHelper.showToastMessage(parentActivity, response.getErrorMessage(), UtilHelper.ToastLength.SHORT);
                 }
             }
         };
     }
     private void createNewItemOtherCategory(String name){
+        dialog.hide();
         CategoryItemDTO categoryItemDTO = new CategoryItemDTO();
         categoryItemDTO.setCategoryId(otherCategoryId);
         categoryItemDTO.setItemName(name);
 
-        AddCategoryAndShoppingItemThread registerThread = new AddCategoryAndShoppingItemThread(newItemAndCategoryItemHandler);
-        registerThread.start();
+        AddCategoryAndShoppingItemThread addCategoryAndShoppingItemThread = new AddCategoryAndShoppingItemThread(newItemAndCategoryItemHandler);
+        addCategoryAndShoppingItemThread.start();
         Message msg = Message.obtain();
         Bundle b = new Bundle();
         b.putLong("listId", listId);
         msg.setData(b);
         msg.obj = categoryItemDTO;
-        registerThread.getHandler().sendMessage(msg);
+        addCategoryAndShoppingItemThread.getHandler().sendMessage(msg);
     }
 }
