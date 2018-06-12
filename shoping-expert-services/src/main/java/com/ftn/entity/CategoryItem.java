@@ -1,5 +1,6 @@
 package com.ftn.entity;
 
+import com.ftn.dto.CategoryItemDTO;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -18,11 +19,16 @@ public class CategoryItem {
 
     @Id
     @GeneratedValue
-    @Column(name = "category_item_id")
-    private long id;
+    private Long id;
 
     @Column(nullable = false)
     private String itemName;
 
     private long categoryId;
+
+    public CategoryItem(CategoryItemDTO categoryItemDTO){
+        this.id = null;
+        this.itemName = categoryItemDTO.getItemName();
+        this.categoryId = categoryItemDTO.getCategoryId();
+    }
 }

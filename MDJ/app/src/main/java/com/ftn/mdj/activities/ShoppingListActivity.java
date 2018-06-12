@@ -12,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ftn.mdj.R;
@@ -43,6 +44,9 @@ public class ShoppingListActivity extends AppCompatActivity  {
     private FloatingActionButton mBtnAddItem;
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
+
+    private TextView mEmptyListTxt;
+    private ImageView mEmptyListImg;
 
     private TextView listNameTxt;
 
@@ -81,6 +85,9 @@ public class ShoppingListActivity extends AppCompatActivity  {
 
         mAdapter = new ShoppingListAdapter(listItemDTOS, this);
         mRecyclerView.setAdapter(mAdapter);
+
+        mEmptyListImg = (ImageView)findViewById(R.id.sh_empty_view_img);
+        mEmptyListTxt = (TextView) findViewById(R.id.sh_empty_view);
 
         listNameTxt = (TextView)findViewById(R.id.sh_txt_list_name);
         listNameTxt.setText(listName);
@@ -122,6 +129,13 @@ public class ShoppingListActivity extends AppCompatActivity  {
                         listItemDTOS = itemDTOS;
                         mAdapter = new ShoppingListAdapter(listItemDTOS, context);
                         mRecyclerView.setAdapter(mAdapter);
+                        mRecyclerView.setVisibility(View.VISIBLE);
+                        mEmptyListImg.setVisibility(View.INVISIBLE);
+                        mEmptyListTxt.setVisibility(View.INVISIBLE);
+                    }else {
+                        mRecyclerView.setVisibility(View.INVISIBLE);
+                        mEmptyListImg.setVisibility(View.VISIBLE);
+                        mEmptyListTxt.setVisibility(View.VISIBLE);
                     }
                 }
             }

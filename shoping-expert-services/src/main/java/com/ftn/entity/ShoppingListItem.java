@@ -1,6 +1,7 @@
 package com.ftn.entity;
 
 import com.ftn.dto.ShoppingListItemDTO;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,16 +15,13 @@ import java.util.Set;
 /**
  * Created by milca on 4/24/2018.
  */
-@Getter
-@Setter
+@Data
 @Entity
 @NoArgsConstructor
-@Component
 public class ShoppingListItem {
 
     @Id
     @GeneratedValue
-    @Column(name = "shopping_list_item_id")
     private Long id;
 
     @Column(nullable = false)
@@ -56,5 +54,15 @@ public class ShoppingListItem {
         this.imagePath = shoppingListItemDTO.getImagePath();
         this.categoryItemId = shoppingListItemDTO.getCategoryItemId();
         this.shoppingListId = shoppingListItemDTO.getShoppingListId();
+    }
+
+    public ShoppingListItem(long categoryItemId, long shoppingListId){
+        this.quantity = 1;
+        this.price = 0.0;
+        this.note = "";
+        this.isPurchased = false;
+        this.imagePath = "";
+        this.categoryItemId = categoryItemId;
+        this.shoppingListId = shoppingListId;
     }
 }

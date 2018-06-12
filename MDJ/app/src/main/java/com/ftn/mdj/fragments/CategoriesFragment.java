@@ -11,24 +11,35 @@ import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ExpandableListView;
 
 import com.ftn.mdj.R;
 import com.ftn.mdj.dto.CategoryDTO;
 import com.ftn.mdj.dto.CategoryItemDTO;
 import com.ftn.mdj.threads.GetCategoriesThread;
+import com.ftn.mdj.threads.GetCategoryItemsMapThread;
 import com.ftn.mdj.threads.GetCategoryItemsThread;
 import com.ftn.mdj.utils.GenericResponse;
+import com.ftn.mdj.adapters.ExpandableCategoryListAdapter;
+import com.ftn.mdj.utils.UtilHelper;
 
 import java.util.List;
+import java.util.HashMap;
 
 
 public class CategoriesFragment extends Fragment {
 
     private Handler allCategoriesHandler;
-    private Handler specificCategoryItemHandler;
+    private Handler mapHandler;
 
     private View rootView;
     private FragmentActivity parentActivity;
+
+    private ExpandableCategoryListAdapter expandableCategoryListAdapter;
+    private ExpandableListView expListView;
+
+    private List<CategoryDTO> listDataHeader;
+    private HashMap<String, List<CategoryItemDTO>> listDataChild;
 
     @Nullable
     @Override
@@ -36,12 +47,21 @@ public class CategoriesFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_categories, container, false);
         parentActivity = super.getActivity();
 
-        setAllCategoriesHandler();
-        setSpecificCategoryItemHandler();
+        expandableCategoryListAdapter = new ExpandableCategoryListAdapter(this.getContext());
+        expListView = (ExpandableListView)rootView.findViewById(R.id.exlv_cat);
+        expListView.setAdapter(expandableCategoryListAdapter);
 
-        getAllCategories();
+        setAllCategoriesHandler();
+        setMapHandler();
 
         return rootView;
+    }
+
+    @Override
+    public void onStart() {
+        getAllCategories();
+        getMap();
+        super.onStart();
     }
 
     //********************* Operation to server *********************
@@ -52,14 +72,11 @@ public class CategoriesFragment extends Fragment {
         getCategoriesThread.getHandler().sendMessage(msg);
     }
 
-    private void getSpecificCategoryItems(long categoryId){
-        GetCategoryItemsThread getCategoryItemsThread = new GetCategoryItemsThread(specificCategoryItemHandler);
-        getCategoryItemsThread.start();
+    private void getMap(){
+        GetCategoryItemsMapThread getCategoryItemsMapThread = new GetCategoryItemsMapThread(mapHandler);
+        getCategoryItemsMapThread.start();
         Message msg = Message.obtain();
-        Bundle b = new Bundle();
-        b.putLong("categoryId", categoryId);
-        msg.setData(b);
-        getCategoryItemsThread.getHandler().sendMessage(msg);
+        getCategoryItemsMapThread.getHandler().sendMessage(msg);
     }
     //***************************************************************
 
@@ -72,23 +89,29 @@ public class CategoriesFragment extends Fragment {
                 GenericResponse<List<CategoryDTO>> response = (GenericResponse<List<CategoryDTO>>) msg.obj;
                 if (response.isSuccessfulOperation()) {
                     List<CategoryDTO> categoryDTOS = response.getEntity();
-                    for (CategoryDTO categoryDTO : categoryDTOS) {
-                        System.out.println(categoryDTO.getCategoryName());
-                    }
+                    listDataHeader = categoryDTOS;
+                    expandableCategoryListAdapter.setListDataHeader(listDataHeader);
+                    expandableCategoryListAdapter.notifyDataSetChanged();
+                }else {
+                    UtilHelper.showToastMessage(getContext(), response.getErrorMessage(), UtilHelper.ToastLength.LONG);
                 }
             }
         };
     }
-    private void setSpecificCategoryItemHandler() {
-        specificCategoryItemHandler = new Handler(Looper.getMainLooper()) {
+
+
+    private void setMapHandler() {
+        mapHandler = new Handler(Looper.getMainLooper()) {
             @Override
             public void handleMessage(Message msg) {
-                GenericResponse<List<CategoryItemDTO>> response = (GenericResponse<List<CategoryItemDTO>>) msg.obj;
+                GenericResponse<HashMap<String, List<CategoryItemDTO>>> response = (GenericResponse<HashMap<String, List<CategoryItemDTO>>>) msg.obj;
                 if (response.isSuccessfulOperation()) {
-                    List<CategoryItemDTO> categoryItemDTOS = response.getEntity();
-                    for (CategoryItemDTO categoryItemDTO : categoryItemDTOS) {
-                        System.out.println(categoryItemDTO.getItemName() + categoryItemDTO.getCategoryId());
-                    }
+                    HashMap<String, List<CategoryItemDTO>> map = response.getEntity();
+                    listDataChild = map;
+                    expandableCategoryListAdapter.setListDataChild(map);
+                    expandableCategoryListAdapter.notifyDataSetChanged();
+                }else {
+                    UtilHelper.showToastMessage(getContext(), response.getErrorMessage(), UtilHelper.ToastLength.LONG);
                 }
             }
         };
