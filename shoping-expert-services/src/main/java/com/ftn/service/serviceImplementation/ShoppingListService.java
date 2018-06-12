@@ -46,6 +46,7 @@ public class ShoppingListService implements IShoppingListService {
             ShoppingListDTO dto = new ShoppingListDTO(l);
             dto.setBoughtItems(shoppingListItemService.getNumberOfPurchasedItems(l.getId()));
             dto.setNumberOfItems(shoppingListItemService.getNumberOfItems(l.getId()));
+            dto.setAccessPassword(l.getAccessPassword());
             dto.setCreatorEmail(userService.getById(l.getCreatorId().intValue()).getEmail());
             return dto;
         }).collect(Collectors.toList());

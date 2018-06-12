@@ -70,26 +70,17 @@ public class MainFragment extends Fragment {
         }
 
         mBtnAddList = (FloatingActionButton)rootView.findViewById(R.id.btn_add_shopping_list);
-        mBtnAddList.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Context context = view.getContext();
-                Intent intent = new Intent(context, AddListActivity.class);
-                startActivity(intent);
-            }
+        mBtnAddList.setOnClickListener(view -> {
+            Context context = view.getContext();
+            Intent intent = new Intent(context, AddListActivity.class);
+            startActivity(intent);
         });
 
         return rootView;
     }
 
-    public void setActiveShoppingLists(List<ShoppingListDTO> shoppingLists){ //throws IOException {
+    public void setActiveShoppingLists(List<ShoppingListDTO> shoppingLists){
         activeShoppingLists = shoppingLists;
-//        Type listType = new TypeToken<ArrayList<ShoppingListDTO>>() {
-//        }.getType();
-//        ObjectMapper mapper = new ObjectMapper();
-//        mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
-//        activeShoppingLists = mapper.readValue(mapper.writeValueAsString(shoppingLists), new TypeReference<List<ShoppingListDTO>>(){});
-//        activeShoppingLists = new Gson().fromJson(mapper.writeValueAsString(shoppingLists), listType);
     }
 
     public void archiveListUI(Long shoppingListId) {
@@ -106,10 +97,11 @@ public class MainFragment extends Fragment {
         });
     }
 
-    public void changeListPrivacy(Long shoppingListId, Boolean isPublic) {
+    public void changeListPrivacy(Long shoppingListId, Boolean isPublic, String accessPassword) {
         activeShoppingLists.forEach(e -> {
             if(e.getId() == shoppingListId) {
                 e.setIsSecret(isPublic);
+                e.setAccessPassword(accessPassword);
                 return;
             }
         });
