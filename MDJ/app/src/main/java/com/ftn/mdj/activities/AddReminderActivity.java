@@ -144,4 +144,10 @@ public class AddReminderActivity extends AppCompatActivity {
         date = sdf.format(myCalendar.getTime());
         textDate.setText(date);
     }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
 }

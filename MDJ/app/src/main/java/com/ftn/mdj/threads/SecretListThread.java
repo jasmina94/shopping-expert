@@ -32,7 +32,7 @@ public class SecretListThread extends Thread {
                         @Override
                         public void onResponse(Call<GenericResponse<Boolean>> call, Response<GenericResponse<Boolean>> response) {
                             System.out.println("Successfully made list public!");
-                            MainFragment.instance.changeListPrivacy(shoppingListId, false);
+                            MainFragment.instance.changeListPrivacy(shoppingListId, false, password);
                             secretHandler.sendMessage(ServiceUtils.getHandlerMessageFromResponse(response));
                         }
 
@@ -47,7 +47,7 @@ public class SecretListThread extends Thread {
                         @Override
                         public void onResponse(Call<GenericResponse<Boolean>> call, Response<GenericResponse<Boolean>> response) {
                             System.out.println("Successfully made list private!");
-                            MainFragment.instance.changeListPrivacy(shoppingListId, true);
+                            MainFragment.instance.changeListPrivacy(shoppingListId, true, password);
                             secretHandler.sendMessage(ServiceUtils.getHandlerMessageFromResponse(response));
                         }
 

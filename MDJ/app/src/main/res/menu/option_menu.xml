@@ -6,5 +6,7 @@
     <item android:id="@+id/mnu_secret" android:title="Make secret" />
     <item android:id="@+id/mnu_location" android:title="Location" />
     <item android:id="@+id/mnu_reminder" android:title="Reminder" />
+    <item android:id="@+id/mnu_unlock" android:title="Unlock temporary" />
+
 
 </menu>
