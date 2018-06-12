@@ -21,6 +21,11 @@ public class EditItemActivity extends AppCompatActivity {
     private long itemId;
     private String itemName;
     private String itemCategory;
+    private String itemNote;
+    private double itemPrice;
+    private int itemQuantity;
+
+
     private Button editButton;
     private EditText name;
     private TextView category;
@@ -38,6 +43,9 @@ public class EditItemActivity extends AppCompatActivity {
             itemId = extras.getLong("ITEM_ID");
             itemName =  extras.getString("ITEM_NAME");
             itemCategory = extras.getString("ITEM_CATEGORY");
+            itemNote = extras.getString("ITEM_NOTE");
+            itemPrice = extras.getDouble("ITEM_PRICE");
+            itemQuantity= extras.getInt("ITEM_QUANTITY");
         }
         Toast.makeText(EditItemActivity.this,
                 "EditItemActivity :"+itemId+" "+itemName+" "+itemCategory,
@@ -53,8 +61,13 @@ public class EditItemActivity extends AppCompatActivity {
         category.setText(itemCategory);
 
         price = findViewById(R.id.edit_price);
+        price.setText(String.valueOf(itemPrice));
+
         quantity = findViewById(R.id.edit_quantity);
+        quantity.setText(String.valueOf(itemQuantity));
+
         note = findViewById(R.id.edit_note);
+        note.setText(String.valueOf(itemNote));
 
         editButton = findViewById(R.id.edit_item_btn);
         editButton.setOnClickListener(new View.OnClickListener() {

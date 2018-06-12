@@ -52,12 +52,24 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
                 CheckBox shopping_list_item = arg0.findViewById(R.id.shopping_list_item);
                 TextView shopping_list_item_id = arg0.findViewById(R.id.shopping_list_item_id);
                 TextView shopping_list_item_category = arg0.findViewById(R.id.shopping_list_item_category);
+                TextView shopping_list_item_quantity = arg0.findViewById(R.id.shopping_list_item_quantity);
+                TextView shopping_list_item_price = arg0.findViewById(R.id.shopping_list_item_price);
+                TextView shopping_list_item_note = arg0.findViewById(R.id.shopping_list_item_note);
+
                 String itemName = shopping_list_item.getText().toString();
                 long itemId = Long.parseLong(shopping_list_item_id.getText().toString());
                 String itemCategory = shopping_list_item_category.getText().toString();
+                int itemQuantity = Integer.parseInt(shopping_list_item_quantity.getText().toString());
+                double itemPrice = Double.parseDouble(shopping_list_item_price.getText().toString());
+                String itemNote = shopping_list_item_note.getText().toString();
+
                 i.putExtra("ITEM_NAME",itemName);
                 i.putExtra("ITEM_ID",itemId);
                 i.putExtra("ITEM_CATEGORY",itemCategory);
+                i.putExtra("ITEM_QUANTITY",itemQuantity);
+                i.putExtra("ITEM_PRICE",itemPrice);
+                i.putExtra("ITEM_NOTE",itemNote);
+
                 context.startActivity(i);
                 return false;
             }
@@ -91,6 +103,9 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
         });
         holder.textView_item_id.setText(""+shoppingListItemDTO.getId());
         holder.textView_item_category.setText(shoppingListItemDTO.getCategoryName());
+        holder.textView_item_quantity.setText(String.valueOf(shoppingListItemDTO.getQuantity()));
+        holder.textView_item_price.setText(String.valueOf(shoppingListItemDTO.getPrice()));
+        holder.textView_item_note.setText(String.valueOf(shoppingListItemDTO.getNote()));
     }
 
     @Override
@@ -123,12 +138,18 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
         private CheckBox checkBox_item;
         private TextView textView_item_id;
         private TextView textView_item_category;
+        private TextView textView_item_quantity;
+        private TextView textView_item_price;
+        private TextView textView_item_note;
 
         public ViewHolder(View itemView) {
             super(itemView);
             checkBox_item = (CheckBox)itemView.findViewById(R.id.shopping_list_item);
             textView_item_id = (TextView)itemView.findViewById(R.id.shopping_list_item_id);
             textView_item_category = (TextView)itemView.findViewById(R.id.shopping_list_item_category);
+            textView_item_note = (TextView)itemView.findViewById(R.id.shopping_list_item_note);
+            textView_item_price = (TextView)itemView.findViewById(R.id.shopping_list_item_price);
+            textView_item_quantity = (TextView)itemView.findViewById(R.id.shopping_list_item_quantity);
         }
     }
 }
